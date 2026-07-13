@@ -66,6 +66,11 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
+      - name: Send Discord notification
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python scripts/send_discord.py
+
       - name: Commit updated files
         run: |
           if git diff --quiet -- races.json graded_races_schedule.html index.html changes.json source_status.json; then
