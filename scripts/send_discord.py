@@ -2,148 +2,165 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
+from datetime import datetime
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 
-CHANGES_PATH = Path("changes.json")
-MAX_ITEMS = 10
+RACES_PATH = Path("races.json")
+JST = ZoneInfo("Asia/Tokyo")
 DISCORD_MAX_LENGTH = 1900
 
+SPORT_NAMES = {
+    "jra": "JRA",
+    "nar": "地方競馬",
+    "boat": "ボートレース",
+    "keirin": "競輪",
+    "auto": "オートレース",
+}
 
-def extract_changes(payload: Any) -> list[dict[str, Any]]:
-    """changes.json の複数形式に対応して変更一覧を取り出す。"""
-    if isinstance(payload, list):
-        return [item for item in payload if isinstance(item, dict)]
+SPORT_ORDER = {
+    "jra": 0,
+    "nar": 1,
+    "boat": 2,
+    "keirin": 3,
+    "auto": 4,
+}
 
-    if not isinstance(payload, dict):
-        raise ValueError("changes.json の最上位は配列またはオブジェクトである必要があります。")
 
-    # この自動更新プログラムの標準形式を優先
-    for key in ("changes", "items", "updates", "diffs"):
-        value = payload.get(key)
-        if isinstance(value, list):
-            return [item for item in value if isinstance(item, dict)]
+def get_target_date() -> str:
+    """手動実行時はNOTIFY_DATE、通常実行時は日本時間の当日を使う。"""
+    specified = os.environ.get("NOTIFY_DATE", "").strip()
 
-    # added / updated / removed のように分類されている形式にも対応
-    merged: list[dict[str, Any]] = []
-    for category in ("added", "updated", "removed"):
-        value = payload.get(category)
-        if not isinstance(value, list):
+    if specified:
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", specified):
+            raise ValueError("NOTIFY_DATEはYYYY-MM-DD形式で指定してください。")
+        return specified
+
+    return datetime.now(JST).strftime("%Y-%m-%d")
+
+
+def get_site_url() -> str:
+    """
+    SITE_URLが設定されていればそれを使用。
+    未設定ならGITHUB_REPOSITORYからGitHub PagesのURLを組み立てる。
+    """
+    configured = os.environ.get("SITE_URL", "").strip()
+
+    if configured:
+        if configured.endswith("index.html"):
+            return configured
+        return configured.rstrip("/") + "/index.html"
+
+    repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
+
+    if "/" not in repository:
+        raise ValueError(
+            "SITE_URLが未設定で、GITHUB_REPOSITORYからも公開URLを判定できません。"
+        )
+
+    owner, repo_name = repository.split("/", 1)
+
+    if repo_name.lower() == f"{owner.lower()}.github.io":
+        return f"https://{owner}.github.io/index.html"
+
+    return f"https://{owner}.github.io/{repo_name}/index.html"
+
+
+def load_races() -> list[dict[str, Any]]:
+    if not RACES_PATH.exists():
+        raise FileNotFoundError("races.jsonが見つかりません。")
+
+    payload = json.loads(RACES_PATH.read_text(encoding="utf-8"))
+
+    if not isinstance(payload, list):
+        raise ValueError("races.jsonの最上位は配列である必要があります。")
+
+    return [race for race in payload if isinstance(race, dict)]
+
+
+def time_value(value: str) -> int:
+    if re.fullmatch(r"\d{2}:\d{2}", value):
+        hour, minute = map(int, value.split(":"))
+        return hour * 60 + minute
+
+    # 時刻未定は時刻確定済みレースの後ろ
+    return 24 * 60 + 1
+
+
+def format_race(race: dict[str, Any]) -> str:
+    time_text = str(race.get("time", "")).strip() or "時刻未定"
+    sport = SPORT_NAMES.get(
+        str(race.get("sport", "")).strip(),
+        str(race.get("sport", "")).strip(),
+    )
+    venue = str(race.get("venue", "")).strip()
+    grade = str(race.get("grade", "")).strip()
+    name = str(race.get("name", "")).strip()
+
+    values = [time_text, sport, venue, grade, name]
+    return " ".join(value for value in values if value)
+
+
+def build_messages(
+    target_date: str,
+    site_url: str,
+    races: list[dict[str, Any]],
+) -> list[str]:
+    todays_races = [
+        race
+        for race in races
+        if str(race.get("date", "")).strip() == target_date
+    ]
+
+    todays_races.sort(
+        key=lambda race: (
+            time_value(str(race.get("time", "")).strip()),
+            SPORT_ORDER.get(str(race.get("sport", "")).strip(), 99),
+            str(race.get("venue", "")).strip(),
+            str(race.get("name", "")).strip(),
+        )
+    )
+
+    linked_title = f"[🏁本日のグレードレース](<{site_url}>)"
+
+    if not todays_races:
+        return [
+            f"{linked_title}\n"
+            "グレードレースはありません"
+        ]
+
+    race_lines = [format_race(race) for race in todays_races]
+
+    # Discordの1投稿2000文字制限を超えないよう、必要なら分割する。
+    messages: list[str] = []
+    current_lines = [linked_title]
+
+    for line in race_lines:
+        candidate = "\n".join(current_lines + [line])
+
+        if len(candidate) <= DISCORD_MAX_LENGTH:
+            current_lines.append(line)
             continue
 
-        for item in value:
-            if not isinstance(item, dict):
-                continue
-            copied = dict(item)
-            copied.setdefault("category", category)
-            merged.append(copied)
+        messages.append("\n".join(current_lines))
+        current_lines = [
+            f"[🏁本日のグレードレース（続き）](<{site_url}>)",
+            line,
+        ]
 
-    return merged
+    if current_lines:
+        messages.append("\n".join(current_lines))
 
-
-def first_text(*values: Any) -> str:
-    for value in values:
-        if value is None:
-            continue
-        text = str(value).strip()
-        if text:
-            return text
-    return ""
+    return messages
 
 
-def format_change(change: dict[str, Any]) -> str:
-    """変更1件をDiscord表示用に整形する。"""
-    race = change.get("race")
-    if not isinstance(race, dict):
-        race = {}
-
-    date = first_text(change.get("date"), race.get("date"))
-    venue = first_text(change.get("venue"), race.get("venue"))
-    name = first_text(change.get("name"), race.get("name"))
-
-    title_parts = [part for part in (date, venue, name) if part]
-    title = " ".join(title_parts) or "日程情報"
-
-    field = first_text(
-        change.get("field"),
-        change.get("key"),
-        change.get("property"),
-    )
-    before = first_text(
-        change.get("before"),
-        change.get("old"),
-        change.get("previous"),
-        change.get("from"),
-    )
-    after = first_text(
-        change.get("after"),
-        change.get("new"),
-        change.get("current"),
-        change.get("to"),
-    )
-    message = first_text(
-        change.get("detail"),
-        change.get("message"),
-        change.get("description"),
-    )
-
-    lines = [f"**{title}**"]
-
-    if message:
-        lines.append(message)
-    elif field or before or after:
-        label_map = {
-            "time": "発走時刻",
-            "winner": "優勝者",
-            "name": "レース名",
-            "venue": "開催場",
-            "grade": "グレード",
-            "status": "開催状況",
-        }
-        label = label_map.get(field, field or "変更")
-        before_text = before or "空欄"
-        after_text = after or "空欄"
-        lines.append(f"{label}：{before_text} → {after_text}")
-    else:
-        # 不明な形式でもJSON全体を出さず、主要項目だけ表示
-        category = first_text(change.get("category"), change.get("type"))
-        if category:
-            lines.append(f"変更種別：{category}")
-
-    source_url = first_text(
-        change.get("source_url"),
-        change.get("url"),
-        change.get("source"),
-    )
-    if source_url.startswith(("https://", "http://")):
-        lines.append(f"<{source_url}>")
-
-    return "\n".join(lines)
-
-
-def build_message(changes: list[dict[str, Any]]) -> str:
-    lines = ["**公営競技重賞日程を更新しました**", ""]
-
-    for change in changes[:MAX_ITEMS]:
-        lines.append(format_change(change))
-        lines.append("")
-
-    if len(changes) > MAX_ITEMS:
-        lines.append(f"ほか {len(changes) - MAX_ITEMS} 件の変更があります。")
-
-    message = "\n".join(lines).strip()
-
-    if len(message) > DISCORD_MAX_LENGTH:
-        message = message[: DISCORD_MAX_LENGTH - 20].rstrip() + "\n…以下省略"
-
-    return message
-
-
-def send_to_discord(webhook_url: str, message: str) -> None:
+def send_message(webhook_url: str, message: str) -> None:
     payload = json.dumps(
         {
             "content": message,
@@ -166,46 +183,55 @@ def send_to_discord(webhook_url: str, message: str) -> None:
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
             if response.status not in (200, 204):
-                raise RuntimeError(f"Discord通知に失敗しました: HTTP {response.status}")
+                raise RuntimeError(
+                    f"Discord通知に失敗しました: HTTP {response.status}"
+                )
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="replace")
         raise RuntimeError(
             f"Discord通知に失敗しました: HTTP {exc.code} {body}"
         ) from exc
     except urllib.error.URLError as exc:
-        raise RuntimeError(f"Discordへ接続できませんでした: {exc.reason}") from exc
+        raise RuntimeError(
+            f"Discordへ接続できませんでした: {exc.reason}"
+        ) from exc
 
 
 def main() -> int:
     webhook_url = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
+
     if not webhook_url:
-        print("DISCORD_WEBHOOK_URL が設定されていません。", file=sys.stderr)
+        print("DISCORD_WEBHOOK_URLが設定されていません。", file=sys.stderr)
         return 1
 
-    if not CHANGES_PATH.exists():
-        print("changes.json がないため、Discord通知を行いません。")
-        return 0
-
     try:
-        payload = json.loads(CHANGES_PATH.read_text(encoding="utf-8"))
-        changes = extract_changes(payload)
-    except (OSError, json.JSONDecodeError, ValueError) as exc:
-        print(f"changes.json の読み込みに失敗しました: {exc}", file=sys.stderr)
-        return 1
+        target_date = get_target_date()
+        site_url = get_site_url()
+        races = load_races()
+        messages = build_messages(target_date, site_url, races)
 
-    if not changes:
-        print("変更がないため、Discord通知を行いません。")
-        return 0
+        for message in messages:
+            send_message(webhook_url, message)
 
-    message = build_message(changes)
-
-    try:
-        send_to_discord(webhook_url, message)
-    except RuntimeError as exc:
+    except (
+        OSError,
+        json.JSONDecodeError,
+        ValueError,
+        RuntimeError,
+    ) as exc:
         print(str(exc), file=sys.stderr)
         return 1
 
-    print(f"Discordへ {len(changes)} 件の変更を通知しました。")
+    count = sum(
+        1
+        for race in races
+        if str(race.get("date", "")).strip() == target_date
+    )
+
+    print(
+        f"{target_date}のグレードレース{count}件を"
+        f"Discordへ通知しました。"
+    )
     return 0
 
 
