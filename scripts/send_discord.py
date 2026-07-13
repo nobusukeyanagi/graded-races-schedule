@@ -16,6 +16,11 @@ RACES_PATH = Path("races.json")
 JST = ZoneInfo("Asia/Tokyo")
 DISCORD_MAX_LENGTH = 1900
 
+DEFAULT_SITE_URL = (
+    "https://nobusukeyanagi.github.io/"
+    "graded-races-schedule/index.html"
+)
+
 SPORT_NAMES = {
     "jra": "JRA",
     "nar": "地方競馬",
@@ -32,6 +37,8 @@ SPORT_ORDER = {
     "auto": 4,
 }
 
+WEEKDAYS_JA = ["月", "火", "水", "木", "金", "土", "日"]
+
 
 def get_target_date() -> str:
     """手動実行時はNOTIFY_DATE、通常実行時は日本時間の当日を使う。"""
@@ -46,30 +53,11 @@ def get_target_date() -> str:
 
 
 def get_site_url() -> str:
-    """
-    SITE_URLが設定されていればそれを使用。
-    未設定ならGITHUB_REPOSITORYからGitHub PagesのURLを組み立てる。
-    """
+    """SITE_URLが設定されていれば使用し、未設定なら既定URLを使う。"""
     configured = os.environ.get("SITE_URL", "").strip()
-
     if configured:
-        if configured.endswith("index.html"):
-            return configured
-        return configured.rstrip("/") + "/index.html"
-
-    repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
-
-    if "/" not in repository:
-        raise ValueError(
-            "SITE_URLが未設定で、GITHUB_REPOSITORYからも公開URLを判定できません。"
-        )
-
-    owner, repo_name = repository.split("/", 1)
-
-    if repo_name.lower() == f"{owner.lower()}.github.io":
-        return f"https://{owner}.github.io/index.html"
-
-    return f"https://{owner}.github.io/{repo_name}/index.html"
+        return configured
+    return DEFAULT_SITE_URL
 
 
 def load_races() -> list[dict[str, Any]]:
@@ -89,8 +77,13 @@ def time_value(value: str) -> int:
         hour, minute = map(int, value.split(":"))
         return hour * 60 + minute
 
-    # 時刻未定は時刻確定済みレースの後ろ
     return 24 * 60 + 1
+
+
+def format_date_line(target_date: str) -> str:
+    dt = datetime.strptime(target_date, "%Y-%m-%d")
+    weekday = WEEKDAYS_JA[dt.weekday()]
+    return f"{dt.month}/{dt.day} ({weekday})"
 
 
 def format_race(race: dict[str, Any]) -> str:
@@ -127,35 +120,43 @@ def build_messages(
         )
     )
 
-    linked_title = f"[🏁本日のグレードレース](<{site_url}>)"
+    title = "🏁本日のグレードレース"
+    date_line = format_date_line(target_date)
 
     if not todays_races:
         return [
-            f"{linked_title}\n"
-            "グレードレースはありません"
+            "\n".join(
+                [
+                    title,
+                    date_line,
+                    "グレードレースはありません",
+                    site_url,
+                ]
+            )
         ]
 
     race_lines = [format_race(race) for race in todays_races]
 
-    # Discordの1投稿2000文字制限を超えないよう、必要なら分割する。
     messages: list[str] = []
-    current_lines = [linked_title]
+    current_lines = [title, date_line]
 
     for line in race_lines:
-        candidate = "\n".join(current_lines + [line])
+        candidate = "\n".join(current_lines + [line, site_url])
 
         if len(candidate) <= DISCORD_MAX_LENGTH:
             current_lines.append(line)
             continue
 
+        current_lines.append(site_url)
         messages.append("\n".join(current_lines))
         current_lines = [
-            f"[🏁本日のグレードレース（続き）](<{site_url}>)",
+            f"{title}（続き）",
+            date_line,
             line,
         ]
 
-    if current_lines:
-        messages.append("\n".join(current_lines))
+    current_lines.append(site_url)
+    messages.append("\n".join(current_lines))
 
     return messages
 
@@ -236,4 +237,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    sys.exit(main())
     sys.exit(main())
