@@ -13,6 +13,7 @@ from zoneinfo import ZoneInfo
 
 
 RACES_PATH = Path("races.json")
+STATE_PATH = Path("discord_notification_state.json")
 JST = ZoneInfo("Asia/Tokyo")
 DISCORD_MAX_LENGTH = 1900
 
@@ -40,8 +41,16 @@ SPORT_ORDER = {
 WEEKDAYS_JA = ["月", "火", "水", "木", "金", "土", "日"]
 
 
+def env_is_true(name: str) -> bool:
+    return os.environ.get(name, "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+
 def get_target_date() -> str:
-    """手動実行時はNOTIFY_DATE、通常実行時は日本時間の当日を使う。"""
     specified = os.environ.get("NOTIFY_DATE", "").strip()
 
     if specified:
@@ -53,11 +62,8 @@ def get_target_date() -> str:
 
 
 def get_site_url() -> str:
-    """SITE_URLが設定されていれば使用し、未設定なら既定URLを使う。"""
     configured = os.environ.get("SITE_URL", "").strip()
-    if configured:
-        return configured
-    return DEFAULT_SITE_URL
+    return configured or DEFAULT_SITE_URL
 
 
 def load_races() -> list[dict[str, Any]]:
@@ -70,6 +76,33 @@ def load_races() -> list[dict[str, Any]]:
         raise ValueError("races.jsonの最上位は配列である必要があります。")
 
     return [race for race in payload if isinstance(race, dict)]
+
+
+def load_last_notified_date() -> str:
+    if not STATE_PATH.exists():
+        return ""
+
+    try:
+        payload = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return ""
+
+    if not isinstance(payload, dict):
+        return ""
+
+    return str(payload.get("last_notified_date", "")).strip()
+
+
+def save_notification_state(target_date: str) -> None:
+    payload = {
+        "last_notified_date": target_date,
+        "sent_at_jst": datetime.now(JST).isoformat(timespec="seconds"),
+    }
+
+    STATE_PATH.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
 
 def time_value(value: str) -> int:
@@ -88,10 +121,8 @@ def format_date_line(target_date: str) -> str:
 
 def format_race(race: dict[str, Any]) -> str:
     time_text = str(race.get("time", "")).strip() or "時刻未定"
-    sport = SPORT_NAMES.get(
-        str(race.get("sport", "")).strip(),
-        str(race.get("sport", "")).strip(),
-    )
+    sport_code = str(race.get("sport", "")).strip()
+    sport = SPORT_NAMES.get(sport_code, sport_code)
     venue = str(race.get("venue", "")).strip()
     grade = str(race.get("grade", "")).strip()
     name = str(race.get("name", "")).strip()
@@ -136,7 +167,6 @@ def build_messages(
         ]
 
     race_lines = [format_race(race) for race in todays_races]
-
     messages: list[str] = []
     current_lines = [title, date_line]
 
@@ -149,15 +179,10 @@ def build_messages(
 
         current_lines.append(site_url)
         messages.append("\n".join(current_lines))
-        current_lines = [
-            f"{title}（続き）",
-            date_line,
-            line,
-        ]
+        current_lines = [f"{title}（続き）", date_line, line]
 
     current_lines.append(site_url)
     messages.append("\n".join(current_lines))
-
     return messages
 
 
@@ -207,12 +232,23 @@ def main() -> int:
 
     try:
         target_date = get_target_date()
+        force_notify = env_is_true("FORCE_NOTIFY")
+        last_notified_date = load_last_notified_date()
+
+        if last_notified_date == target_date and not force_notify:
+            print(
+                f"{target_date}は通知済みのため、重複通知を行いません。"
+            )
+            return 0
+
         site_url = get_site_url()
         races = load_races()
         messages = build_messages(target_date, site_url, races)
 
         for message in messages:
             send_message(webhook_url, message)
+
+        save_notification_state(target_date)
 
     except (
         OSError,
@@ -237,5 +273,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
     sys.exit(main())
