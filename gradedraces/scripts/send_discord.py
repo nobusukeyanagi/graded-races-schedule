@@ -19,7 +19,7 @@ DISCORD_MAX_LENGTH = 1900
 
 DEFAULT_SITE_URL = (
     "https://nobusukeyanagi.github.io/"
-    "graded-races-schedule/index.html"
+    "zenrace/gradedraces/"
 )
 
 SPORT_NAMES = {
