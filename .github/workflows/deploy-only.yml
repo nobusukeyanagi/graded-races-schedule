@@ -25,25 +25,46 @@ jobs:
       - name: Prepare Pages files
         run: |
           rm -rf _site
-          mkdir -p _site/gradedraces _site/shared
+          mkdir -p _site/shared _site/gradedraces
 
-          # ホーム
           cp index.html _site/index.html
-
-          # 全ページ共通ファイル
           cp -R shared/. _site/shared/
 
-          # グレードレース
           cp gradedraces/index.html _site/gradedraces/index.html
-          cp gradedraces/graded_races_schedule.html             _site/gradedraces/graded_races_schedule.html
+          cp gradedraces/graded_races_schedule.html _site/gradedraces/graded_races_schedule.html
           cp gradedraces/races.json _site/gradedraces/races.json
+          [ ! -d gradedraces/icons ] || cp -R gradedraces/icons _site/gradedraces/icons
 
-          # 競技ピクトグラムなどの画像
-          if [ -d gradedraces/icons ]; then
-            cp -R gradedraces/icons _site/gradedraces/icons
-          fi
+          # 現在または今後追加される通常ページもそのまま公開する。
+          for page_dir in vote onair mypage; do
+            if [ -d "$page_dir" ]; then
+              cp -R "$page_dir" "_site/$page_dir"
+            fi
+          done
 
-          # Jekyll処理を行わず、そのまま公開
+          # HTML側で記述を忘れても、全ページに共通ボトムナビを配置する。
+          python - <<'PY'
+          from pathlib import Path
+          import os
+
+          site = Path("_site")
+          for html in site.rglob("*.html"):
+              text = html.read_text(encoding="utf-8")
+              relative_root = os.path.relpath(site, html.parent).replace(os.sep, "/")
+              prefix = "" if relative_root == "." else f"{relative_root}/"
+              script = f'<script src="{prefix}shared/bottom-nav.js?v=16" defer></script>'
+
+              if "bottom-nav.js" not in text and "</head>" in text:
+                  text = text.replace("</head>", f"  {script}\n</head>", 1)
+              if "<zenrace-bottom-nav" not in text and "</body>" in text:
+                  text = text.replace(
+                      "</body>",
+                      "  <zenrace-bottom-nav></zenrace-bottom-nav>\n</body>",
+                      1,
+                  )
+              html.write_text(text, encoding="utf-8")
+          PY
+
           touch _site/.nojekyll
 
       - name: Upload GitHub Pages artifact
