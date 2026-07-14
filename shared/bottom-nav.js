@@ -89,8 +89,9 @@
         <style>
           :host{
             --safe:max(env(safe-area-inset-bottom),0px);
-            position:fixed;left:0;right:0;bottom:0;z-index:2000;display:block;
+            position:fixed;left:0;right:0;bottom:var(--visual-bottom,0px);z-index:5000;display:block;
             height:calc(${standalone ? '58px' : '62px'} + var(--safe));
+            transform:translateZ(0);backface-visibility:hidden;
             font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Yu Gothic UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
             -webkit-text-size-adjust:100%;text-size-adjust:100%;
           }
