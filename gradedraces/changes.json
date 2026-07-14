@@ -1,82 +1,19 @@
 {
-  "generated_at": "2026-07-14T17:11:36.806821+09:00",
+  "generated_at": "2026-07-14T17:32:20.208389+09:00",
   "center_date": "2026-07-14",
   "window": {
     "start": "2026-07-12",
     "end": "2026-07-19"
   },
   "target_count": 17,
-  "change_count": 4,
+  "change_count": 1,
   "changes": [
     {
       "date": "2026-07-19",
       "sport": "jra",
-      "venue": "小倉",
-      "name": "小倉記念",
-      "before": {
-        "date": "2026-07-19",
-        "time": "15:45",
-        "sport": "jra",
-        "venue": "小倉",
-        "grade": "GⅢ",
-        "name": "小倉記念",
-        "winner": ""
-      },
-      "after": {
-        "date": "2026-07-19",
-        "time": "15:45",
-        "sport": "jra",
-        "venue": "小倉",
-        "grade": "GIII",
-        "name": "小倉記念",
-        "winner": ""
-      },
-      "source": "JRA",
-      "evidence_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
-      "note": "JRA重賞一覧"
-    },
-    {
-      "date": "2026-07-19",
-      "sport": "jra",
       "venue": "函館",
       "name": "函館2歳S",
       "before": {
-        "date": "2026-07-19",
-        "time": "15:20",
-        "sport": "jra",
-        "venue": "函館",
-        "grade": "GⅢ",
-        "name": "函館2歳ステークス",
-        "winner": ""
-      },
-      "after": {
-        "date": "2026-07-19",
-        "time": "15:20",
-        "sport": "jra",
-        "venue": "函館",
-        "grade": "GIII",
-        "name": "函館2歳S",
-        "winner": ""
-      },
-      "source": "JRA",
-      "evidence_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
-      "note": "JRA重賞一覧"
-    },
-    {
-      "date": "2026-07-19",
-      "sport": "jra",
-      "venue": "函館",
-      "name": "函館2歳S",
-      "before": {
-        "date": "2026-07-19",
-        "time": "15:20",
-        "sport": "jra",
-        "venue": "函館",
-        "grade": "GIII",
-        "name": "函館2歳S",
-        "winner": ""
-      },
-      "after": {
         "date": "2026-07-19",
         "time": "16:05",
         "sport": "jra",
@@ -85,31 +22,13 @@
         "name": "函館2歳S",
         "winner": ""
       },
-      "source": "JRA",
-      "evidence_url": "https://www.jra.go.jp/keiba/calendar2026/2026/7/0719.html",
-      "note": "JRA競馬番組"
-    },
-    {
-      "date": "2026-07-19",
-      "sport": "jra",
-      "venue": "小倉",
-      "name": "小倉記念",
-      "before": {
-        "date": "2026-07-19",
-        "time": "15:45",
-        "sport": "jra",
-        "venue": "小倉",
-        "grade": "GIII",
-        "name": "小倉記念",
-        "winner": ""
-      },
       "after": {
         "date": "2026-07-19",
-        "time": "15:20",
+        "time": "14:10",
         "sport": "jra",
-        "venue": "小倉",
+        "venue": "函館",
         "grade": "GIII",
-        "name": "小倉記念",
+        "name": "函館2歳S",
         "winner": ""
       },
       "source": "JRA",
