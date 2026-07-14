@@ -7,7 +7,6 @@ on:
       timezone: "Asia/Tokyo"
 
     # 予備実行：日本時間 毎朝6:47
-    # 6:17の実行が成功済みなら、重複通知防止により送信しません。
     - cron: "47 6 * * *"
       timezone: "Asia/Tokyo"
 
@@ -23,17 +22,21 @@ on:
         default: false
         type: boolean
 
-permissions:
-  contents: write
-
 concurrency:
   group: graded-races-daily-update
   cancel-in-progress: false
 
 jobs:
   update:
+    name: Update data and prepare site
     runs-on: ubuntu-latest
     timeout-minutes: 30
+
+    permissions:
+      contents: write
+
+    outputs:
+      race_update_outcome: ${{ steps.race_update.outcome }}
 
     steps:
       - name: Checkout latest main
@@ -82,15 +85,7 @@ jobs:
             --html graded_races_schedule.html
           cp graded_races_schedule.html index.html
 
-      - name: Send today's graded races to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          SITE_URL: ${{ vars.SITE_URL }}
-          NOTIFY_DATE: ${{ inputs.base_date }}
-          FORCE_NOTIFY: ${{ inputs.force_notify }}
-        run: python scripts/send_discord.py
-
-      - name: Commit updated files and notification state
+      - name: Commit updated source files
         if: always()
         run: |
           git config user.name "graded-races-bot"
@@ -103,17 +98,49 @@ jobs:
 
           [ -f changes.json ] && git add changes.json || true
           [ -f source_status.json ] && git add source_status.json || true
-          [ -f discord_notification_state.json ] && git add discord_notification_state.json || true
 
           if git diff --cached --quiet; then
-            echo "コミット対象の変更はありません。"
+            echo "データファイルの変更はありません。"
           else
-            # 先にローカルの変更をコミットしてから、
-            # リモートmainの最新状態を取り込む。
-            git commit -m "Update graded races and notification state"
+            git commit -m "Update graded races"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
+
+      - name: Prepare Pages files
+        env:
+          RUN_ID: ${{ github.run_id }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          rm -rf _site
+          mkdir -p _site
+
+          cp index.html _site/index.html
+          cp graded_races_schedule.html _site/graded_races_schedule.html
+          cp races.json _site/races.json
+
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          marker = {
+              "run_id": os.environ["RUN_ID"],
+              "commit_sha": os.environ["COMMIT_SHA"],
+              "deployed_at": datetime.now(timezone.utc).isoformat(),
+          }
+
+          Path("_site/deployment.json").write_text(
+              json.dumps(marker, ensure_ascii=False, separators=(",", ":")),
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
 
       - name: Upload diagnostic reports
         if: always()
@@ -123,12 +150,109 @@ jobs:
           path: |
             changes.json
             source_status.json
-            discord_notification_state.json
           if-no-files-found: ignore
           retention-days: 14
 
-      - name: Report update failure
-        if: steps.race_update.outcome == 'failure'
+  deploy:
+    name: Deploy website
+    needs: update
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  notify:
+    name: Notify Discord after deployment
+    needs:
+      - update
+      - deploy
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Confirm the new website is live
+        env:
+          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
+          RUN_ID: ${{ github.run_id }}
         run: |
-          echo "公式情報の更新には失敗しましたが、既存のraces.jsonを使ったDiscord通知は実行しました。"
+          MARKER_URL="${PAGE_URL%/}/deployment.json?run=${RUN_ID}"
+
+          for attempt in $(seq 1 18); do
+            CONTENT="$(curl --fail --silent --show-error \
+              --max-time 15 "$MARKER_URL" || true)"
+
+            if printf '%s' "$CONTENT" | \
+              grep -q "\"run_id\":\"${RUN_ID}\""; then
+              echo "今回のWebページが公開済みであることを確認しました。"
+              exit 0
+            fi
+
+            echo "公開反映を待っています（${attempt}/18）"
+            sleep 5
+          done
+
+          echo "今回のWebページが公開されたことを確認できませんでした。"
           exit 1
+
+      - name: Send today's graded races to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          NOTIFY_DATE: ${{ inputs.base_date }}
+          FORCE_NOTIFY: ${{ inputs.force_notify }}
+        run: python scripts/send_discord.py
+
+      - name: Commit notification state
+        run: |
+          git config user.name "graded-races-bot"
+          git config user.email "graded-races-bot@users.noreply.github.com"
+
+          if [ ! -f discord_notification_state.json ]; then
+            echo "通知済み状態ファイルは作成されませんでした。"
+            exit 0
+          fi
+
+          git add discord_notification_state.json
+
+          if git diff --cached --quiet; then
+            echo "通知済み状態の変更はありません。"
+          else
+            git commit -m "Save Discord notification state"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Report source update failure
+        if: needs.update.outputs.race_update_outcome == 'failure'
+        run: |
+          echo "公式情報の取得には失敗しました。既存データを公開・通知しました。"
