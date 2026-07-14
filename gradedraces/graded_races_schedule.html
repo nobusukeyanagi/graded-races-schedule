@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes,viewport-fit=cover">
 <title>公営競技重賞日程</title>
 <style>
 
@@ -24,28 +24,62 @@
   --holiday:#fff0f0;
   --today:#fff6c9;
   --table-font:11px;
+
+  --date-width:54px;
+  --time-width:49px;
+  --venue-width:88px;
+  --grade-width:49px;
+  --name-width:205px;
+  --winner-width:130px;
+  --table-width:
+    calc(
+      var(--time-width) +
+      var(--venue-width) +
+      var(--grade-width) +
+      var(--name-width) +
+      var(--winner-width)
+    );
 }
 *{box-sizing:border-box}
 html{
   min-height:100%;
   background:#090704;
+  touch-action:pan-x pan-y pinch-zoom;
 }
 body{
   margin:0;
-  min-width:0;
+  min-width:
+    calc(
+      var(--date-width) +
+      var(--table-width) +
+      14px
+    );
   min-height:100%;
-  overflow-x:hidden;
+  overflow-x:auto;
+  overflow-y:auto;
   color:var(--text);
   background:linear-gradient(180deg,#f7f8fa,var(--bg));
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Yu Gothic UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Yu Gothic UI",
+    "Hiragino Kaku Gothic ProN",
+    Meiryo,
+    sans-serif;
   -webkit-font-smoothing:antialiased;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-x pan-y pinch-zoom;
 }
 button,textarea{font:inherit}
 
 .topbar{
-  position:sticky;
+  position:fixed;
+  z-index:100;
   top:0;
-  z-index:50;
+  right:0;
+  left:0;
+  min-width:0;
   min-height:calc(56px + env(safe-area-inset-top,0px));
   padding:calc(env(safe-area-inset-top,0px) + 8px) 8px 8px;
   display:flex;
@@ -53,8 +87,17 @@ button,textarea{font:inherit}
   justify-content:flex-end;
   color:#fff;
   background:
-    linear-gradient(105deg,transparent 0 28%,rgba(255,224,128,.09) 42%,transparent 57%),
-    radial-gradient(circle at 75% -30%,rgba(255,218,111,.32),transparent 46%),
+    linear-gradient(
+      105deg,
+      transparent 0 28%,
+      rgba(255,224,128,.09) 42%,
+      transparent 57%
+    ),
+    radial-gradient(
+      circle at 75% -30%,
+      rgba(255,218,111,.32),
+      transparent 46%
+    ),
     linear-gradient(135deg,#050403 0%,#181307 48%,#0a0804 100%);
   border-bottom:1px solid rgba(212,175,55,.62);
   box-shadow:
@@ -68,7 +111,15 @@ button,textarea{font:inherit}
   bottom:0;
   left:0;
   height:2px;
-  background:linear-gradient(90deg,transparent,#9b741b 20%,#ffe18a 50%,#9b741b 80%,transparent);
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #9b741b 20%,
+      #ffe18a 50%,
+      #9b741b 80%,
+      transparent
+    );
   opacity:.8;
 }
 .month-nav{
@@ -128,11 +179,22 @@ button,textarea{font:inherit}
 #editBtn{display:none}
 
 .schedule{
-  padding:7px 7px 15px;
+  width:max-content;
+  min-width:100%;
+  padding:
+    calc(56px + env(safe-area-inset-top,0px) + 7px)
+    7px
+    15px;
+  touch-action:pan-x pan-y pinch-zoom;
 }
 .day-block{
   display:grid;
-  grid-template-columns:54px minmax(0,1fr);
+  grid-template-columns:var(--date-width) var(--table-width);
+  width:
+    calc(
+      var(--date-width) +
+      var(--table-width)
+    );
   margin-bottom:6px;
   overflow:hidden;
   border:1px solid var(--line);
@@ -142,7 +204,9 @@ button,textarea{font:inherit}
 }
 .day-block.today{
   border-color:#d7aa21;
-  box-shadow:0 0 0 1px rgba(215,170,33,.16),0 3px 10px rgba(15,23,42,.06);
+  box-shadow:
+    0 0 0 1px rgba(215,170,33,.16),
+    0 3px 10px rgba(15,23,42,.06);
 }
 .date-cell{
   position:relative;
@@ -197,29 +261,20 @@ button,textarea{font:inherit}
 }
 
 .race-list{
-  min-width:0;
-  overflow-x:auto;
-  overflow-y:hidden;
-  overscroll-behavior-x:contain;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:thin;
-  scrollbar-color:#c8a13c transparent;
-}
-.race-list::-webkit-scrollbar{height:4px}
-.race-list::-webkit-scrollbar-thumb{
-  border-radius:99px;
-  background:#c8a13c;
+  width:var(--table-width);
+  min-width:var(--table-width);
+  overflow:visible;
 }
 .race-row{
   display:grid;
   grid-template-columns:
-    50px
-    112px
-    50px
-    minmax(180px,max-content)
-    minmax(112px,max-content);
-  width:max-content;
-  min-width:100%;
+    var(--time-width)
+    var(--venue-width)
+    var(--grade-width)
+    var(--name-width)
+    var(--winner-width);
+  width:var(--table-width);
+  min-width:var(--table-width);
   min-height:38px;
   align-items:stretch;
   border-bottom:1px solid #e7ebf0;
@@ -233,7 +288,7 @@ button,textarea{font:inherit}
 .name-cell,
 .winner-cell{
   min-width:0;
-  padding:5px 7px;
+  padding:5px;
   display:flex;
   align-items:center;
   line-height:1.15;
@@ -248,11 +303,18 @@ button,textarea{font:inherit}
 .time-cell.pending{color:#8a94a3;font-weight:700}
 .time-cell.cancelled{color:#c43b3b;font-weight:950}
 .venue-cell{
-  gap:6px;
+  width:var(--venue-width);
+  gap:4px;
   border-right:1px solid #edf0f4;
   font-weight:900;
 }
-.venue-name{white-space:nowrap}
+.venue-name{
+  display:block;
+  flex:0 0 auto;
+  max-width:4em;
+  overflow:visible;
+  white-space:nowrap;
+}
 .grade-cell{
   justify-content:center;
   border-right:1px solid #edf0f4;
@@ -264,9 +326,7 @@ button,textarea{font:inherit}
   font-weight:800;
 }
 .race-name{white-space:nowrap}
-.winner-cell{
-  font-weight:800;
-}
+.winner-cell{font-weight:800}
 .grade-top,
 .name-top,
 .winner-top{
@@ -293,20 +353,25 @@ button,textarea{font:inherit}
 .sport-icon.keirin{background:var(--keirin)}
 .sport-icon.auto{background:var(--auto)}
 .sport-icon svg{
-  width:26px;
-  height:26px;
+  width:27px;
+  height:27px;
   display:block;
 }
 .sport-icon.horse svg{
-  width:28px;
-  height:28px;
-}
-.sport-icon.boat svg{
   width:29px;
   height:29px;
 }
+.sport-icon.boat svg{
+  width:30px;
+  height:30px;
+}
 
 .empty-month{
+  width:
+    calc(
+      var(--date-width) +
+      var(--table-width)
+    );
   padding:48px 20px;
   border:1px dashed #cbd2dc;
   border-radius:10px;
@@ -316,7 +381,13 @@ button,textarea{font:inherit}
   font-size:13px;
 }
 .data-note{
-  padding:0 10px 14px;
+  width:
+    calc(
+      var(--date-width) +
+      var(--table-width)
+    );
+  margin:0 7px;
+  padding:0 3px 14px;
   color:#7c8694;
   font-size:9px;
   line-height:1.55;
@@ -335,7 +406,7 @@ button,textarea{font:inherit}
 }
 .modal-backdrop.open{display:grid}
 .modal{
-  width:100%;
+  width:min(100%,430px);
   max-height:calc(100dvh - 16px);
   display:grid;
   grid-template-rows:auto auto minmax(180px,1fr) auto auto;
@@ -377,30 +448,45 @@ button,textarea{font:inherit}
   align-items:stretch;
   flex-direction:column;
 }
-.modal-actions .left,.modal-actions .right{
+.modal-actions .left,
+.modal-actions .right{
   display:flex;
   flex-wrap:wrap;
   gap:6px;
 }
-.error{min-height:16px;color:#c93636;font-size:11px;font-weight:800}
+.error{
+  min-height:16px;
+  color:#c93636;
+  font-size:11px;
+  font-weight:800;
+}
 
 @media(max-width:350px){
-  .day-block{grid-template-columns:51px minmax(0,1fr)}
-  .date-cell{padding-inline:2px}
-  .month-title{min-width:96px;font-size:16px}
-  .btn{padding-inline:6px}
-  .race-row{
-    grid-template-columns:
-      47px
-      108px
-      47px
-      minmax(175px,max-content)
-      minmax(108px,max-content);
+  :root{
+    --date-width:51px;
+    --venue-width:86px;
+    --name-width:198px;
+    --winner-width:125px;
   }
+  .date-cell{padding-inline:2px}
+  .month-title{
+    min-width:96px;
+    font-size:16px;
+  }
+  .btn{padding-inline:6px}
 }
 @media print{
-  zenrace-bottom-nav,.modal-backdrop,.data-note,.top-actions{display:none!important}
-  html,body{background:#fff}
+  zenrace-bottom-nav,
+  .modal-backdrop,
+  .data-note,
+  .top-actions{
+    display:none!important;
+  }
+  html,body{
+    min-width:0;
+    overflow:visible;
+    background:#fff;
+  }
   .topbar{
     position:static;
     min-height:44px;
@@ -409,8 +495,10 @@ button,textarea{font:inherit}
   }
   .month-nav{top:5px}
   .schedule{padding:5px}
-  .day-block{break-inside:avoid;box-shadow:none}
-  .race-list{overflow:visible}
+  .day-block{
+    break-inside:avoid;
+    box-shadow:none;
+  }
 }
 
 </style>
@@ -512,50 +600,55 @@ function sportIcon(sport){
   const icons={
     jra:`<span class="sport-icon horse jra" role="img" aria-label="${labels.jra}">
       <svg viewBox="0 0 64 64" aria-hidden="true">
-        <path fill="currentColor" d="M15 58c1-14 5-25 14-35l-3-13 13 8 10-7 1 14c7 6 10 14 10 25v8H40v-8h10c0-7-2-12-7-16l-8 5-9-5c-5 7-8 15-9 24H15z"/>
-        <path fill="#fff" d="M42 25a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/>
-        <path fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" d="M28 34c4 4 9 5 15 3"/>
+        <path fill="#fff" d="M61 58H37c0-8 2-16 7-24l-5-3-7 4-10-1-7 6-11-2-3-6 9-4 5-9 12-4 8-7 2-10 6 13-2 5c-6 7-9 15-10 25h-9c1-13 5-24 13-34l-3-13 11 6 9-12 5 2-1 17c7 9 10 20 9 34z"/>
+        <path fill="#23834a" d="M15 29c4 0 7 1 10 3l-5 4-8-1z"/>
+        <circle cx="30" cy="25" r="2.4" fill="#23834a"/>
+        <path d="M8 33c4 2 8 2 12 1" fill="none" stroke="#23834a" stroke-width="2.5" stroke-linecap="round"/>
       </svg>
     </span>`,
     nar:`<span class="sport-icon horse nar" role="img" aria-label="${labels.nar}">
       <svg viewBox="0 0 64 64" aria-hidden="true">
-        <path fill="currentColor" d="M15 58c1-14 5-25 14-35l-3-13 13 8 10-7 1 14c7 6 10 14 10 25v8H40v-8h10c0-7-2-12-7-16l-8 5-9-5c-5 7-8 15-9 24H15z"/>
-        <path fill="#fff" d="M42 25a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/>
-        <path fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" d="M28 34c4 4 9 5 15 3"/>
+        <path fill="#fff" d="M61 58H37c0-8 2-16 7-24l-5-3-7 4-10-1-7 6-11-2-3-6 9-4 5-9 12-4 8-7 2-10 6 13-2 5c-6 7-9 15-10 25h-9c1-13 5-24 13-34l-3-13 11 6 9-12 5 2-1 17c7 9 10 20 9 34z"/>
+        <path fill="#8b5a2b" d="M15 29c4 0 7 1 10 3l-5 4-8-1z"/>
+        <circle cx="30" cy="25" r="2.4" fill="#8b5a2b"/>
+        <path d="M8 33c4 2 8 2 12 1" fill="none" stroke="#8b5a2b" stroke-width="2.5" stroke-linecap="round"/>
       </svg>
     </span>`,
     boat:`<span class="sport-icon boat" role="img" aria-label="${labels.boat}">
       <svg viewBox="0 0 64 64" aria-hidden="true">
-        <path fill="#fff" d="M8 39h40l9 7-10 9H20L8 45z"/>
-        <path fill="#fff" d="M24 27h20l6 12H18z"/>
-        <path fill="#1876c9" d="M29 30h12l3 7H25z"/>
-        <path fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" d="M7 58h21M35 58h18"/>
-        <path fill="#fff" d="M48 35l8-5 2 3-8 6z"/>
+        <path fill="#fff" d="M4 41l13-13h27l12 8-8 14H15L4 45z"/>
+        <path fill="#d8eeff" d="M17 31h24l8 6H11z"/>
+        <path fill="#1876c9" d="M30 29h11l6 7H25z"/>
+        <circle cx="39" cy="25" r="5" fill="#fff"/>
+        <path fill="#fff" d="M46 34h10l3 7-7 2z"/>
+        <path fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" d="M7 55h21M34 55h20"/>
+        <path fill="none" stroke="#d8eeff" stroke-width="2.5" stroke-linecap="round" d="M49 48l9 4"/>
       </svg>
     </span>`,
     keirin:`<span class="sport-icon keirin" role="img" aria-label="${labels.keirin}">
       <svg viewBox="0 0 64 64" aria-hidden="true">
-        <circle cx="17" cy="46" r="10" fill="none" stroke="currentColor" stroke-width="4.5"/>
-        <circle cx="48" cy="46" r="10" fill="none" stroke="currentColor" stroke-width="4.5"/>
-        <path d="M17 46l12-18 8 18H25l-8 0zm12-18h15l4 18" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="35" cy="15" r="5" fill="currentColor"/>
-        <path d="M34 21l-7 10m8-10l12 6m-12-6l3 12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="16" cy="47" r="10" fill="none" stroke="#fff" stroke-width="4.5"/>
+        <circle cx="49" cy="47" r="10" fill="none" stroke="#fff" stroke-width="4.5"/>
+        <path d="M16 47l13-18 9 18H25l-9 0zm13-18h15l5 18" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="27" cy="15" r="5" fill="#fff"/>
+        <path d="M28 21l8 9m-8-8l-12 5m12-5l-4 12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+        <path d="M18 26l-7 3" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
       </svg>
     </span>`,
     auto:`<span class="sport-icon auto" role="img" aria-label="${labels.auto}">
       <svg viewBox="0 0 64 64" aria-hidden="true">
-        <circle cx="16" cy="47" r="9" fill="none" stroke="currentColor" stroke-width="4.5"/>
-        <circle cx="49" cy="47" r="9" fill="none" stroke="currentColor" stroke-width="4.5"/>
-        <path d="M16 47h17l8-13h9m-18 13l-7-14h13l10 14" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="34" cy="17" r="5" fill="currentColor"/>
-        <path d="M33 23l-9 10m10-9l13 5m-14-5l5 10" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-        <path d="M22 31h-7" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="15" cy="48" r="9" fill="none" stroke="#fff" stroke-width="4.5"/>
+        <circle cx="50" cy="48" r="9" fill="none" stroke="#fff" stroke-width="4.5"/>
+        <path d="M15 48h18l8-13h11m-19 13l-7-14h13l11 14" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="27" cy="17" r="5" fill="#fff"/>
+        <path d="M28 23l9 9m-9-8l-13 5m13-5l-4 11" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+        <path d="M19 31h-8" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+        <path d="M45 34h10" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
       </svg>
     </span>`
   };
   return icons[sport]||"";
 }
-
 function raceRow(x){
   const gc=gradeClass(x.sport,x.grade);
   return `<div class="race-row ${x.sport}">

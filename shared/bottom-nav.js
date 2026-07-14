@@ -143,7 +143,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 16px;
+            gap: 5px;
             padding: 4px 1px 5px;
             color: var(--nav-white);
             text-decoration: none;
