@@ -8,17 +8,15 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="zenrace">
 <title>グレードレース | zenrace</title>
+<link rel="stylesheet" href="../shared/header.css">
 <style>
 :root{
-  --header-h:58px;
   --nav-content-h:62px;
   --nav-safe:max(env(safe-area-inset-bottom),0px);
   --nav-total-h:calc(var(--nav-content-h) + var(--nav-safe));
-  --visual-top:0px;
   --visual-bottom:0px;
   --visual-height:100dvh;
   --bg:#eef1f5;--panel:#fff;--line:#d8dde6;--text:#18202a;--muted:#738091;
-  --gold:#d5ab43;--gold-light:#f2d889;
   --jra:#23834a;--nar:#8b5a2b;--boat:#1876c9;--keirin:#d8661d;--auto:#7545af;
   --sat:#eaf4ff;--sun:#fff0f0;--today:#fff6c8;
   --content-scale:1.18;
@@ -35,24 +33,9 @@ body{
 button,textarea{font:inherit}
 button{-webkit-tap-highlight-color:transparent}
 
-.topbar{
-  position:fixed;left:0;right:0;top:var(--visual-top);z-index:4000;height:calc(var(--header-h) + env(safe-area-inset-top));
-  padding-top:env(safe-area-inset-top);display:grid;grid-template-columns:minmax(72px,1fr) auto minmax(72px,1fr);
-  align-items:center;color:#fff;background:
-    linear-gradient(110deg,rgba(213,171,67,.15),transparent 25%,transparent 70%,rgba(213,171,67,.12)),
-    linear-gradient(135deg,#050505,#202020 56%,#080808);
-  border-bottom:1px solid rgba(213,171,67,.42);box-shadow:0 5px 18px rgba(0,0,0,.24);
-  touch-action:none;overscroll-behavior:none;transform:translate3d(0,0,0);backface-visibility:hidden;contain:layout paint
-}
-.header-side{display:flex;align-items:center;padding:0 10px}.header-side.left{justify-content:flex-start}.header-side.right{justify-content:flex-end}
-.header-btn{
-  min-width:52px;height:34px;padding:0 10px;border:1px solid rgba(242,216,137,.42);border-radius:8px;
-  color:#f8e8b8;background:rgba(255,255,255,.055);font-size:11px;font-weight:800;cursor:pointer
-}
-.header-btn:active{background:rgba(213,171,67,.2)}
 .month-nav{display:grid;grid-template-columns:34px minmax(112px,auto) 34px;align-items:center;gap:2px}
-.month-arrow{width:34px;height:34px;border:0;background:transparent;color:var(--gold-light);font-size:27px;line-height:1;cursor:pointer}
-.month-title{text-align:center;color:#fff;font-size:17px;font-weight:900;letter-spacing:.045em;white-space:nowrap}
+.month-arrow{width:34px;height:34px;border:0;background:transparent;color:var(--header-gold-light);font-size:27px;line-height:1;cursor:pointer}
+.month-title{text-align:center;color:#fff;font-size:17px;font-weight:900;letter-spacing:.045em;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.28)}
 
 zenrace-bottom-nav{touch-action:none;overscroll-behavior:none}
 
@@ -115,14 +98,13 @@ zenrace-bottom-nav{touch-action:none;overscroll-behavior:none}
 .modal-btn{border:1px solid #c9d1dc;border-radius:8px;padding:7px 10px;color:#243041;background:#fff;font-weight:750;cursor:pointer}.modal-btn.primary{color:#fff;border-color:#171d25;background:#171d25}.modal-actions>div{display:flex;gap:6px}.error{min-height:15px;color:#c93636;font-size:10px;font-weight:850}
 
 @media(max-width:430px){
-  :root{--header-h:54px;--nav-content-h:62px}
-  .topbar{grid-template-columns:68px auto 68px}.header-side{padding:0 7px}.header-btn{min-width:48px;height:32px;padding:0 6px;font-size:10px}
+  :root{--nav-content-h:62px}
   .month-nav{grid-template-columns:29px minmax(102px,auto) 29px}.month-arrow{width:29px}.month-title{font-size:15px}
   .schedule{padding:5px 5px 5px}.day-block{grid-template-columns:36px minmax(0,1fr)}
   .date-number{font-size:16px}.weekday{font-size:6.5px}
 }
 @media(display-mode:standalone){
-  :root{--header-h:54px;--nav-content-h:58px}
+  :root{--nav-content-h:58px}
 }
 @media print{
   html,body{height:auto;overflow:visible}.topbar,zenrace-bottom-nav,.modal-backdrop{display:none!important}
@@ -135,7 +117,7 @@ zenrace-bottom-nav{touch-action:none;overscroll-behavior:none}
 <body>
 <header class="topbar">
   <div class="header-side left"></div>
-  <div class="month-nav">
+  <div class="header-center month-nav">
     <button class="month-arrow" id="prevMonth" aria-label="前月">‹</button>
     <div class="month-title" id="monthTitle"></div>
     <button class="month-arrow" id="nextMonth" aria-label="翌月">›</button>
