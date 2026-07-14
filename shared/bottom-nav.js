@@ -91,13 +91,13 @@
             --safe:max(env(safe-area-inset-bottom),0px);
             position:fixed;left:0;right:0;bottom:var(--visual-bottom,0px);z-index:5000;display:block;
             height:calc(${standalone ? '58px' : '62px'} + var(--safe));
-            transform:translateZ(0);backface-visibility:hidden;
+            transform:translate3d(0,0,0);backface-visibility:hidden;will-change:transform;contain:layout paint;touch-action:none;overscroll-behavior:none;
             font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Yu Gothic UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
             -webkit-text-size-adjust:100%;text-size-adjust:100%;
           }
           *{box-sizing:border-box}
           nav{
-            width:100%;height:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:start;
+            width:100%;height:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:start;touch-action:none;overscroll-behavior:none;
             padding:4px 4px var(--safe);
             color:#d7dce3;
             background:
@@ -147,6 +147,18 @@
         </style>
         <nav aria-label="メインナビゲーション">${items}</nav>
       `;
+
+      const navElement=shadow.querySelector("nav");
+      const stopGesture=event=>event.preventDefault();
+      for(const type of ["gesturestart","gesturechange","gestureend"]){
+        navElement.addEventListener(type,stopGesture,{passive:false});
+      }
+      navElement.addEventListener("touchstart",event=>{
+        if(event.touches.length>1)event.preventDefault();
+      },{passive:false});
+      navElement.addEventListener("touchmove",event=>{
+        if(event.touches.length>1)event.preventDefault();
+      },{passive:false});
     }
   }
 
