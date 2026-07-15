@@ -6,13 +6,13 @@
 <title>TikTok風コメントオーバーレイ 12行固定版</title>
 <style>
 :root {
-  --left: 30px;
+  --left: 0px;
   --bottom: 0px;
-  --width: 820px;
-  --height: 740px;
-  --font-size: 36px;
-  --line-height: 1.20;
-  --gap: 20px;
+  --width: 430px;
+  --height: 370px;
+  --font-size: 18px;
+  --line-height: 1.18;
+  --gap: 8px;
   --rows: 12;
 }
 * { box-sizing: border-box; }
@@ -72,7 +72,7 @@ body { pointer-events: none; }
 }
 </style>
 
-<link rel="stylesheet" href="./mobile-half.css">
+
 </head>
 <body>
 <div class="comment-layer" id="commentLayer" aria-hidden="true">
@@ -110,10 +110,10 @@ function render(newCount) {
     stack.appendChild(el);
 
     // 1行の文字を省略せず、領域内に収まる場合だけ緩やかに縮小する。
-    const available = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--width')) || 820;
+    const available = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--width')) || 430;
     const naturalWidth = el.scrollWidth;
     if (naturalWidth > available) {
-      const fitted = Math.max(26, 36 * available / naturalWidth);
+      const fitted = Math.max(13, 18 * available / naturalWidth);
       el.style.fontSize = `${fitted}px`;
     }
   });
