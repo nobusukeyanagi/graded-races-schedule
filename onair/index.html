@@ -24,10 +24,10 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
 .menu-button{left:410px;top:878px;width:100px;height:100px;z-index:75;transition:opacity var(--fade) linear,filter .12s ease,transform .12s ease}
 .menu-button.press{filter:brightness(1.25) drop-shadow(0 0 9px rgba(255,215,106,.85));transform:scale(.97)}
 .avatar-custom{left:-76.5px;top:230px;width:805px;height:1650px;z-index:20}
-.transition-backdrop{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity var(--fade) linear;background:radial-gradient(circle at 50% 48%,rgba(255,215,106,.20),transparent 22%),radial-gradient(circle at 18% 80%,rgba(255,215,106,.10),transparent 24%),radial-gradient(circle at 86% 18%,rgba(255,255,255,.07),transparent 18%),linear-gradient(180deg,#020202 0%,#0a0a0a 42%,#050505 100%)}.transition-backdrop.show{opacity:1}
+.transition-backdrop{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;z-index:0;pointer-events:none;opacity:0;transition:opacity var(--fade) linear;background:radial-gradient(circle at 50% 48%,rgba(255,215,106,.20),transparent 22%),radial-gradient(circle at 18% 80%,rgba(255,215,106,.10),transparent 24%),radial-gradient(circle at 86% 18%,rgba(255,255,255,.07),transparent 18%),linear-gradient(180deg,#020202 0%,#0a0a0a 42%,#050505 100%)}
+.transition-backdrop::before{content:"";position:absolute;left:50%;top:50%;width:max(160vw,160vh);height:max(160vw,160vh);transform:translate(-50%,-50%);background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(255,215,106,.08) 45deg,transparent 88deg,rgba(255,255,255,.05) 136deg,transparent 188deg,rgba(255,215,106,.09) 242deg,transparent 308deg,rgba(255,255,255,.04) 360deg);filter:blur(5px)}
+.transition-backdrop.show{opacity:1}.transition-backdrop.show::before{animation:transitionBackdropRotate 9s linear infinite}
 .transition-screen{left:0;top:0;width:540px;height:1074px;z-index:65;background:transparent;display:grid;place-items:center;overflow:hidden}
-.transition-screen::before{content:"";position:absolute;inset:-130px;background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(255,215,106,.08) 45deg,transparent 88deg,rgba(255,255,255,.05) 136deg,transparent 188deg,rgba(255,215,106,.09) 242deg,transparent 308deg,rgba(255,255,255,.04) 360deg);filter:blur(5px)}
-.transition-screen.show::before{animation:transitionRotate 9s linear infinite}
 .transition-panel{position:relative;width:450px;height:280px;display:grid;place-items:center;z-index:2}
 .transition-ring{position:absolute;width:260px;height:260px;border-radius:50%;border:2px solid rgba(255,215,106,.20);box-shadow:0 0 28px rgba(255,215,106,.22),inset 0 0 20px rgba(255,215,106,.10)}
 .transition-ring::before,.transition-ring::after{content:"";position:absolute;inset:21px;border-radius:50%;border:3px solid transparent;border-top-color:#ffd76a;border-right-color:rgba(255,215,106,.34)}
@@ -40,12 +40,12 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
 .transition-sub{width:100%;margin-top:17px;padding-left:.18em;color:rgba(255,240,184,.94);font-size:18px;font-weight:800;letter-spacing:.18em;text-align:center}
 .transition-sweep{position:absolute;left:-35%;top:0;width:30%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.11),transparent);transform:skewX(-18deg);z-index:1}
 .transition-screen.show .transition-sweep{animation:transitionSweep 2.2s ease-in-out infinite}
-@keyframes transitionRotate{to{transform:rotate(360deg)}}
+@keyframes transitionBackdropRotate{to{transform:translate(-50%,-50%) rotate(360deg)}}
 @keyframes transitionSpin{to{transform:rotate(360deg)}}
 @keyframes transitionSpinReverse{to{transform:rotate(-360deg)}}
 @keyframes transitionPulse{0%,100%{transform:scale(1);opacity:.88}50%{transform:scale(1.05);opacity:1}}
 @keyframes transitionSweep{0%{left:-35%;opacity:0}20%{opacity:1}70%,100%{left:108%;opacity:0}}
-@media(prefers-reduced-motion:reduce){.transition-screen.show::before,.transition-screen.show .transition-ring,.transition-screen.show .transition-ring::before,.transition-screen.show .transition-ring::after,.transition-screen.show .transition-sweep{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.transition-backdrop.show::before,.transition-screen.show .transition-ring,.transition-screen.show .transition-ring::before,.transition-screen.show .transition-ring::after,.transition-screen.show .transition-sweep{animation:none!important}}
 .hidden-media{position:absolute;width:1px;height:1px;opacity:.001;pointer-events:none}
 #audioUnlock{position:absolute;right:10px;top:10px;z-index:120;display:none;min-height:38px;padding:0 14px;border:1px solid rgba(255,215,106,.72);border-radius:999px;color:#fff;background:rgba(8,10,16,.90);box-shadow:0 5px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12);font:800 12px/1 "Noto Sans JP","Yu Gothic",sans-serif;-webkit-tap-highlight-color:transparent}
 #audioUnlock.show{display:block}
@@ -66,7 +66,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
     </div>
   </div>
   <iframe id="avatarCustom" loading="eager" scrolling="no" class="layer avatar-custom" src="assets/avatar_live2d.html"></iframe>
-  <iframe id="statusLive" loading="eager" scrolling="no" class="layer status-live" src="assets/status_live_row.html"></iframe>
+  <iframe id="statusLive" loading="eager" scrolling="no" class="layer status-live" src="assets/status_live_row.html?v=32"></iframe>
   <iframe id="bannerRace" loading="eager" scrolling="no" class="layer banner" src="assets/banner_race.html"></iframe>
   <iframe id="bannerAddiction" class="layer banner" data-src="assets/banner_addiction.html" scrolling="no"></iframe>
   <iframe id="voteButton" loading="eager" scrolling="no" class="layer vote-button-layer" src="assets/vote_button.html?v=24"></iframe>

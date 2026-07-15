@@ -271,10 +271,11 @@
         inset 0 1px 0 rgba(255,255,255,.18);
     }
 
-    .deadline-icon svg {
+    .deadline-icon img {
       width: 40px;
       height: 40px;
       display: block;
+      object-fit: contain;
     }
 
     .deadline-notice .venue {
@@ -389,16 +390,7 @@
       const venue = venues[Math.floor(Math.random() * venues.length)];
       const raceNo = 1 + Math.floor(Math.random() * 12);
       deadlineEl.classList.remove("show");
-      deadlineEl.innerHTML = `<span class="deadline-icon" aria-hidden="true">
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="22" cy="44" r="10" fill="none" stroke="#ffffff" stroke-width="5"/>
-  <circle cx="46" cy="44" r="10" fill="none" stroke="#ffffff" stroke-width="5"/>
-  <path d="M16 36L27 23H39L47 36" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M29 22L23 15" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="22" cy="14" r="4.6" fill="#ffffff"/>
-  <path d="M37 23L31 31" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
-</svg>
-</span><span class="venue">${venue}</span><span class="race-no">${raceNo}R</span><span class="deadline-text">締切10分前</span>`;
+      deadlineEl.innerHTML = `<span class="deadline-icon" aria-hidden="true"><img src="../../gradedraces/icons/keirin.png?v=32" alt=""></span><span class="venue">${venue}</span><span class="race-no">${raceNo}R</span><span class="deadline-text">締切10分前</span>`;
       void deadlineEl.offsetWidth;
       deadlineEl.classList.add("show");
     }
