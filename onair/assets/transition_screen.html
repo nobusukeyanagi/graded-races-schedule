@@ -7,9 +7,9 @@
 <style>
 :root{--w:540px;--h:1074px;--gold:#ffd76a;--gold2:#fff0b8}
 *{box-sizing:border-box}
-html,body{margin:0;width:var(--w);height:var(--h);overflow:hidden;background:#050505;font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
+html,body{margin:0;width:var(--w);height:var(--h);overflow:hidden;background:transparent;font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
 body{pointer-events:none}
-.stage{position:relative;width:100%;height:100%;overflow:hidden;background:radial-gradient(circle at 50% 48%,rgba(255,215,106,.20),transparent 22%),radial-gradient(circle at 18% 80%,rgba(255,215,106,.10),transparent 24%),radial-gradient(circle at 86% 18%,rgba(255,255,255,.07),transparent 18%),linear-gradient(180deg,#020202 0%,#0a0a0a 42%,#050505 100%)}
+.stage{position:relative;width:100%;height:100%;overflow:hidden;background:transparent}
 .stage::before{content:"";position:absolute;inset:-130px;background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(255,215,106,.07) 45deg,transparent 88deg,rgba(255,255,255,.045) 136deg,transparent 188deg,rgba(255,215,106,.08) 242deg,transparent 308deg,rgba(255,255,255,.035) 360deg);animation:rotateBg 9s linear infinite;filter:blur(5px)}
 .stage::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,transparent 0%,transparent 58%,rgba(0,0,0,.46) 100%),repeating-linear-gradient(90deg,rgba(255,255,255,.014) 0 1px,transparent 1px 20px);opacity:.65}
 .panel{position:absolute;left:50%;top:50%;width:450px;height:260px;transform:translate(-50%,-50%);display:grid;place-items:center;z-index:2}
