@@ -216,18 +216,6 @@
               0 4px 13px rgba(0,0,0,.28);
           }
 
-          .item.featured.active::before {
-            border-color: rgba(240,204,112,.62);
-            background:
-              linear-gradient(115deg, rgba(255,255,255,.09), transparent 32%, rgba(213,171,67,.08)),
-              linear-gradient(180deg, rgba(56,47,27,.92), rgba(20,16,9,.94));
-            box-shadow:
-              inset 0 1px 0 rgba(255,255,255,.12),
-              inset 0 -1px 0 rgba(0,0,0,.44),
-              0 0 12px rgba(240,204,112,.12),
-              0 4px 13px rgba(0,0,0,.3);
-          }
-
           .item > * { position: relative; z-index: 1; }
           .item.featured .icon { transform: translateY(-1px) scale(1.04); }
 

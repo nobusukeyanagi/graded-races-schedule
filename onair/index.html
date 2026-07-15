@@ -19,7 +19,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
 .layer{position:absolute;border:0;margin:0;padding:0;overflow:hidden;pointer-events:none;opacity:0;transition:opacity var(--fade) linear}
 .layer.show{opacity:1}.layer.no-fade{transition:none}iframe.layer{background:transparent}
 .status-live{left:0;top:0;width:540px;height:64px;z-index:50}.banner{left:0;top:65px;width:540px;height:275px;z-index:30}
-.vote-button-layer{left:30px;top:429px;width:150px;height:150px;z-index:45;pointer-events:auto}.chat{left:0;top:0;width:540px;height:750px;z-index:42}
+.vote-button-layer{left:30px;top:399px;width:150px;height:150px;z-index:45;pointer-events:auto}.chat{left:0;top:0;width:540px;height:750px;z-index:42}
 .comment-stream{left:0;top:608px;width:430px;height:370px;z-index:60}.input{left:0;top:952px;width:540px;height:110px;z-index:70}
 .menu-button{left:410px;top:878px;width:100px;height:100px;z-index:75;transition:opacity var(--fade) linear,filter .12s ease,transform .12s ease}
 .menu-button.press{filter:brightness(1.25) drop-shadow(0 0 9px rgba(255,215,106,.85));transform:scale(.97)}
@@ -53,11 +53,28 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
 <zenrace-bottom-nav active="onair"></zenrace-bottom-nav>
 <script src="../shared/bottom-nav.js?v=24"></script>
 <script>
-const CONFIG={width:540,height:1074,bgmVolume:.18,voiceVolume:1,tConcierge:60,tPersonality2Return:140,tPersonality2End:165,tPersonality:165,tEnd:236,transitionDuration:3,preSwitchFlash:.3};
+const CONFIG={width:540,height:1074,bgmVolume:.108,voiceVolume:1,voiceBoost:1.2,tConcierge:60,tPersonality2Return:140,tPersonality2End:165,tPersonality:165,tEnd:236,transitionDuration:3,preSwitchFlash:.3};
 const $=id=>document.getElementById(id);
 const layers={bgPersonality:$("bgPersonality"),bgConcierge:$("bgConcierge"),transitionBackdrop:$("transitionBackdrop"),transitionScreen:$("transitionScreen"),statusLive:$("statusLive"),bannerRace:$("bannerRace"),bannerAddiction:$("bannerAddiction"),voteButton:$("voteButton"),chatBot:$("chatBot"),commentStream:$("commentStream"),sharedInput:$("sharedInput"),personalityButton:$("personalityButton"),conciergeButton:$("conciergeButton"),avatarCustom:$("avatarCustom")};
 const bgm=$("bgm"),voiceRace=$("voiceRace"),voiceAddiction=$("voiceAddiction");
 bgm.volume=CONFIG.bgmVolume;voiceRace.volume=CONFIG.voiceVolume;voiceAddiction.volume=CONFIG.voiceVolume;
+let voiceAudioContext=null,voiceGain=null,voiceNodesReady=false;
+function prepareVoiceBoost(){
+  if(voiceNodesReady)return;
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContextClass)return;
+  try{
+    voiceAudioContext=new AudioContextClass();
+    voiceGain=voiceAudioContext.createGain();
+    voiceGain.gain.value=CONFIG.voiceBoost;
+    [voiceRace,voiceAddiction].forEach(audio=>{
+      const source=voiceAudioContext.createMediaElementSource(audio);
+      source.connect(voiceGain);
+    });
+    voiceGain.connect(voiceAudioContext.destination);
+    voiceNodesReady=true;
+  }catch(e){console.warn("voice boost unavailable",e)}
+}
 let startTime=null,raceVoiceStarted=false,addictionVoiceStarted=false,finished=false,currentScene="",previousScene="",conciergeChatStarted=false,voiceLevelSmooth=0,conciergeAvatarSpeaking=false,conciergeAvatarLevel=0,conciergeAvatarSpeakingAt=0,conciergeReleased=false,raceReleased=false;
 function ensureLoaded(el){if(!el||el.dataset.loaded==="1")return;const src=el.dataset.src;if(src){el.src=src;el.dataset.loaded="1"}}
 function releaseFrame(el){if(!el)return;try{el.src="about:blank";delete el.dataset.loaded}catch(e){}}
@@ -71,8 +88,8 @@ function applyScene(scene){if(scene===currentScene)return;previousScene=currentS
 window.addEventListener("message",e=>{const d=e.data||{};if(d.type==="conciergeAvatarSpeaking"){conciergeAvatarSpeaking=!!d.speaking;conciergeAvatarLevel=conciergeAvatarSpeaking?Math.max(0,Math.min(1,Number(d.level)||.82)):0;if(conciergeAvatarSpeaking)conciergeAvatarSpeakingAt=performance.now()}});
 function activeVoiceLevel(){const active=[voiceRace,voiceAddiction].some(a=>a&&!a.paused&&!a.ended);const target=active?.045:0;voiceLevelSmooth=voiceLevelSmooth*.72+target*.28;return voiceLevelSmooth}
 let lastAvatar=0;function updateAvatar(scene,now){if(now-lastAvatar<100)return;lastAvatar=now;const pv=scene==="personality2"||scene==="personality",cv=scene==="concierge",level=activeVoiceLevel(),ps=pv&&level>.014,cs=cv&&(conciergeAvatarSpeaking||now-conciergeAvatarSpeakingAt<450);try{layers.avatarCustom.contentWindow.postMessage({type:"avatarState",scene,speaking:ps||cs,level:ps?Math.min(1,level*12):(cs?Math.max(.68,conciergeAvatarLevel||.82):0)},"*")}catch(e){}}
-async function startPlayback(){if(startTime!==null)return;startTime=performance.now();applyScene("personality2");requestAnimationFrame(tick);bgm.currentTime=0;bgm.play().catch(()=>{})}
-function unlockAudio(){if(startTime===null)return;const t=Math.max(0,(performance.now()-startTime)/1000);if(bgm.paused){try{bgm.currentTime=Math.min(t,bgm.duration||t)}catch(e){}bgm.play().catch(()=>{})}if(t<CONFIG.tConcierge&&voiceRace.paused){try{voiceRace.currentTime=Math.min(t,Math.max(0,(voiceRace.duration||t)-.05))}catch(e){}voiceRace.play().catch(()=>{})}if(t>=CONFIG.tPersonality&&t<CONFIG.tEnd){warmFinal();if(voiceAddiction.paused){try{voiceAddiction.currentTime=Math.min(t-CONFIG.tPersonality,Math.max(0,(voiceAddiction.duration||t)-.05))}catch(e){}voiceAddiction.play().catch(()=>{})}}}
+async function startPlayback(){if(startTime!==null)return;prepareVoiceBoost();startTime=performance.now();applyScene("personality2");requestAnimationFrame(tick);bgm.currentTime=0;bgm.play().catch(()=>{})}
+function unlockAudio(){if(startTime===null)return;prepareVoiceBoost();if(voiceAudioContext?.state==="suspended")voiceAudioContext.resume().catch(()=>{});const t=Math.max(0,(performance.now()-startTime)/1000);if(bgm.paused){try{bgm.currentTime=Math.min(t,bgm.duration||t)}catch(e){}bgm.play().catch(()=>{})}if(t<CONFIG.tConcierge&&voiceRace.paused){try{voiceRace.currentTime=Math.min(t,Math.max(0,(voiceRace.duration||t)-.05))}catch(e){}voiceRace.play().catch(()=>{})}if(t>=CONFIG.tPersonality&&t<CONFIG.tEnd){warmFinal();if(voiceAddiction.paused){try{voiceAddiction.currentTime=Math.min(t-CONFIG.tPersonality,Math.max(0,(voiceAddiction.duration||t)-.05))}catch(e){}voiceAddiction.play().catch(()=>{})}}}
 ["pointerdown","touchstart","click"].forEach(type=>window.addEventListener(type,unlockAudio,{once:true,passive:true}));
 let flashC=false,flashP=false;function tick(now){if(startTime===null)return;const t=(now-startTime)/1000;if(t>54)warmConcierge();if(t>156)warmFinal();const scene=getScene(t);applyScene(scene);if(!flashC&&t>=CONFIG.tConcierge-CONFIG.preSwitchFlash&&t<CONFIG.tConcierge){flashC=true;flashButton(layers.personalityButton)}if(!flashP&&t>=CONFIG.tPersonality2Return-CONFIG.preSwitchFlash&&t<CONFIG.tPersonality2Return){flashP=true;flashButton(layers.conciergeButton)}updateAvatar(scene,now);if(!raceVoiceStarted){raceVoiceStarted=true;voiceRace.currentTime=0;voiceRace.play().catch(()=>{})}if(!addictionVoiceStarted&&t>=CONFIG.tPersonality){addictionVoiceStarted=true;warmFinal();voiceAddiction.currentTime=0;voiceAddiction.play().catch(()=>{})}if(!conciergeReleased&&t>146){conciergeReleased=true;setTimeout(()=>{releaseFrame(layers.bgConcierge);releaseFrame(layers.chatBot);releaseFrame(layers.conciergeButton)},500)}if(!raceReleased&&t>167){raceReleased=true;setTimeout(()=>releaseFrame(layers.bannerRace),500)}if(!finished&&t>=CONFIG.tEnd){finished=true;[bgm,voiceRace,voiceAddiction].forEach(a=>{try{a.pause();a.removeAttribute("src");a.load()}catch(e){}});try{layers.avatarCustom.contentWindow.postMessage({type:"freezeAvatar"},"*")}catch(e){}window.__AITUBER_DONE__=true}if(!finished)requestAnimationFrame(tick)}
 function syncViewport(){const root=document.documentElement,vv=window.visualViewport,layout=Math.max(root.clientHeight,window.innerHeight||0),top=vv?Math.max(0,vv.offsetTop):0,visible=vv?vv.height:(window.innerHeight||layout),bottom=vv?Math.max(0,layout-visible-top):0;root.style.setProperty("--visual-top",`${Math.round(top)}px`);root.style.setProperty("--visual-bottom",`${Math.round(bottom)}px`);const vp=$("appViewport"),stage=$("stage");if(!vp||!stage)return;const scale=Math.min(vp.clientWidth/CONFIG.width,vp.clientHeight/CONFIG.height);stage.style.transformOrigin="50% 50%";stage.style.transform=`scale(${scale})`;stage.style.left=`${(vp.clientWidth-CONFIG.width)/2}px`;stage.style.top=`${(vp.clientHeight-CONFIG.height)/2}px`}
