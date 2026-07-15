@@ -197,8 +197,7 @@
             touch-action: manipulation;
           }
 
-          .item.featured { color: inherit; }
-          .item.featured:not(.active) { color: #fff; }
+          .item.featured { color: #fff; }
 
           .item.featured::before {
             content: "";
@@ -241,7 +240,7 @@
           }
 
           .item[data-route="onair"] .label { letter-spacing: .04em; }
-          .active { color: #f0cc70; }
+          .item.active, .item.featured.active { color: #f0cc70 !important; }
           .active .icon { filter: drop-shadow(0 0 5px rgba(213,171,67,.28)); }
           .active .label { font-weight: 900; }
           .disabled { opacity: .38; pointer-events: none; }

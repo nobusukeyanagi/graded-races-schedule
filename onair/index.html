@@ -26,6 +26,8 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
 .avatar-custom{left:-76.5px;top:230px;width:805px;height:1650px;z-index:20}
 .transition-backdrop{position:absolute;inset:0;z-index:64;pointer-events:none;opacity:0;transition:opacity var(--fade) linear;background:radial-gradient(circle at 50% 48%,rgba(255,215,106,.20),transparent 22%),radial-gradient(circle at 18% 80%,rgba(255,215,106,.10),transparent 24%),radial-gradient(circle at 86% 18%,rgba(255,255,255,.07),transparent 18%),linear-gradient(180deg,#020202 0%,#0a0a0a 42%,#050505 100%)}.transition-backdrop.show{opacity:1}.transition-screen{left:0;top:0;width:540px;height:1074px;z-index:65;background:transparent}
 .hidden-media{position:absolute;width:1px;height:1px;opacity:.001;pointer-events:none}
+#audioUnlock{position:absolute;right:10px;top:10px;z-index:120;display:none;min-height:38px;padding:0 14px;border:1px solid rgba(255,215,106,.72);border-radius:999px;color:#fff;background:rgba(8,10,16,.90);box-shadow:0 5px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12);font:800 12px/1 "Noto Sans JP","Yu Gothic",sans-serif;-webkit-tap-highlight-color:transparent}
+#audioUnlock.show{display:block}
 @media(prefers-reduced-motion:reduce){.layer{transition:none!important}}
 </style>
 </head>
@@ -46,40 +48,23 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
   <iframe id="sharedInput" loading="eager" scrolling="no" class="layer input" src="assets/shared_input.html"></iframe>
   <iframe id="personalityButton" loading="eager" scrolling="no" class="layer menu-button" src="assets/personality_button.html"></iframe>
   <iframe id="conciergeButton" class="layer menu-button" data-src="assets/concierge_button.html" scrolling="no"></iframe>
-  <audio id="bgm" class="hidden-media" src="assets/bgm_demo.m4a" preload="metadata" playsinline></audio>
-  <audio id="voiceRace" class="hidden-media" src="assets/voice_race.m4a" preload="metadata" playsinline></audio>
-  <audio id="voiceAddiction" class="hidden-media" data-src="assets/voice_addiction.m4a" preload="none" playsinline></audio>
-</div></div>
+  <audio id="bgm" class="hidden-media" src="assets/bgm_demo.m4a" preload="auto" playsinline></audio>
+  <audio id="voiceRace" class="hidden-media" src="assets/voice_race.m4a?v=26" preload="auto" playsinline></audio>
+  <audio id="voiceAddiction" class="hidden-media" data-src="assets/voice_addiction.m4a?v=26" preload="metadata" playsinline></audio>
+</div><button id="audioUnlock" type="button">音声を再生</button></div>
 <zenrace-bottom-nav active="onair"></zenrace-bottom-nav>
-<script src="../shared/bottom-nav.js?v=24"></script>
+<script src="../shared/bottom-nav.js?v=26"></script>
 <script>
-const CONFIG={width:540,height:1074,bgmVolume:.108,voiceVolume:1,voiceBoost:1.2,tConcierge:60,tPersonality2Return:140,tPersonality2End:165,tPersonality:165,tEnd:236,transitionDuration:3,preSwitchFlash:.3};
+const CONFIG={width:540,height:1074,bgmVolume:.8,voiceVolume:1,tConcierge:60,tPersonality2Return:140,tPersonality2End:165,tPersonality:165,tEnd:236,transitionDuration:3,preSwitchFlash:.3};
 const $=id=>document.getElementById(id);
 const layers={bgPersonality:$("bgPersonality"),bgConcierge:$("bgConcierge"),transitionBackdrop:$("transitionBackdrop"),transitionScreen:$("transitionScreen"),statusLive:$("statusLive"),bannerRace:$("bannerRace"),bannerAddiction:$("bannerAddiction"),voteButton:$("voteButton"),chatBot:$("chatBot"),commentStream:$("commentStream"),sharedInput:$("sharedInput"),personalityButton:$("personalityButton"),conciergeButton:$("conciergeButton"),avatarCustom:$("avatarCustom")};
-const bgm=$("bgm"),voiceRace=$("voiceRace"),voiceAddiction=$("voiceAddiction");
+const bgm=$("bgm"),voiceRace=$("voiceRace"),voiceAddiction=$("voiceAddiction"),audioUnlock=$("audioUnlock");
 bgm.volume=CONFIG.bgmVolume;voiceRace.volume=CONFIG.voiceVolume;voiceAddiction.volume=CONFIG.voiceVolume;
-let voiceAudioContext=null,voiceGain=null,voiceNodesReady=false;
-function prepareVoiceBoost(){
-  if(voiceNodesReady)return;
-  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
-  if(!AudioContextClass)return;
-  try{
-    voiceAudioContext=new AudioContextClass();
-    voiceGain=voiceAudioContext.createGain();
-    voiceGain.gain.value=CONFIG.voiceBoost;
-    [voiceRace,voiceAddiction].forEach(audio=>{
-      const source=voiceAudioContext.createMediaElementSource(audio);
-      source.connect(voiceGain);
-    });
-    voiceGain.connect(voiceAudioContext.destination);
-    voiceNodesReady=true;
-  }catch(e){console.warn("voice boost unavailable",e)}
-}
 let startTime=null,raceVoiceStarted=false,addictionVoiceStarted=false,finished=false,currentScene="",previousScene="",conciergeChatStarted=false,voiceLevelSmooth=0,conciergeAvatarSpeaking=false,conciergeAvatarLevel=0,conciergeAvatarSpeakingAt=0,conciergeReleased=false,raceReleased=false;
 function ensureLoaded(el){if(!el||el.dataset.loaded==="1")return;const src=el.dataset.src;if(src){el.src=src;el.dataset.loaded="1"}}
 function releaseFrame(el){if(!el)return;try{el.src="about:blank";delete el.dataset.loaded}catch(e){}}
 function warmConcierge(){ensureLoaded(layers.bgConcierge);ensureLoaded(layers.chatBot);ensureLoaded(layers.conciergeButton)}
-function warmFinal(){ensureLoaded(layers.bannerAddiction);if(!voiceAddiction.src&&voiceAddiction.dataset.src)voiceAddiction.src=voiceAddiction.dataset.src}
+function warmFinal(){ensureLoaded(layers.bannerAddiction);if(!voiceAddiction.getAttribute("src")&&voiceAddiction.dataset.src){voiceAddiction.src=voiceAddiction.dataset.src;voiceAddiction.load()}}
 function setVisible(el,v){if(el)el.classList.toggle("show",!!v)}
 function flashButton(el){if(!el)return;el.classList.remove("press");void el.offsetWidth;el.classList.add("press");setTimeout(()=>el.classList.remove("press"),300)}
 function getScene(t){const d=CONFIG.transitionDuration;if(t<CONFIG.tConcierge)return"personality2";if(t<CONFIG.tConcierge+d)return"transitionToConcierge";if(t<CONFIG.tPersonality2Return)return"concierge";if(t<CONFIG.tPersonality2Return+d)return"transitionToPersonality";if(t<CONFIG.tPersonality2End)return"personality2";return"personality"}
@@ -88,10 +73,48 @@ function applyScene(scene){if(scene===currentScene)return;previousScene=currentS
 window.addEventListener("message",e=>{const d=e.data||{};if(d.type==="conciergeAvatarSpeaking"){conciergeAvatarSpeaking=!!d.speaking;conciergeAvatarLevel=conciergeAvatarSpeaking?Math.max(0,Math.min(1,Number(d.level)||.82)):0;if(conciergeAvatarSpeaking)conciergeAvatarSpeakingAt=performance.now()}});
 function activeVoiceLevel(){const active=[voiceRace,voiceAddiction].some(a=>a&&!a.paused&&!a.ended);const target=active?.045:0;voiceLevelSmooth=voiceLevelSmooth*.72+target*.28;return voiceLevelSmooth}
 let lastAvatar=0;function updateAvatar(scene,now){if(now-lastAvatar<100)return;lastAvatar=now;const pv=scene==="personality2"||scene==="personality",cv=scene==="concierge",level=activeVoiceLevel(),ps=pv&&level>.014,cs=cv&&(conciergeAvatarSpeaking||now-conciergeAvatarSpeakingAt<450);try{layers.avatarCustom.contentWindow.postMessage({type:"avatarState",scene,speaking:ps||cs,level:ps?Math.min(1,level*12):(cs?Math.max(.68,conciergeAvatarLevel||.82):0)},"*")}catch(e){}}
-async function startPlayback(){if(startTime!==null)return;prepareVoiceBoost();startTime=performance.now();applyScene("personality2");requestAnimationFrame(tick);bgm.currentTime=0;bgm.play().catch(()=>{})}
-function unlockAudio(){if(startTime===null)return;prepareVoiceBoost();if(voiceAudioContext?.state==="suspended")voiceAudioContext.resume().catch(()=>{});const t=Math.max(0,(performance.now()-startTime)/1000);if(bgm.paused){try{bgm.currentTime=Math.min(t,bgm.duration||t)}catch(e){}bgm.play().catch(()=>{})}if(t<CONFIG.tConcierge&&voiceRace.paused){try{voiceRace.currentTime=Math.min(t,Math.max(0,(voiceRace.duration||t)-.05))}catch(e){}voiceRace.play().catch(()=>{})}if(t>=CONFIG.tPersonality&&t<CONFIG.tEnd){warmFinal();if(voiceAddiction.paused){try{voiceAddiction.currentTime=Math.min(t-CONFIG.tPersonality,Math.max(0,(voiceAddiction.duration||t)-.05))}catch(e){}voiceAddiction.play().catch(()=>{})}}}
-["pointerdown","touchstart","click"].forEach(type=>window.addEventListener(type,unlockAudio,{once:true,passive:true}));
-let flashC=false,flashP=false;function tick(now){if(startTime===null)return;const t=(now-startTime)/1000;if(t>54)warmConcierge();if(t>156)warmFinal();const scene=getScene(t);applyScene(scene);if(!flashC&&t>=CONFIG.tConcierge-CONFIG.preSwitchFlash&&t<CONFIG.tConcierge){flashC=true;flashButton(layers.personalityButton)}if(!flashP&&t>=CONFIG.tPersonality2Return-CONFIG.preSwitchFlash&&t<CONFIG.tPersonality2Return){flashP=true;flashButton(layers.conciergeButton)}updateAvatar(scene,now);if(!raceVoiceStarted){raceVoiceStarted=true;voiceRace.currentTime=0;voiceRace.play().catch(()=>{})}if(!addictionVoiceStarted&&t>=CONFIG.tPersonality){addictionVoiceStarted=true;warmFinal();voiceAddiction.currentTime=0;voiceAddiction.play().catch(()=>{})}if(!conciergeReleased&&t>146){conciergeReleased=true;setTimeout(()=>{releaseFrame(layers.bgConcierge);releaseFrame(layers.chatBot);releaseFrame(layers.conciergeButton)},500)}if(!raceReleased&&t>167){raceReleased=true;setTimeout(()=>releaseFrame(layers.bannerRace),500)}if(!finished&&t>=CONFIG.tEnd){finished=true;[bgm,voiceRace,voiceAddiction].forEach(a=>{try{a.pause();a.removeAttribute("src");a.load()}catch(e){}});try{layers.avatarCustom.contentWindow.postMessage({type:"freezeAvatar"},"*")}catch(e){}window.__AITUBER_DONE__=true}if(!finished)requestAnimationFrame(tick)}
+function showAudioUnlock(){if(audioUnlock)audioUnlock.classList.add("show")}
+function hideAudioUnlock(){if(audioUnlock)audioUnlock.classList.remove("show")}
+function tryPlay(audio){
+  if(!audio)return;
+  const result=audio.play();
+  if(result&&typeof result.catch==="function")result.catch(showAudioUnlock);
+}
+async function startPlayback(){
+  if(startTime!==null)return;
+  startTime=performance.now();
+  applyScene("personality2");
+  requestAnimationFrame(tick);
+  try{bgm.currentTime=0}catch(e){}
+  tryPlay(bgm);
+}
+function unlockAudio(){
+  if(startTime===null)return;
+  const t=Math.max(0,(performance.now()-startTime)/1000);
+  let attempted=false;
+  if(bgm.paused){
+    try{bgm.currentTime=Math.min(t,Number.isFinite(bgm.duration)?bgm.duration:t)}catch(e){}
+    tryPlay(bgm);attempted=true;
+  }
+  if(t<CONFIG.tConcierge&&voiceRace.paused&&!voiceRace.ended){
+    try{voiceRace.currentTime=Math.min(t,Math.max(0,(Number.isFinite(voiceRace.duration)?voiceRace.duration:t)-.05))}catch(e){}
+    tryPlay(voiceRace);attempted=true;
+  }
+  if(t>=CONFIG.tPersonality&&t<CONFIG.tEnd){
+    warmFinal();
+    if(voiceAddiction.paused&&!voiceAddiction.ended){
+      try{voiceAddiction.currentTime=Math.min(t-CONFIG.tPersonality,Math.max(0,(Number.isFinite(voiceAddiction.duration)?voiceAddiction.duration:t)-.05))}catch(e){}
+      tryPlay(voiceAddiction);attempted=true;
+    }
+  }
+  if(attempted)setTimeout(()=>{
+    const relevantVoice=t<CONFIG.tConcierge?voiceRace:(t>=CONFIG.tPersonality?voiceAddiction:null);
+    if(!bgm.paused||relevantVoice&&!relevantVoice.paused)hideAudioUnlock();
+  },120);
+}
+if(audioUnlock)audioUnlock.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();unlockAudio()},{passive:false});
+["pointerdown","touchstart"].forEach(type=>window.addEventListener(type,unlockAudio,{passive:true}));
+let flashC=false,flashP=false;function tick(now){if(startTime===null)return;const t=(now-startTime)/1000;if(t>54)warmConcierge();if(t>156)warmFinal();const scene=getScene(t);applyScene(scene);if(!flashC&&t>=CONFIG.tConcierge-CONFIG.preSwitchFlash&&t<CONFIG.tConcierge){flashC=true;flashButton(layers.personalityButton)}if(!flashP&&t>=CONFIG.tPersonality2Return-CONFIG.preSwitchFlash&&t<CONFIG.tPersonality2Return){flashP=true;flashButton(layers.conciergeButton)}updateAvatar(scene,now);if(!raceVoiceStarted){raceVoiceStarted=true;voiceRace.currentTime=0;voiceRace.play().catch(()=>{})}if(!addictionVoiceStarted&&t>=CONFIG.tPersonality){addictionVoiceStarted=true;warmFinal();voiceAddiction.currentTime=0;voiceAddiction.play().catch(()=>{})}if(!conciergeReleased&&t>146){conciergeReleased=true;setTimeout(()=>{releaseFrame(layers.bgConcierge);releaseFrame(layers.chatBot);releaseFrame(layers.conciergeButton)},500)}if(!raceReleased&&t>167){raceReleased=true;setTimeout(()=>releaseFrame(layers.bannerRace),500)}if(!finished&&t>=CONFIG.tEnd){finished=true;[bgm,voiceRace,voiceAddiction].forEach(a=>{try{a.pause()}catch(e){}});hideAudioUnlock();try{layers.avatarCustom.contentWindow.postMessage({type:"freezeAvatar"},"*")}catch(e){}window.__AITUBER_DONE__=true}if(!finished)requestAnimationFrame(tick)}
 function syncViewport(){const root=document.documentElement,vv=window.visualViewport,layout=Math.max(root.clientHeight,window.innerHeight||0),top=vv?Math.max(0,vv.offsetTop):0,visible=vv?vv.height:(window.innerHeight||layout),bottom=vv?Math.max(0,layout-visible-top):0;root.style.setProperty("--visual-top",`${Math.round(top)}px`);root.style.setProperty("--visual-bottom",`${Math.round(bottom)}px`);const vp=$("appViewport"),stage=$("stage");if(!vp||!stage)return;const scale=Math.min(vp.clientWidth/CONFIG.width,vp.clientHeight/CONFIG.height);stage.style.transformOrigin="50% 50%";stage.style.transform=`scale(${scale})`;stage.style.left=`${(vp.clientWidth-CONFIG.width)/2}px`;stage.style.top=`${(vp.clientHeight-CONFIG.height)/2}px`}
 const appViewport=$("appViewport");
 const stopMultiTouch=event=>{if(event.touches&&event.touches.length>1)event.preventDefault()};
