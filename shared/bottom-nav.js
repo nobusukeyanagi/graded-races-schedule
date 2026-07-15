@@ -19,7 +19,7 @@
     },
     {
       id: "schedule",
-      label: "開催情報",
+      label: "開催",
       path: "schedule/",
       icon: `
         <svg viewBox="0 0 96 96" aria-hidden="true">

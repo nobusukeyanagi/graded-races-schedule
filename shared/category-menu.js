@@ -7,13 +7,13 @@
   const appRoot = new URL("../", scriptUrl);
   const MENUS = {
     home: [
-      { id: "home", label: "ホーム", path: "" },
+      { id: "home", label: "トップ", path: "" },
       { id: "settings", label: "設定", path: "settings/" },
       { id: "guide", label: "ガイド", path: "guide/" },
       { id: "about", label: "ABOUT", path: "about/" },
     ],
     schedule: [
-      { id: "today", label: "本日開催", path: "schedule/" },
+      { id: "today", label: "本日の開催", path: "schedule/" },
       { id: "timetable", label: "時刻表", path: "timetable/" },
       { id: "monthly", label: "月別日程", path: "monthly/" },
       { id: "grade", label: "グレード", path: "gradedraces/" },
