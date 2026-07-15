@@ -35,9 +35,9 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
 .transition-screen.show .transition-ring{animation:transitionPulse 1.35s ease-in-out infinite}
 .transition-screen.show .transition-ring::before{animation:transitionSpin 1.1s linear infinite}
 .transition-screen.show .transition-ring::after{animation:transitionSpinReverse 1.65s linear infinite}
-.transition-copy{position:relative;width:500px;text-align:center;z-index:3;text-shadow:0 3px 10px rgba(0,0,0,.78),0 0 16px rgba(255,215,106,.24)}
-.transition-title{color:#fff;font-size:34px;font-weight:1000;line-height:1;letter-spacing:.08em}
-.transition-sub{margin-top:17px;color:rgba(255,240,184,.94);font-size:18px;font-weight:800;letter-spacing:.18em}
+.transition-copy{position:relative;width:100%;max-width:500px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:3;text-shadow:0 3px 10px rgba(0,0,0,.78),0 0 16px rgba(255,215,106,.24)}
+.transition-title{width:100%;padding-left:.08em;color:#fff;font-size:34px;font-weight:1000;line-height:1;letter-spacing:.08em;text-align:center}
+.transition-sub{width:100%;margin-top:17px;padding-left:.18em;color:rgba(255,240,184,.94);font-size:18px;font-weight:800;letter-spacing:.18em;text-align:center}
 .transition-sweep{position:absolute;left:-35%;top:0;width:30%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.11),transparent);transform:skewX(-18deg);z-index:1}
 .transition-screen.show .transition-sweep{animation:transitionSweep 2.2s ease-in-out infinite}
 @keyframes transitionRotate{to{transform:rotate(360deg)}}
@@ -75,7 +75,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
   <iframe id="sharedInput" loading="eager" scrolling="no" class="layer input" src="assets/shared_input.html"></iframe>
   <iframe id="personalityButton" loading="eager" scrolling="no" class="layer menu-button" src="assets/personality_button.html"></iframe>
   <iframe id="conciergeButton" class="layer menu-button" data-src="assets/concierge_button.html" scrolling="no"></iframe>
-  <audio id="bgm" class="hidden-media" src="assets/bgm_demo_v29.m4a" preload="auto" playsinline></audio>
+  <audio id="bgm" class="hidden-media" src="assets/bgm_demo_v30.m4a" preload="auto" playsinline></audio>
   <audio id="voiceRace" class="hidden-media" src="assets/voice_race.m4a?v=26" preload="auto" playsinline></audio>
   <audio id="voiceAddiction" class="hidden-media" data-src="assets/voice_addiction.m4a?v=26" preload="metadata" playsinline></audio>
 </div><button id="audioUnlock" type="button">音声を再生</button></div>
