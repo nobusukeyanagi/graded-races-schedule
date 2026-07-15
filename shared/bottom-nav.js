@@ -150,7 +150,7 @@
         <style>
           :host {
             --safe: max(env(safe-area-inset-bottom), 0px);
-            --nav-active: #f0b84c;
+            --nav-active: #f0cc70;
             position: fixed;
             right: 0;
             bottom: var(--visual-bottom, 0px);

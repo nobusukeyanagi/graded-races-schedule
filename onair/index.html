@@ -24,7 +24,28 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
 .menu-button{left:410px;top:878px;width:100px;height:100px;z-index:75;transition:opacity var(--fade) linear,filter .12s ease,transform .12s ease}
 .menu-button.press{filter:brightness(1.25) drop-shadow(0 0 9px rgba(255,215,106,.85));transform:scale(.97)}
 .avatar-custom{left:-76.5px;top:230px;width:805px;height:1650px;z-index:20}
-.transition-backdrop{position:absolute;inset:0;z-index:64;pointer-events:none;opacity:0;transition:opacity var(--fade) linear;background:radial-gradient(circle at 50% 48%,rgba(255,215,106,.20),transparent 22%),radial-gradient(circle at 18% 80%,rgba(255,215,106,.10),transparent 24%),radial-gradient(circle at 86% 18%,rgba(255,255,255,.07),transparent 18%),linear-gradient(180deg,#020202 0%,#0a0a0a 42%,#050505 100%)}.transition-backdrop.show{opacity:1}.transition-screen{left:0;top:0;width:540px;height:1074px;z-index:65;background:transparent}
+.transition-backdrop{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity var(--fade) linear;background:radial-gradient(circle at 50% 48%,rgba(255,215,106,.20),transparent 22%),radial-gradient(circle at 18% 80%,rgba(255,215,106,.10),transparent 24%),radial-gradient(circle at 86% 18%,rgba(255,255,255,.07),transparent 18%),linear-gradient(180deg,#020202 0%,#0a0a0a 42%,#050505 100%)}.transition-backdrop.show{opacity:1}
+.transition-screen{left:0;top:0;width:540px;height:1074px;z-index:65;background:transparent;display:grid;place-items:center;overflow:hidden}
+.transition-screen::before{content:"";position:absolute;inset:-130px;background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(255,215,106,.08) 45deg,transparent 88deg,rgba(255,255,255,.05) 136deg,transparent 188deg,rgba(255,215,106,.09) 242deg,transparent 308deg,rgba(255,255,255,.04) 360deg);filter:blur(5px)}
+.transition-screen.show::before{animation:transitionRotate 9s linear infinite}
+.transition-panel{position:relative;width:450px;height:280px;display:grid;place-items:center;z-index:2}
+.transition-ring{position:absolute;width:260px;height:260px;border-radius:50%;border:2px solid rgba(255,215,106,.20);box-shadow:0 0 28px rgba(255,215,106,.22),inset 0 0 20px rgba(255,215,106,.10)}
+.transition-ring::before,.transition-ring::after{content:"";position:absolute;inset:21px;border-radius:50%;border:3px solid transparent;border-top-color:#ffd76a;border-right-color:rgba(255,215,106,.34)}
+.transition-ring::after{inset:52px;border-top-color:rgba(255,255,255,.82);border-right-color:rgba(255,215,106,.20)}
+.transition-screen.show .transition-ring{animation:transitionPulse 1.35s ease-in-out infinite}
+.transition-screen.show .transition-ring::before{animation:transitionSpin 1.1s linear infinite}
+.transition-screen.show .transition-ring::after{animation:transitionSpinReverse 1.65s linear infinite}
+.transition-copy{position:relative;width:500px;text-align:center;z-index:3;text-shadow:0 3px 10px rgba(0,0,0,.78),0 0 16px rgba(255,215,106,.24)}
+.transition-title{color:#fff;font-size:34px;font-weight:1000;line-height:1;letter-spacing:.08em}
+.transition-sub{margin-top:17px;color:rgba(255,240,184,.94);font-size:18px;font-weight:800;letter-spacing:.18em}
+.transition-sweep{position:absolute;left:-35%;top:0;width:30%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.11),transparent);transform:skewX(-18deg);z-index:1}
+.transition-screen.show .transition-sweep{animation:transitionSweep 2.2s ease-in-out infinite}
+@keyframes transitionRotate{to{transform:rotate(360deg)}}
+@keyframes transitionSpin{to{transform:rotate(360deg)}}
+@keyframes transitionSpinReverse{to{transform:rotate(-360deg)}}
+@keyframes transitionPulse{0%,100%{transform:scale(1);opacity:.88}50%{transform:scale(1.05);opacity:1}}
+@keyframes transitionSweep{0%{left:-35%;opacity:0}20%{opacity:1}70%,100%{left:108%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.transition-screen.show::before,.transition-screen.show .transition-ring,.transition-screen.show .transition-ring::before,.transition-screen.show .transition-ring::after,.transition-screen.show .transition-sweep{animation:none!important}}
 .hidden-media{position:absolute;width:1px;height:1px;opacity:.001;pointer-events:none}
 #audioUnlock{position:absolute;right:10px;top:10px;z-index:120;display:none;min-height:38px;padding:0 14px;border:1px solid rgba(255,215,106,.72);border-radius:999px;color:#fff;background:rgba(8,10,16,.90);box-shadow:0 5px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12);font:800 12px/1 "Noto Sans JP","Yu Gothic",sans-serif;-webkit-tap-highlight-color:transparent}
 #audioUnlock.show{display:block}
@@ -37,7 +58,13 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
   <div id="transitionBackdrop" class="transition-backdrop"></div>
   <iframe id="bgConcierge" class="viewport-bg" data-src="assets/concierge_bg.html" scrolling="no"></iframe>
   <div id="stage">
-  <iframe id="transitionScreen" loading="eager" scrolling="no" class="layer transition-screen" src="assets/transition_screen.html?v=24"></iframe>
+  <div id="transitionScreen" class="layer transition-screen" aria-hidden="true">
+    <div class="transition-sweep"></div>
+    <div class="transition-panel">
+      <div class="transition-ring"></div>
+      <div class="transition-copy"><div class="transition-title">モード切替中</div><div class="transition-sub">PLEASE WAIT</div></div>
+    </div>
+  </div>
   <iframe id="avatarCustom" loading="eager" scrolling="no" class="layer avatar-custom" src="assets/avatar_live2d.html"></iframe>
   <iframe id="statusLive" loading="eager" scrolling="no" class="layer status-live" src="assets/status_live_row.html"></iframe>
   <iframe id="bannerRace" loading="eager" scrolling="no" class="layer banner" src="assets/banner_race.html"></iframe>
@@ -53,9 +80,9 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;oversc
   <audio id="voiceAddiction" class="hidden-media" data-src="assets/voice_addiction.m4a?v=26" preload="metadata" playsinline></audio>
 </div><button id="audioUnlock" type="button">音声を再生</button></div>
 <zenrace-bottom-nav active="onair"></zenrace-bottom-nav>
-<script src="../shared/bottom-nav.js?v=27"></script>
+<script src="../shared/bottom-nav.js?v=28"></script>
 <script>
-const CONFIG={width:540,height:1074,bgmVolume:.08,voiceVolume:1,tConcierge:60,tPersonality2Return:140,tPersonality2End:165,tPersonality:165,tEnd:236,transitionDuration:3,preSwitchFlash:.3};
+const CONFIG={width:540,height:1074,bgmVolume:.03,voiceVolume:1,tConcierge:60,tPersonality2Return:140,tPersonality2End:165,tPersonality:165,tEnd:236,transitionDuration:3,preSwitchFlash:.3};
 const $=id=>document.getElementById(id);
 const layers={bgPersonality:$("bgPersonality"),bgConcierge:$("bgConcierge"),transitionBackdrop:$("transitionBackdrop"),transitionScreen:$("transitionScreen"),statusLive:$("statusLive"),bannerRace:$("bannerRace"),bannerAddiction:$("bannerAddiction"),voteButton:$("voteButton"),chatBot:$("chatBot"),commentStream:$("commentStream"),sharedInput:$("sharedInput"),personalityButton:$("personalityButton"),conciergeButton:$("conciergeButton"),avatarCustom:$("avatarCustom")};
 const bgm=$("bgm"),voiceRace=$("voiceRace"),voiceAddiction=$("voiceAddiction"),audioUnlock=$("audioUnlock");
@@ -69,7 +96,7 @@ function setVisible(el,v){if(el)el.classList.toggle("show",!!v)}
 function flashButton(el){if(!el)return;el.classList.remove("press");void el.offsetWidth;el.classList.add("press");setTimeout(()=>el.classList.remove("press"),300)}
 function getScene(t){const d=CONFIG.transitionDuration;if(t<CONFIG.tConcierge)return"personality2";if(t<CONFIG.tConcierge+d)return"transitionToConcierge";if(t<CONFIG.tPersonality2Return)return"concierge";if(t<CONFIG.tPersonality2Return+d)return"transitionToPersonality";if(t<CONFIG.tPersonality2End)return"personality2";return"personality"}
 function restartConciergeChat(){ensureLoaded(layers.chatBot);conciergeAvatarSpeaking=false;conciergeAvatarLevel=0;conciergeAvatarSpeakingAt=0;layers.chatBot.src=`assets/chat.html?start=${Date.now()}`;try{layers.sharedInput.contentWindow.postMessage({type:"clearChatInput"},"*")}catch(e){}}
-function applyScene(scene){if(scene===currentScene)return;previousScene=currentScene;currentScene=scene;const p2=scene==="personality2",p=scene==="personality",c=scene==="concierge",tr=scene.startsWith("transition"),any=p2||p;if(tr&&!String(previousScene).startsWith("transition")){try{layers.transitionScreen.src=`assets/transition_screen.html?v=${Date.now()}`}catch(e){}}setVisible(layers.bgPersonality,any);setVisible(layers.bgConcierge,c);setVisible(layers.transitionBackdrop,tr);setVisible(layers.transitionScreen,tr);setVisible(layers.statusLive,any);setVisible(layers.bannerRace,p2);setVisible(layers.bannerAddiction,p);setVisible(layers.voteButton,any);setVisible(layers.chatBot,c);setVisible(layers.commentStream,any);setVisible(layers.sharedInput,any||c);setVisible(layers.personalityButton,any);setVisible(layers.conciergeButton,c);setVisible(layers.avatarCustom,any||c);try{layers.sharedInput.contentWindow.postMessage({type:"setInputMode",mode:any?"personality":"concierge",text:any?"コメントを入力…":"チャットを入力..."},"*")}catch(e){}if(previousScene&&previousScene!==scene){const fromP=previousScene==="personality2"||previousScene==="personality";if(fromP&&c)flashButton(layers.conciergeButton);if(previousScene==="concierge"&&any)flashButton(layers.personalityButton)}if(c&&!conciergeChatStarted){conciergeChatStarted=true;restartConciergeChat()}}
+function applyScene(scene){if(scene===currentScene)return;previousScene=currentScene;currentScene=scene;const p2=scene==="personality2",p=scene==="personality",c=scene==="concierge",tr=scene.startsWith("transition"),any=p2||p;setVisible(layers.bgPersonality,any);setVisible(layers.bgConcierge,c);setVisible(layers.transitionBackdrop,tr);setVisible(layers.transitionScreen,tr);setVisible(layers.statusLive,any);setVisible(layers.bannerRace,p2);setVisible(layers.bannerAddiction,p);setVisible(layers.voteButton,any);setVisible(layers.chatBot,c);setVisible(layers.commentStream,any);setVisible(layers.sharedInput,any||c);setVisible(layers.personalityButton,any);setVisible(layers.conciergeButton,c);setVisible(layers.avatarCustom,any||c);try{layers.sharedInput.contentWindow.postMessage({type:"setInputMode",mode:any?"personality":"concierge",text:any?"コメントを入力…":"チャットを入力..."},"*")}catch(e){}if(previousScene&&previousScene!==scene){const fromP=previousScene==="personality2"||previousScene==="personality";if(fromP&&c)flashButton(layers.conciergeButton);if(previousScene==="concierge"&&any)flashButton(layers.personalityButton)}if(c&&!conciergeChatStarted){conciergeChatStarted=true;restartConciergeChat()}}
 window.addEventListener("message",e=>{const d=e.data||{};if(d.type==="conciergeAvatarSpeaking"){conciergeAvatarSpeaking=!!d.speaking;conciergeAvatarLevel=conciergeAvatarSpeaking?Math.max(0,Math.min(1,Number(d.level)||.82)):0;if(conciergeAvatarSpeaking)conciergeAvatarSpeakingAt=performance.now()}});
 function activeVoiceLevel(){const active=[voiceRace,voiceAddiction].some(a=>a&&!a.paused&&!a.ended);const target=active?.045:0;voiceLevelSmooth=voiceLevelSmooth*.72+target*.28;return voiceLevelSmooth}
 let lastAvatar=0;function updateAvatar(scene,now){if(now-lastAvatar<100)return;lastAvatar=now;const pv=scene==="personality2"||scene==="personality",cv=scene==="concierge",level=activeVoiceLevel(),ps=pv&&level>.014,cs=cv&&(conciergeAvatarSpeaking||now-conciergeAvatarSpeakingAt<450);try{layers.avatarCustom.contentWindow.postMessage({type:"avatarState",scene,speaking:ps||cs,level:ps?Math.min(1,level*12):(cs?Math.max(.68,conciergeAvatarLevel||.82):0)},"*")}catch(e){}}
