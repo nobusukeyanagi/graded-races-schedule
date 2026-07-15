@@ -22,9 +22,9 @@
       { id: "vote", label: "投票", path: "vote/" },
     ],
     mypage: [
-      { id: "profile", label: "プロフ", path: "mypage/" },
+      { id: "profile", label: "プロフィール", path: "mypage/" },
+      { id: "stats", label: "投票成績", path: "mypage/stats/" },
       { id: "diary", label: "ダイアリー", path: "mypage/diary/" },
-      { id: "stats", label: "マイ成績", path: "mypage/stats/" },
       { id: "blog", label: "ブログ", path: "mypage/blog/" },
     ],
   };
