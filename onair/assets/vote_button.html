@@ -37,11 +37,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 7px;
+    gap: 12px;
     width: 100%;
     height: 100%;
-    border-radius: 34px;
-    padding: 13px 16px 12px;
+    border-radius: 36px;
+    padding: 20px 18px 18px;
     color: var(--white);
     text-decoration: none;
     text-align: center;
@@ -123,13 +123,13 @@
   }
 
   .line3 {
-    gap: 7px;
-    margin-top: 0;
+    gap: 12px;
+    margin-top: 2px;
   }
 
   .icon-badge {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     border-radius: 12px;
     display: inline-flex;
     align-items: center;
@@ -140,10 +140,13 @@
       inset 0 1px 0 rgba(255,255,255,.18);
   }
 
-  .icon-badge svg {
-    width: 38px;
-    height: 38px;
+  .auto-mark {
+    width: 40px;
+    height: 40px;
     display: block;
+    background: #fff;
+    -webkit-mask: url("./icons/auto.png") center / contain no-repeat;
+    mask: url("./icons/auto.png") center / contain no-repeat;
   }
 
   .icon-badge.auto {
@@ -164,7 +167,7 @@
   }
 
   .line4 {
-    margin-top: 0;
+    margin-top: 2px;
   }
 
   .vote-pill {
@@ -172,14 +175,14 @@
     align-items: center;
     justify-content: center;
     min-width: 176px;
-    height: 62px;
+    height: 70px;
     padding: 0 22px;
     border-radius: 999px;
     border: 2px solid rgba(255, 215, 106, .86);
     color: rgba(255,255,255,.98);
-    font-size: 46px;
+    font-size: 52px;
     font-weight: 1000;
-    letter-spacing: .06em;
+    letter-spacing: .08em;
     background: rgba(255, 215, 106, .10);
     box-shadow:
       0 4px 10px rgba(0,0,0,.18),
@@ -195,17 +198,7 @@
       <div class="line1">浜松12R</div>
       <div class="line2"><span class="deadline-time">16:40</span><span class="deadline-label">締切</span></div>
       <div class="line3">
-        <span class="icon-badge auto" aria-hidden="true">
-          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="18" cy="44" r="10" fill="none" stroke="#ffffff" stroke-width="5"/>
-            <circle cx="46" cy="44" r="10" fill="none" stroke="#ffffff" stroke-width="5"/>
-            <path d="M18 44L29 28L37 44H25L18 44Z" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M29 28H42L46 44" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="33" cy="16" r="5" fill="#ffffff"/>
-            <path d="M32 22L26 31" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
-            <path d="M33 22L42 26" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
-          </svg>
-        </span>
+        <span class="icon-badge auto" aria-hidden="true"><span class="auto-mark"></span></span>
         <span class="icon-badge sg" aria-hidden="true"><span>SG</span></span>
       </div>
       <div class="line4">
