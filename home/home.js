@@ -9,12 +9,13 @@
   let timer = 0;
   let settleTimer = 0;
   let allSlides = originalSlides;
+  let isProgrammaticScroll = false;
 
   const toast = document.querySelector("[data-home-toast]");
   let toastTimer = 0;
-  const showToast = (message) => {
-    if (!toast || !message) return;
-    toast.textContent = message;
+  const showToast = () => {
+    if (!toast) return;
+    toast.textContent = "遷移先ページは準備中です";
     toast.classList.add("is-visible");
     window.clearTimeout(toastTimer);
     toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 1800);
@@ -24,7 +25,7 @@
     const element = event.target.closest("[data-demo-message]");
     if (!element) return;
     event.preventDefault();
-    showToast(element.getAttribute("data-demo-message"));
+    showToast();
   });
 
   if (!carousel || !track || !dotsHost || originalSlides.length === 0) return;
@@ -65,13 +66,15 @@
     const slide = allSlides[physicalIndex];
     if (!slide) return;
     const targetLeft = slide.offsetLeft - (track.clientWidth - slide.clientWidth) / 2;
+    isProgrammaticScroll = true;
     track.scrollTo({ left: targetLeft, behavior });
+    window.setTimeout(() => { isProgrammaticScroll = false; }, behavior === "smooth" ? 360 : 0);
   };
 
   const goTo = (index, userInitiated = false) => {
     current = (index + originalSlides.length) % originalSlides.length;
-    centerPhysical(physicalIndexFor(current), "smooth");
     updateDots();
+    centerPhysical(physicalIndexFor(current), "smooth");
     if (userInitiated) restartAutoPlay();
   };
 
@@ -105,22 +108,9 @@
     updateDots();
   };
 
-  let scrollFrame = 0;
   track.addEventListener("scroll", () => {
-    cancelAnimationFrame(scrollFrame);
-    scrollFrame = requestAnimationFrame(() => {
-      const physical = nearestPhysicalIndex();
-      if (originalSlides.length > 1) {
-        if (physical === 0) current = originalSlides.length - 1;
-        else if (physical === allSlides.length - 1) current = 0;
-        else current = physical - 1;
-      } else {
-        current = physical;
-      }
-      updateDots();
-      window.clearTimeout(settleTimer);
-      settleTimer = window.setTimeout(normalizeAfterScroll, 140);
-    });
+    window.clearTimeout(settleTimer);
+    settleTimer = window.setTimeout(normalizeAfterScroll, isProgrammaticScroll ? 220 : 110);
   }, { passive: true });
 
   const stopAutoPlay = () => {

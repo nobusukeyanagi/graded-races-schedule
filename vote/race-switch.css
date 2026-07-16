@@ -11,5 +11,14 @@ zenrace-race-switch{display:block;width:min(100%,760px);margin:0 auto}
 .race-tab-icon.keirin::before{-webkit-mask-image:url("../gradedraces/icons/keirin.png");mask-image:url("../gradedraces/icons/keirin.png")}
 .race-tab-name{display:block;min-width:0}
 .race-tab>span{display:block;margin-top:3px;padding-top:3px;border-top:3px solid var(--sport-color);font-size:12px;font-weight:900;line-height:1;white-space:nowrap}
-.race-tab.active{border-color:#ffd35c;background:linear-gradient(180deg,#ffd84c,#f6b900);box-shadow:0 0 0 1px rgba(255,223,118,.45),0 5px 15px rgba(0,0,0,.3)}
+.race-tab.active{color:#171108;border-color:#ffe6a1;background:#f0cc70;box-shadow:0 0 0 1px rgba(255,230,161,.42),0 5px 15px rgba(0,0,0,.3)}
 @media(max-width:430px){.race-tab{flex-basis:86px}}
+
+.race-switch-toast{
+  position:fixed;left:50%;bottom:calc(var(--bottom-nav-total-h,62px) + 16px);z-index:12000;
+  max-width:min(88vw,420px);padding:10px 16px;color:#18130a;border:1px solid rgba(255,255,255,.42);
+  border-radius:999px;background:linear-gradient(135deg,#f2da8e,#c28c25);box-shadow:0 10px 28px rgba(0,0,0,.28);
+  font-size:13px;font-weight:850;opacity:0;pointer-events:none;transform:translate(-50%,12px);
+  transition:opacity .18s ease,transform .18s ease;
+}
+.race-switch-toast.is-visible{opacity:1;transform:translate(-50%,0)}
