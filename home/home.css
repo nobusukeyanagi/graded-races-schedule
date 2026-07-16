@@ -36,7 +36,7 @@ button{font:inherit}
   background:transparent;
   box-shadow:none;
 }
-.brand-logo{display:block;width:88%;height:auto;margin:0 auto}
+.brand-logo{display:block;width:84%;height:auto;margin:0 auto}
 .wallet-panel{
   margin-top:8px;
   padding:8px;
@@ -68,9 +68,9 @@ button{font:inherit}
 .balance-row--delca .balance-label{background:linear-gradient(100deg,#057cb9,#24a7df)}
 .balance-row--coin .balance-label{color:#281b05;background:linear-gradient(100deg,#b88017,#ebc45d)}
 .balance-value{
-  display:flex;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 2.8em;
   align-items:center;
-  justify-content:flex-end;
   min-width:0;
   padding:4px 10px;
   color:#161616;
@@ -80,7 +80,8 @@ button{font:inherit}
   letter-spacing:.015em;
   white-space:nowrap;
 }
-.balance-value small{margin-left:4px;font-size:.55em;color:#555}
+.balance-number{min-width:0;text-align:right}
+.balance-unit{display:block;width:2.8em;margin-left:0;text-align:right;font-size:.55em;color:#555}
 .wallet-actions{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
@@ -164,15 +165,15 @@ button{font:inherit}
 }
 .carousel-dots{display:flex;align-items:center;justify-content:center;gap:8px}
 .carousel-dot{
-  width:8px;
-  height:8px;
+  width:16px;
+  height:16px;
   padding:0;
   border:0;
   border-radius:50%;
   background:#77777a;
   transition:width .2s ease,background .2s ease;
 }
-.carousel-dot.is-active{width:24px;border-radius:10px;background:linear-gradient(90deg,#b78320,#e3bd61)}
+.carousel-dot.is-active{width:38px;border-radius:999px;background:linear-gradient(90deg,#b78320,#e3bd61)}
 .notice-grid{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
