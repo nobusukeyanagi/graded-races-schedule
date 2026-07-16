@@ -17,7 +17,7 @@
             <span class="race-info-time"><span class="race-info-time-label">投票締切</span><time datetime="2026-02-23T16:41:00+09:00">16:41</time></span>
             <span class="race-info-time"><span class="race-info-time-label">発走</span><time datetime="2026-02-23T16:41:00+09:00">16:41</time></span>
           </div>
-          <p class="race-info-date">2026年2月23日　最終日　5,100m</p>
+          <p class="race-info-date">2026年2月23日(月祝)　最終日　5,100m</p>
         </section>`;
     }
   }
