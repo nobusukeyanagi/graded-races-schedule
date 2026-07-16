@@ -4,16 +4,16 @@
   --home-gold-deep:#8a6315;
   --home-delca:#0787c8;
   --home-delca-light:#28a9df;
-  --home-page-bg:#ffffff;
-  --home-text:#171717;
-  --home-muted:#666b72;
-  --home-line:#dedede;
+  --home-page-bg:#050505;
+  --home-text:#f7f4eb;
+  --home-muted:#aaa7a0;
+  --home-line:rgba(226,185,81,.28);
 }
 *{box-sizing:border-box}
 body{
   margin:0;
   color:var(--home-text);
-  background:#ececea;
+  background:#050505;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Yu Gothic UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
 }
 button,a{-webkit-tap-highlight-color:transparent}
@@ -24,32 +24,35 @@ button{font:inherit}
   margin:0 auto;
   padding:10px 12px 34px;
   background:
-    radial-gradient(circle at 95% 0,rgba(205,159,55,.07),transparent 24%),
-    linear-gradient(180deg,#fff 0,#fff 72%,#f7f7f5 100%);
+    radial-gradient(circle at 92% 4%,rgba(215,172,68,.11),transparent 25%),
+    radial-gradient(circle at 5% 41%,rgba(31,79,93,.10),transparent 28%),
+    linear-gradient(180deg,#050505 0,#0a0a0b 48%,#050505 100%);
 }
 .brand-panel{
-  overflow:hidden;
+  overflow:visible;
   padding:0;
-  border:1px solid #e4e1d8;
-  border-radius:13px;
-  background:#fff;
-  box-shadow:0 5px 16px rgba(0,0,0,.08);
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
 }
-.brand-logo{display:block;width:100%;height:auto;margin:0}
+.brand-logo{display:block;width:88%;height:auto;margin:0 auto}
 .wallet-panel{
-  margin-top:9px;
+  margin-top:8px;
   padding:8px;
-  border:1px solid #dedbd2;
+  border:1px solid rgba(226,185,81,.32);
   border-radius:14px;
-  background:#fff;
-  box-shadow:0 5px 16px rgba(0,0,0,.075);
+  background:
+    linear-gradient(120deg,rgba(215,172,68,.07),transparent 42%),
+    linear-gradient(180deg,#171719,#0b0b0d);
+  box-shadow:0 8px 22px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.04);
 }
 .balance-row{
   display:grid;
   grid-template-columns:minmax(108px,.82fr) minmax(0,1.35fr);
   min-height:39px;
   overflow:hidden;
-  border:1px solid #d8d8d8;
+  border:1px solid rgba(255,255,255,.10);
   border-radius:8px;
 }
 .balance-row+.balance-row{margin-top:5px}
@@ -71,7 +74,7 @@ button{font:inherit}
   min-width:0;
   padding:4px 10px;
   color:#161616;
-  background:#fbfbfb;
+  background:#f8f8f7;
   font-size:clamp(17px,4.7vw,25px);
   font-variant-numeric:tabular-nums;
   letter-spacing:.015em;
@@ -88,25 +91,25 @@ button{font:inherit}
   min-height:58px;
   padding:7px 3px;
   border-radius:10px;
-  background:#fff;
-  box-shadow:0 2px 7px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.75);
+  background:#17181a;
+  box-shadow:0 3px 9px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05);
   font-size:clamp(12px,3.25vw,16px);
   font-weight:850;
   line-height:1.15;
   cursor:pointer;
 }
 .wallet-action--delca{
-  color:#056491;
-  border:1px solid rgba(7,135,200,.48);
-  background:linear-gradient(180deg,#f7fcff,#eaf7fd)!important;
+  color:#f5fbff;
+  border:1px solid rgba(40,169,223,.62);
+  background:linear-gradient(180deg,#0f6f9d,#07537d)!important;
 }
-.wallet-action--delca span{display:block;color:var(--home-delca);font-size:1.06em}
+.wallet-action--delca span{display:block;color:#fff;font-size:1.06em}
 .wallet-action--coin{
-  color:#6d4a08;
-  border:1px solid rgba(190,137,30,.5);
-  background:linear-gradient(180deg,#fffdf7,#fbf2dc)!important;
+  color:#fff3cf;
+  border:1px solid rgba(228,189,99,.55);
+  background:linear-gradient(180deg,#3a2a0c,#211704)!important;
 }
-.wallet-action--coin span{display:block;color:#a87010;font-size:1.06em}
+.wallet-action--coin span{display:block;color:#f0c867;font-size:1.06em}
 .wallet-actions button:active,.notice-grid button:active{transform:translateY(1px);filter:brightness(.98)}
 .campaign-section{margin-top:13px}
 .campaign-carousel{
@@ -130,10 +133,10 @@ button{font:inherit}
   flex:0 0 min(72vw,320px);
   aspect-ratio:1;
   overflow:hidden;
-  border:1px solid #ddd5c3;
+  border:1px solid rgba(232,195,101,.42);
   border-radius:14px;
-  background:#eee;
-  box-shadow:0 7px 18px rgba(0,0,0,.16);
+  background:#171717;
+  box-shadow:0 8px 20px rgba(0,0,0,.40);
   scroll-snap-align:center;
 }
 .campaign-slide img{display:block;width:100%;height:100%;object-fit:cover}
@@ -151,11 +154,11 @@ button{font:inherit}
   height:29px;
   place-items:center;
   padding:0 0 2px;
-  color:#8c6415;
-  border:1px solid #d7c69d;
+  color:#ead181;
+  border:1px solid rgba(222,184,87,.36);
   border-radius:50%;
-  background:#fff;
-  box-shadow:0 2px 6px rgba(0,0,0,.08);
+  background:#141414;
+  box-shadow:0 2px 7px rgba(0,0,0,.30);
   font-size:22px;
   line-height:1;
 }
@@ -166,7 +169,7 @@ button{font:inherit}
   padding:0;
   border:0;
   border-radius:50%;
-  background:#b9b9b9;
+  background:#77777a;
   transition:width .2s ease,background .2s ease;
 }
 .carousel-dot.is-active{width:24px;border-radius:10px;background:linear-gradient(90deg,#b78320,#e3bd61)}
@@ -178,16 +181,19 @@ button{font:inherit}
 }
 .notice-grid button{
   position:relative;
+  display:grid;
   min-width:0;
-  min-height:68px;
-  padding:11px 4px 8px;
-  color:#252525;
-  border:1px solid #ddd8cb;
+  min-height:60px;
+  place-items:center;
+  padding:10px 6px;
+  color:#f7f4ec;
+  border:1px solid rgba(221,184,91,.34);
   border-radius:11px;
-  background:linear-gradient(180deg,#fff,#f7f6f2);
-  box-shadow:0 3px 10px rgba(0,0,0,.08);
-  font-size:clamp(11px,3.1vw,15px);
+  background:linear-gradient(155deg,#222326,#111113 60%,#09090a);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 4px 12px rgba(0,0,0,.28);
+  font-size:clamp(12px,3.25vw,16px);
   font-weight:850;
+  text-align:center;
 }
 .notice-grid strong{
   position:absolute;
@@ -198,25 +204,25 @@ button{font:inherit}
   height:24px;
   place-items:center;
   color:#fff;
-  border:2px solid #fff;
+  border:2px solid #09090a;
   border-radius:50%;
   background:#df2929;
   font-size:11px;
 }
-.notice-icon{display:block;margin-bottom:4px;color:#b27c19;font-size:18px;line-height:1}
+.notice-icon{display:none}
 .youtube-section{
   margin-top:14px;
   padding:10px;
-  border:1px solid #dedbd2;
+  border:1px solid rgba(222,183,87,.30);
   border-radius:14px;
-  background:#fff;
-  box-shadow:0 5px 16px rgba(0,0,0,.08);
+  background:linear-gradient(155deg,#171719,#0c0c0e);
+  box-shadow:0 7px 20px rgba(0,0,0,.30);
 }
 .youtube-frame{
   position:relative;
   overflow:hidden;
   aspect-ratio:16/9;
-  border:1px solid #d9d5ca;
+  border:1px solid rgba(240,207,120,.28);
   border-radius:10px;
   background:#000;
 }
