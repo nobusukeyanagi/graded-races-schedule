@@ -1,15 +1,15 @@
 (() => {
   "use strict";
 
-  // 出走表デモの基準日。レースデータは2026年2月23日の固定データ。
+  // 添付データセットの基準日・表示基準時刻。
   const todayBase = new Date(2026, 1, 23);
   const selectedDate = new Date(todayBase);
   const REFERENCE_MINUTES = 16 * 60 + 40;
   const FOCUS_SLOT_INDEX = 1;
   const WEEKDAY = ["日", "月", "火", "水", "木", "金", "土"];
-  const VENUE_ORDER = ["松戸", "京王閣", "平塚", "豊橋", "玉野", "防府", "高知", "浜松", "飯塚"];
 
   const races = Array.isArray(window.ZENRACE_RACES) ? window.ZENRACE_RACES : [];
+  const venueOrder = Array.isArray(window.ZENRACE_VENUE_ORDER) ? window.ZENRACE_VENUE_ORDER : [];
 
   const showPreparingToast = () => {
     let toast = document.querySelector(".today-race-toast");
@@ -36,6 +36,7 @@
     const [hour, minute] = String(time).split(":").map(Number);
     return (hour * 60) + minute;
   };
+  const groupKey = (sport, venue) => `${sport}:${venue}`;
 
   const disableContentPinch = () => {
     const shell = document.querySelector(".zenrace-content-shell");
@@ -53,21 +54,17 @@
   const groupRacesByVenue = () => {
     const grouped = new Map();
     for (const race of races) {
-      if (!grouped.has(race.venue)) {
-        grouped.set(race.venue, { venue: race.venue, sport: race.sport, races: [] });
+      const key = groupKey(race.sport, race.venue);
+      if (!grouped.has(key)) {
+        grouped.set(key, { venue: race.venue, sport: race.sport, races: [] });
       }
-      grouped.get(race.venue).races.push({
-        ...race,
-        minutes: timeToMinutes(race.time),
-      });
+      grouped.get(key).races.push({ ...race, minutes: timeToMinutes(race.time) });
     }
-    const venueRank = new Map(VENUE_ORDER.map((venue, index) => [venue, index]));
-    return [...grouped.values()]
-      .map((row) => ({
-        ...row,
-        races: row.races.sort((a, b) => a.minutes - b.minutes),
-      }))
-      .sort((a, b) => (venueRank.get(a.venue) ?? 99) - (venueRank.get(b.venue) ?? 99));
+
+    const venueRank = new Map(venueOrder.map((item, index) => [groupKey(item.sport, item.venue), index]));
+    return [...grouped.entries()]
+      .map(([key, row]) => ({ ...row, key, races: row.races.sort((a, b) => a.minutes - b.minutes) }))
+      .sort((a, b) => (venueRank.get(a.key) ?? 999) - (venueRank.get(b.key) ?? 999));
   };
 
   const createCard = (race, className = "") => {
@@ -96,9 +93,7 @@
       if (index === nextIndex) className = "current";
       cards.push(createCard(race, className));
     });
-    if (nextIndex === row.races.length - 1) {
-      cards.push(createCard(null), createCard(null), createCard(null));
-    }
+    if (nextIndex === row.races.length - 1) cards.push(createCard(null), createCard(null), createCard(null));
     return { mode: "active", cards: cards.join("") };
   };
 

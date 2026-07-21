@@ -11,6 +11,8 @@
   --focus-band-left:calc(var(--venue-card-w) + 1px + var(--track-pad-x) + (var(--focus-slot-index) * (var(--race-card-w) + var(--track-gap))));
   --keirin:#d8661d;
   --auto:#7545af;
+  --boat:#1876c9;
+  --nar:#8b5a2b;
   --gold:#f0cc70;
   --line:#d8dbe0;
   --panel:#f7f7f7;
@@ -65,6 +67,8 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 }
 .venue-card.sport-keirin{background:linear-gradient(180deg,#d66c1d,#bd5510)}
 .venue-card.sport-auto{background:linear-gradient(180deg,#7e47af,#683397)}
+.venue-card.sport-boat{background:linear-gradient(180deg,#237fc8,#1264a8)}
+.venue-card.sport-nar{background:linear-gradient(180deg,#93643a,#704722)}
 .venue-name{font-size:16px;line-height:1.05;font-weight:950;letter-spacing:-.01em;text-align:center;white-space:nowrap}
 .venue-sport-icon{
   width:21px;height:21px;display:block;background:#fff;
@@ -72,6 +76,8 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 }
 .venue-sport-icon.keirin{-webkit-mask:url('../gradedraces/icons/keirin.png') center / contain no-repeat;mask:url('../gradedraces/icons/keirin.png') center / contain no-repeat}
 .venue-sport-icon.auto{-webkit-mask:url('../gradedraces/icons/auto.png') center / contain no-repeat;mask:url('../gradedraces/icons/auto.png') center / contain no-repeat}
+.venue-sport-icon.boat{-webkit-mask:url('../gradedraces/icons/boat.png') center / contain no-repeat;mask:url('../gradedraces/icons/boat.png') center / contain no-repeat}
+.venue-sport-icon.nar{-webkit-mask:url('../gradedraces/icons/nar.png') center / contain no-repeat;mask:url('../gradedraces/icons/nar.png') center / contain no-repeat}
 
 .venue-track-shell{position:relative;min-height:var(--row-h);overflow:hidden;background:transparent}
 .venue-track{
