@@ -1,6 +1,30 @@
 (() => {
   "use strict";
 
+  // 全ページ共通: iOS Safariのネイティブピンチと独自ズームを無効化する。
+  if (!window.__ZENRACE_PINCH_DISABLED__) {
+    window.__ZENRACE_PINCH_DISABLED__ = true;
+    const stopPinch = (event) => {
+      if (event.touches && event.touches.length < 2) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    };
+    for (const type of ["touchstart", "touchmove"]) {
+      window.addEventListener(type, stopPinch, { capture: true, passive: false });
+    }
+    for (const type of ["gesturestart", "gesturechange", "gestureend"]) {
+      window.addEventListener(type, (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }, { capture: true, passive: false });
+    }
+    window.addEventListener("wheel", (event) => {
+      if (!event.ctrlKey) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, { capture: true, passive: false });
+  }
+
   if (customElements.get("zenrace-bottom-nav")) return;
 
   const scriptUrl = document.currentScript?.src || window.location.href;

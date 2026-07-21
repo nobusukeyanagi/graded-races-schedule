@@ -49,18 +49,7 @@
   };
   const groupKey = (sport, venue) => `${sport}:${venue}`;
 
-  const disableContentPinch = () => {
-    const shell = document.querySelector(".zenrace-content-shell");
-    if (!shell) return;
-    const blockMultiTouch = (event) => {
-      if (event.touches && event.touches.length > 1) event.preventDefault();
-    };
-    shell.addEventListener("touchstart", blockMultiTouch, { passive: false });
-    shell.addEventListener("touchmove", blockMultiTouch, { passive: false });
-    for (const type of ["gesturestart", "gesturechange", "gestureend"]) {
-      shell.addEventListener(type, (event) => event.preventDefault(), { passive: false });
-    }
-  };
+
 
   const groupRacesByVenue = () => {
     const grouped = new Map();
@@ -109,7 +98,7 @@
       if (index === nextIndex) className = "current";
       cards.push(createCard(race, className));
     });
-    if (nextIndex === row.races.length - 1) cards.push(createCard(null), createCard(null), createCard(null));
+    cards.push('<span class="race-active-tail" aria-hidden="true"></span>');
     return { mode: "active", cards: cards.join("") };
   };
 
@@ -126,7 +115,11 @@
 
   const buildFutureTrack = (row) => ({
     mode: "future",
-    cards: [createCard(null, "spacer"), ...row.races.map((race, index) => createCard(race, index === 0 ? "current" : "upcoming"))].join(""),
+    cards: [
+      createCard(null, "spacer"),
+      ...row.races.map((race, index) => createCard(race, index === 0 ? "current" : "upcoming")),
+      '<span class="race-active-tail" aria-hidden="true"></span>',
+    ].join(""),
   });
 
   const renderRow = (row, dayDiff) => {
@@ -168,7 +161,8 @@
     const slotWidth = parseFloat(styles.getPropertyValue("--race-card-w")) || focusCard.offsetWidth || 76;
     const slotGap = parseFloat(styles.getPropertyValue("--track-gap")) || 7;
     const trackPad = parseFloat(styles.getPropertyValue("--track-pad-x")) || 8;
-    const target = focusCard.offsetLeft - trackPad - (FOCUS_SLOT_INDEX * (slotWidth + slotGap));
+    const bandShift = parseFloat(styles.getPropertyValue("--focus-band-shift")) || 0;
+    const target = focusCard.offsetLeft - trackPad - (FOCUS_SLOT_INDEX * (slotWidth + slotGap)) - bandShift;
     track.scrollLeft = Math.max(0, target);
   };
 
@@ -197,7 +191,6 @@
   };
 
   document.addEventListener("DOMContentLoaded", () => {
-    disableContentPinch();
     document.getElementById("prevDate")?.addEventListener("click", () => {
       selectedDate.setDate(selectedDate.getDate() - 1);
       render();

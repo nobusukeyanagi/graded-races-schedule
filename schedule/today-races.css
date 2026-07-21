@@ -8,7 +8,8 @@
   --track-gap:7px;
   --track-pad-x:8px;
   --focus-slot-index:1;
-  --focus-band-left:calc(var(--venue-card-w) + 1px + var(--track-pad-x) + (var(--focus-slot-index) * (var(--race-card-w) + var(--track-gap))));
+  --focus-band-shift:5px;
+  --focus-band-left:calc(var(--venue-card-w) + 1px + var(--track-pad-x) + (var(--focus-slot-index) * (var(--race-card-w) + var(--track-gap))) + var(--focus-band-shift));
   --keirin:#d8661d;
   --auto:#7545af;
   --boat:#1876c9;
@@ -45,7 +46,7 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 .today-btn.is-current{color:#171108;border-color:#ffe6a1;background:var(--gold);box-shadow:0 0 0 1px rgba(255,230,161,.25)}
 .today-btn:disabled{cursor:default;opacity:1}
 
-.zenrace-content-shell{touch-action:pan-x pan-y!important}
+.zenrace-content-shell{overflow-x:hidden!important;overflow-y:auto!important;touch-action:pan-x pan-y!important;-webkit-overflow-scrolling:touch}
 .today-page{width:min(100%,760px);margin:0 auto;padding:7px 5px 10px}
 .today-board{
   position:relative;isolation:isolate;overflow:hidden;
@@ -81,11 +82,12 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 .venue-sport-icon.boat{-webkit-mask:url('../gradedraces/icons/boat.png') center / contain no-repeat;mask:url('../gradedraces/icons/boat.png') center / contain no-repeat}
 .venue-sport-icon.nar{-webkit-mask:url('../gradedraces/icons/nar.png') center / contain no-repeat;mask:url('../gradedraces/icons/nar.png') center / contain no-repeat}
 
-.venue-track-shell{position:relative;min-height:var(--row-h);overflow:hidden;background:transparent}
+.venue-track-shell{position:relative;min-height:var(--row-h);overflow:hidden;background:transparent;touch-action:pan-x pan-y}
 .venue-track{
   position:relative;z-index:1;display:flex;gap:var(--track-gap);align-items:center;min-height:var(--row-h);
   padding:5px var(--track-pad-x);overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;
-  touch-action:pan-x;overscroll-behavior-x:contain;overscroll-behavior-y:none;scroll-snap-type:x proximity
+  touch-action:pan-x pan-y;overscroll-behavior-x:contain;overscroll-behavior-y:auto;scroll-snap-type:x mandatory;
+  scroll-padding-left:calc(var(--track-pad-x) + var(--focus-band-shift))
 }
 .venue-track::-webkit-scrollbar{display:none}
 .race-card{
@@ -102,6 +104,7 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 .race-card.placeholder,.race-card.spacer{box-shadow:none;border-color:transparent;background:transparent;color:transparent;pointer-events:none}
 .race-card.placeholder .race-no,.race-card.placeholder .race-time,.race-card.spacer .race-no,.race-card.spacer .race-time{visibility:hidden}
 .race-end-tail{flex:0 0 calc(100% - var(--race-card-w) - (2 * var(--track-pad-x)));height:1px;pointer-events:none}
+.race-active-tail{flex:0 0 calc(100% - (2 * var(--track-pad-x)));height:1px;pointer-events:none}
 .race-card:focus-visible{outline:2px solid #ffe7a0;outline-offset:1px}
 
 .today-race-toast{
