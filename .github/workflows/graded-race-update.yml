@@ -122,20 +122,21 @@ jobs:
             DATA_CHANGED=1
           fi
 
-          git add \
+          # 更新処理が生成・更新するファイルをすべてステージする。
+          # レポート類を残したまま rebase すると、未ステージ変更として拒否されるため、
+          # Web公開対象に変更がない場合も実行状態・レポートは同じコミットへ含める。
+          for file in \
             gradedraces/races.json \
             gradedraces/graded_races_schedule.html \
             gradedraces/index.html \
-            gradedraces/schedule_sync_state.json
-
-          # 実データが変わった実行だけ、調査用レポートも履歴に残す。
-          if [ "$DATA_CHANGED" = '1' ]; then
-            [ -f gradedraces/changes.json ] && git add gradedraces/changes.json || true
-            [ -f gradedraces/source_status.json ] && git add gradedraces/source_status.json || true
-            [ -f gradedraces/incomplete_records.json ] && git add gradedraces/incomplete_records.json || true
-            [ -f gradedraces/master_schedule_report.json ] && git add gradedraces/master_schedule_report.json || true
-            [ -f gradedraces/daily_update_report.json ] && git add gradedraces/daily_update_report.json || true
-          fi
+            gradedraces/schedule_sync_state.json \
+            gradedraces/changes.json \
+            gradedraces/source_status.json \
+            gradedraces/incomplete_records.json \
+            gradedraces/master_schedule_report.json \
+            gradedraces/daily_update_report.json; do
+            [ -f "$file" ] && git add "$file"
+          done
 
           # Web公開対象の3ファイルに変更があったかを、後続のデプロイjobへ渡す。
           echo "website_changed=$DATA_CHANGED" >> "$GITHUB_OUTPUT"
@@ -144,7 +145,17 @@ jobs:
             echo 'グレードレース情報の変更はありません。'
           else
             git commit -m 'Update graded races (daily integrated)'
-            git pull --rebase origin main
+
+            # rebase前に作業ツリーが空であることを保証する。
+            # 新しい生成ファイルが増えた場合は、黙って破棄せずファイル名を表示して停止する。
+            if [ -n "$(git status --porcelain)" ]; then
+              echo '::error::コミット対象に含まれていない生成ファイルまたは変更が残っています。'
+              git status --short
+              exit 1
+            fi
+
+            git fetch origin main
+            git rebase origin/main
             git push origin HEAD:main
           fi
 
