@@ -34,6 +34,8 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 .date-nav{display:grid;grid-template-columns:34px minmax(152px,auto) 34px;align-items:center;gap:2px}
 .date-arrow{width:34px;height:34px;border:0;background:transparent;color:var(--gold);font-size:27px;line-height:1;cursor:pointer}
 .date-title{text-align:center;color:#fff;font-size:17px;font-weight:900;letter-spacing:.045em;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.28)}
+.date-weekday{color:inherit}
+.date-weekday.holiday{color:#ff7676;text-shadow:0 1px 6px rgba(0,0,0,.72),0 0 8px rgba(255,118,118,.18)}
 .date-toolbar-side{display:flex;align-items:center;min-width:0}
 .date-toolbar-side.right{justify-content:flex-end}
 .today-btn{
@@ -99,6 +101,7 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 .race-card.upcoming{background:#f7f7f7}
 .race-card.placeholder,.race-card.spacer{box-shadow:none;border-color:transparent;background:transparent;color:transparent;pointer-events:none}
 .race-card.placeholder .race-no,.race-card.placeholder .race-time,.race-card.spacer .race-no,.race-card.spacer .race-time{visibility:hidden}
+.race-end-tail{flex:0 0 calc(100% - var(--race-card-w) - (2 * var(--track-pad-x)));height:1px;pointer-events:none}
 .race-card:focus-visible{outline:2px solid #ffe7a0;outline-offset:1px}
 
 .today-race-toast{

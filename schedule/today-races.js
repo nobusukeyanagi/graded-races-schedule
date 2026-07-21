@@ -7,6 +7,13 @@
   const REFERENCE_MINUTES = 16 * 60 + 40;
   const FOCUS_SLOT_INDEX = 1;
   const WEEKDAY = ["日", "月", "火", "水", "木", "金", "土"];
+  const JAPAN_HOLIDAYS_2026 = new Set([
+    "2026-01-01", "2026-01-12", "2026-02-11", "2026-02-23",
+    "2026-03-20", "2026-04-29", "2026-05-03", "2026-05-04",
+    "2026-05-05", "2026-05-06", "2026-07-20", "2026-08-11",
+    "2026-09-21", "2026-09-22", "2026-09-23", "2026-10-12",
+    "2026-11-03", "2026-11-23",
+  ]);
 
   const races = Array.isArray(window.ZENRACE_RACES) ? window.ZENRACE_RACES : [];
   const venueOrder = Array.isArray(window.ZENRACE_VENUE_ORDER) ? window.ZENRACE_VENUE_ORDER : [];
@@ -31,7 +38,11 @@
   const dateKey = (value) => `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}`;
   const startOfDay = (value) => new Date(value.getFullYear(), value.getMonth(), value.getDate());
   const diffDays = (a, b) => Math.round((startOfDay(a) - startOfDay(b)) / 86400000);
-  const formatDateTitle = (value) => `${value.getFullYear()}年 ${value.getMonth() + 1}月 ${value.getDate()}日 (${WEEKDAY[value.getDay()]})`;
+  const isHoliday = (value) => JAPAN_HOLIDAYS_2026.has(dateKey(value));
+  const formatDateTitle = (value) => {
+    const holidayClass = isHoliday(value) ? " holiday" : "";
+    return `${value.getFullYear()}年 ${value.getMonth() + 1}月 ${value.getDate()}日 <span class="date-weekday${holidayClass}">(${WEEKDAY[value.getDay()]})</span>`;
+  };
   const timeToMinutes = (time) => {
     const [hour, minute] = String(time).split(":").map(Number);
     return (hour * 60) + minute;
@@ -78,10 +89,15 @@
   const buildCurrentTrack = (row) => {
     const nextIndex = row.races.findIndex((race) => race.minutes > REFERENCE_MINUTES);
     if (nextIndex < 0) {
-      const finalRace = row.races[row.races.length - 1];
       return {
         mode: "ended",
-        cards: [createCard(finalRace, "finished"), createCard(null), createCard(null), createCard(null)].join(""),
+        cards: [
+          ...row.races.map((race, index) => createCard(
+            race,
+            index === row.races.length - 1 ? "finished final" : "finished",
+          )),
+          '<span class="race-end-tail" aria-hidden="true"></span>',
+        ].join(""),
       };
     }
 
@@ -97,13 +113,16 @@
     return { mode: "active", cards: cards.join("") };
   };
 
-  const buildPastTrack = (row) => {
-    const finalRace = row.races[row.races.length - 1];
-    return {
-      mode: "ended",
-      cards: [createCard(finalRace, "finished"), createCard(null), createCard(null), createCard(null)].join(""),
-    };
-  };
+  const buildPastTrack = (row) => ({
+    mode: "ended",
+    cards: [
+      ...row.races.map((race, index) => createCard(
+        race,
+        index === row.races.length - 1 ? "finished final" : "finished",
+      )),
+      '<span class="race-end-tail" aria-hidden="true"></span>',
+    ].join(""),
+  });
 
   const buildFutureTrack = (row) => ({
     mode: "future",
@@ -130,7 +149,14 @@
   const alignTrack = (track) => {
     if (!track) return;
     if (track.dataset.mode === "ended") {
-      track.scrollLeft = 0;
+      const finalCard = track.querySelector(".race-card.final");
+      if (!finalCard) {
+        track.scrollLeft = 0;
+        return;
+      }
+      const styles = getComputedStyle(document.documentElement);
+      const trackPad = parseFloat(styles.getPropertyValue("--track-pad-x")) || 8;
+      track.scrollLeft = Math.max(0, finalCard.offsetLeft - trackPad);
       return;
     }
     const focusCard = track.querySelector(".race-card.current");
@@ -153,7 +179,7 @@
     const isCurrentDay = dateKey(selectedDate) === dateKey(todayBase);
     const dayDiff = diffDays(selectedDate, todayBase);
 
-    dateTitle.textContent = formatDateTitle(selectedDate);
+    dateTitle.innerHTML = formatDateTitle(selectedDate);
     todayBtn.classList.toggle("is-current", isCurrentDay);
     todayBtn.disabled = isCurrentDay;
 
