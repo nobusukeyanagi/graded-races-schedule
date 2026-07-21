@@ -161,3 +161,143 @@ def test_autorace_official_schedule_winner_parser() -> None:
     )
     assert len(patches) == 1
     assert patches[0].fields == {"winner": "青山 周平"}
+
+from scripts.master_schedule import (  # noqa: E402
+    MasterRecord,
+    parse_autorace_master,
+    parse_boat_master,
+    parse_jra_master,
+    parse_keirin_master,
+    parse_nar_master,
+    reconcile,
+)
+
+
+def test_master_jra_parser() -> None:
+    parsed = parse_jra_master(
+        soup(
+            """
+            <table><tr>
+              <td>7月5日 日曜</td><td>GⅢ ラジオNIKKEI賞</td><td>福島</td>
+              <td>3歳</td><td>芝1800</td><td>テストホース</td>
+            </tr></table>
+            """
+        ),
+        2026,
+        "https://www.jra.go.jp/example",
+    )
+    assert parsed[0].date == "2026-07-05"
+    assert parsed[0].grade == "GⅢ"
+    assert parsed[0].winner == "テストホース"
+
+
+def test_master_nar_parser() -> None:
+    parsed = parse_nar_master(
+        soup(
+            """
+            <h1>重賞競走一覧（2026年）</h1>
+            <table><tr>
+              <td>7/22</td><td>水</td><td>習志野きらっとスプリント</td>
+              <td>SⅠ</td><td>船橋</td><td>1000m</td>
+            </tr></table>
+            """
+        ),
+        2026,
+        "https://www.keiba.go.jp/gradedrace/schedule.html",
+    )
+    assert parsed[0].date == "2026-07-22"
+    assert parsed[0].venue == "船橋"
+    assert parsed[0].grade == "SⅠ"
+
+
+def test_master_boat_parser() -> None:
+    parsed = parse_boat_master(
+        soup(
+            """
+            <table><tr>
+              <td>7月</td><td>07/17-07/22</td><td>児島</td>
+              <td><img alt="G3">シモデンカップ</td><td></td><td>リンク</td>
+            </tr></table>
+            """
+        ),
+        2026,
+        "G3",
+        "https://www.boatrace.jp/example",
+    )
+    assert parsed[0].date == "2026-07-22"
+    assert parsed[0].name == "シモデンカップ"
+    assert parsed[0].grade == "GⅢ"
+
+
+def test_master_keirin_parser() -> None:
+    parsed = parse_keirin_master(
+        soup(
+            """
+            <table><tr>
+              <td><img alt="G2"></td><td>第23回サマーナイトフェスティバル</td>
+              <td>松阪(16～19)</td><td>7月</td>
+            </tr></table>
+            """
+        ),
+        2027,
+        "https://keirin.jp/pc/graderaceschedule?scyy=2027",
+    )
+    assert parsed[0].date == "2027-07-19"
+    assert parsed[0].venue == "松阪"
+    assert parsed[0].grade == "GⅡ"
+
+
+def test_master_autorace_parser() -> None:
+    parsed = parse_autorace_master(
+        soup(
+            """
+            <table><tr>
+              <td>GII</td><td>浜松記念 曳馬野賞</td>
+              <td>2026年7月29日(水)～2026年8月2日(日)</td>
+              <td>浜松</td><td></td>
+            </tr></table>
+            """
+        ),
+        "https://autorace.jp/calendar/graderace/",
+    )
+    assert parsed[0].date == "2026-08-02"
+    assert parsed[0].venue == "浜松"
+    assert parsed[0].grade == "GⅡ"
+
+
+def test_master_reconcile_adds_and_updates_without_deleting_time_on_name_change() -> None:
+    current = [
+        {
+            "date": "2026-07-22",
+            "time": "17:50",
+            "sport": "boat",
+            "venue": "児島",
+            "grade": "GⅢ",
+            "name": "企業杯",
+            "winner": "",
+        }
+    ]
+    official = [
+        MasterRecord(
+            "2026-07-22",
+            "boat",
+            "児島",
+            "GⅢ",
+            "シモデンカップ",
+            source_url="https://www.boatrace.jp/example",
+        ),
+        MasterRecord(
+            "2026-07-25",
+            "jra",
+            "新潟",
+            "GⅢ",
+            "新規重賞",
+            source_url="https://www.jra.go.jp/example",
+        ),
+    ]
+    updated, changes, additions = reconcile(current, official, dt.date(2026, 7, 21))
+    boat = next(item for item in updated if item["sport"] == "boat")
+    assert boat["name"] == "シモデンカップ"
+    assert boat["time"] == "17:50"
+    assert len(changes) == 1
+    assert len(additions) == 1

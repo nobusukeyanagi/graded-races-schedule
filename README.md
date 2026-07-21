@@ -25,7 +25,7 @@ zenrace/
    └─ workflows/
 ```
 
-`.github/workflows/daily-update.yml`が、重賞情報の更新、GitHub Pagesへの公開、Discord通知を行います。
+`.github/workflows/graded-race-update.yml`が、毎日25:00に公式日程同期・直近詳細更新・結果補完・全件監査をまとめて行います。更新がコミットされると、`deploy-website.yml`がGitHub Pagesを公開します。Discord通知は`notify-discord.yml`が担当します。
 
 ## 共通ボトムナビ
 

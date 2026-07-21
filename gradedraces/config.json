@@ -12,5 +12,8 @@
   "upcoming_days": 14,
   "unresolved_retry_days": 90,
   "recent_verification_days": 2,
-  "incomplete_file": "incomplete_records.json"
+  "incomplete_file": "incomplete_records.json",
+  "master_schedule_years_ahead": 1,
+  "master_schedule_report_file": "master_schedule_report.json",
+  "schedule_sync_state_file": "schedule_sync_state.json"
 }
