@@ -1,147 +1,175 @@
 {
-  "generated_at": "2026-07-21T14:09:34.913508+09:00",
+  "generated_at": "2026-07-21T15:17:26.767385+09:00",
   "center_date": "2026-07-21",
-  "selection_mode": "implementation_correction",
+  "selection_mode": "smart",
   "selection_counts": {
-    "reported_missing": 4
+    "recent_verification": 10,
+    "upcoming": 25
   },
-  "target_count": 4,
-  "change_count": 5,
+  "target_count": 35,
+  "change_count": 6,
   "changes": [
     {
-      "date": "2026-07-18",
-      "sport": "boat",
-      "venue": "尼崎",
-      "name": "オールレディース",
+      "date": "2026-07-19",
+      "sport": "jra",
+      "venue": "小倉",
+      "name": "小倉記念",
       "before": {
-        "date": "2026-07-18",
-        "time": "16:35",
-        "sport": "boat",
-        "venue": "尼崎",
+        "date": "2026-07-19",
+        "time": "15:20",
+        "sport": "jra",
+        "venue": "小倉",
         "grade": "GⅢ",
-        "name": "オールレディース",
-        "winner": ""
+        "name": "小倉記念",
+        "winner": "ゼンダンハヤブサ"
       },
       "after": {
-        "date": "2026-07-18",
-        "time": "16:35",
-        "sport": "boat",
-        "venue": "尼崎",
+        "date": "2026-07-19",
+        "time": "15:20",
+        "sport": "jra",
+        "venue": "小倉",
+        "grade": "GIII",
+        "name": "小倉記念",
+        "winner": "ゼンダンハヤブサ"
+      },
+      "source": "JRA",
+      "evidence_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
+      "note": "JRA重賞一覧"
+    },
+    {
+      "date": "2026-07-19",
+      "sport": "jra",
+      "venue": "函館",
+      "name": "函館2歳S",
+      "before": {
+        "date": "2026-07-19",
+        "time": "14:10",
+        "sport": "jra",
+        "venue": "函館",
         "grade": "GⅢ",
-        "name": "オールレディース",
-        "winner": "中谷 朋子"
+        "name": "函館2歳S",
+        "winner": "フェリチタ"
       },
-      "source": "ボートレース",
-      "evidence_url": "https://www.boatrace.jp/owpc/pc/race/raceresult?hd=20260718&jcd=13&rno=12",
-      "note": "BOAT RACE公式12R結果"
+      "after": {
+        "date": "2026-07-19",
+        "time": "14:10",
+        "sport": "jra",
+        "venue": "函館",
+        "grade": "GIII",
+        "name": "函館2歳S",
+        "winner": "フェリチタ"
+      },
+      "source": "JRA",
+      "evidence_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
+      "note": "JRA重賞一覧"
     },
     {
-      "date": "2026-07-18",
-      "sport": "boat",
-      "venue": "蒲郡",
-      "name": "モーターボート大賞",
+      "date": "2026-07-26",
+      "sport": "jra",
+      "venue": "新潟",
+      "name": "関屋記念",
       "before": {
-        "date": "2026-07-18",
-        "time": "20:39",
-        "sport": "boat",
-        "venue": "蒲郡",
-        "grade": "GⅡ",
-        "name": "モーターボート大賞",
+        "date": "2026-07-26",
+        "time": "15:35",
+        "sport": "jra",
+        "venue": "新潟",
+        "grade": "GⅢ",
+        "name": "関屋記念",
         "winner": ""
       },
       "after": {
-        "date": "2026-07-18",
-        "time": "20:39",
-        "sport": "boat",
-        "venue": "蒲郡",
-        "grade": "GⅡ",
-        "name": "モーターボート大賞",
-        "winner": "豊田 健士郎"
+        "date": "2026-07-26",
+        "time": "15:35",
+        "sport": "jra",
+        "venue": "新潟",
+        "grade": "GIII",
+        "name": "関屋記念",
+        "winner": ""
       },
-      "source": "ボートレース",
-      "evidence_url": "https://www.boatrace.jp/owpc/pc/race/raceresult?hd=20260718&jcd=07&rno=12",
-      "note": "BOAT RACE公式12R結果"
+      "source": "JRA",
+      "evidence_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
+      "note": "JRA重賞一覧"
     },
     {
-      "date": "2026-07-20",
-      "sport": "keirin",
-      "venue": "高知",
-      "name": "サマーナイトフェスティバル",
+      "date": "2026-07-26",
+      "sport": "jra",
+      "venue": "中京",
+      "name": "東海S",
       "before": {
-        "date": "2026-07-20",
-        "time": "",
-        "sport": "keirin",
-        "venue": "高知",
-        "grade": "GⅡ",
-        "name": "サマーナイトフェスティバル",
+        "date": "2026-07-26",
+        "time": "16:10",
+        "sport": "jra",
+        "venue": "中京",
+        "grade": "GⅢ",
+        "name": "東海S",
         "winner": ""
       },
       "after": {
-        "date": "2026-07-20",
-        "time": "20:30",
-        "sport": "keirin",
-        "venue": "高知",
-        "grade": "GⅡ",
-        "name": "サマーナイトフェスティバル",
+        "date": "2026-07-26",
+        "time": "16:10",
+        "sport": "jra",
+        "venue": "中京",
+        "grade": "GIII",
+        "name": "東海S",
         "winner": ""
       },
-      "source": "競輪",
-      "evidence_url": "https://keirin.jp/pc/dfw/portal/guest/report/graderace/summer/2026/report_int_3.html",
-      "note": "KEIRIN.JP公式決勝戦共同インタビューの発走予定"
+      "source": "JRA",
+      "evidence_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
+      "note": "JRA重賞一覧"
     },
     {
-      "date": "2026-07-20",
-      "sport": "keirin",
-      "venue": "高知",
-      "name": "サマーナイトフェスティバル",
+      "date": "2026-08-02",
+      "sport": "jra",
+      "venue": "新潟",
+      "name": "アイビスサマーダッシュ",
       "before": {
-        "date": "2026-07-20",
-        "time": "20:30",
-        "sport": "keirin",
-        "venue": "高知",
-        "grade": "GⅡ",
-        "name": "サマーナイトフェスティバル",
+        "date": "2026-08-02",
+        "time": "15:35",
+        "sport": "jra",
+        "venue": "新潟",
+        "grade": "GⅢ",
+        "name": "アイビスサマーダッシュ",
         "winner": ""
       },
       "after": {
-        "date": "2026-07-20",
-        "time": "20:30",
-        "sport": "keirin",
-        "venue": "高知",
-        "grade": "GⅡ",
-        "name": "サマーナイトフェスティバル",
-        "winner": "吉田 拓矢"
+        "date": "2026-08-02",
+        "time": "15:35",
+        "sport": "jra",
+        "venue": "新潟",
+        "grade": "GIII",
+        "name": "アイビスサマーダッシュ",
+        "winner": ""
       },
-      "source": "競輪",
-      "evidence_url": "https://keirin.jp/pc/graderaceschedule",
-      "note": "KEIRIN.JP公式グレード日程の優勝者"
+      "source": "JRA",
+      "evidence_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
+      "note": "JRA重賞一覧"
     },
     {
-      "date": "2026-07-20",
-      "sport": "auto",
-      "venue": "川口",
-      "name": "キューポラ杯",
+      "date": "2026-08-02",
+      "sport": "jra",
+      "venue": "札幌",
+      "name": "クイーンS",
       "before": {
-        "date": "2026-07-20",
-        "time": "20:45",
-        "sport": "auto",
-        "venue": "川口",
-        "grade": "GⅠ",
-        "name": "キューポラ杯",
+        "date": "2026-08-02",
+        "time": "14:20",
+        "sport": "jra",
+        "venue": "札幌",
+        "grade": "GⅢ",
+        "name": "クイーンS",
         "winner": ""
       },
       "after": {
-        "date": "2026-07-20",
-        "time": "20:45",
-        "sport": "auto",
-        "venue": "川口",
-        "grade": "GⅠ",
-        "name": "キューポラ杯",
-        "winner": "青山 周平"
+        "date": "2026-08-02",
+        "time": "14:20",
+        "sport": "jra",
+        "venue": "札幌",
+        "grade": "GIII",
+        "name": "クイーンS",
+        "winner": ""
       },
-      "source": "オートレース",
-      "evidence_url": "https://autorace.jp/calendar/graderace/",
-      "note": "AutoRace.JP公式年間グレード日程の優勝者"
+      "source": "JRA",
+      "evidence_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
+      "note": "JRA重賞一覧"
     }
   ]
 }

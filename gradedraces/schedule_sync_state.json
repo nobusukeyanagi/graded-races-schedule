@@ -1,3 +1,24 @@
 {
-  "pages": {}
+  "pages": {
+    "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html": {
+      "source": "JRA公式重賞一覧",
+      "content_hash": "e407cdbafab57c29a8700187eda3d1f123eb35b76051d53cd55a99bbac709f85",
+      "last_changed_at": "2026-07-21T15:14:33.040178+09:00"
+    },
+    "https://www.keiba.go.jp/gradedrace/schedule.html": {
+      "source": "地方競馬公式重賞一覧",
+      "content_hash": "fea2d31e9e436c088ed65327969b982608ac6e1f73626ea70ba8bb7c1baae188",
+      "last_changed_at": "2026-07-21T15:14:33.040178+09:00"
+    },
+    "https://keirin.jp/pc/graderaceschedule?scyy=2026": {
+      "source": "KEIRIN.JP公式グレード日程",
+      "content_hash": "e87e5288360b70eaad996b370725bc7a980dacd1650953ef059c021fef0a6454",
+      "last_changed_at": "2026-07-21T15:14:33.040178+09:00"
+    },
+    "https://keirin.jp/pc/graderaceschedule?scyy=2027": {
+      "source": "KEIRIN.JP公式グレード日程",
+      "content_hash": "a7e390760f80b5a9c5068cbfaa6157801897916142ccdb138b9a7f7a1c7c4e3b",
+      "last_changed_at": "2026-07-21T15:14:33.040178+09:00"
+    }
+  }
 }

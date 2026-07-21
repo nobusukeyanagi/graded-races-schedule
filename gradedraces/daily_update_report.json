@@ -1,0 +1,58 @@
+{
+  "generated_at": "2026-07-21T15:17:26.886917+09:00",
+  "base_date": "2026-07-21",
+  "steps": [
+    {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.13/x64/bin/python",
+        "-m",
+        "scripts.master_schedule",
+        "--fail-if-all-sources-fail"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.13/x64/bin/python",
+        "-m",
+        "scripts.update_races",
+        "--smart",
+        "--fail-if-all-sources-fail"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.13/x64/bin/python",
+        "-m",
+        "scripts.validate_races",
+        "races.json"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.13/x64/bin/python",
+        "-m",
+        "scripts.sync_html",
+        "--json",
+        "races.json",
+        "--html",
+        "graded_races_schedule.html"
+      ],
+      "returncode": 0
+    }
+  ],
+  "summary": {
+    "master_official_records": 205,
+    "master_added": 45,
+    "master_updated": 91,
+    "master_review_required": 6,
+    "master_duplicates": 0,
+    "detail_targets": 35,
+    "detail_changes": 6,
+    "past_unresolved": 0,
+    "upcoming_missing_time": 15,
+    "detail_source_failures": 0
+  }
+}
