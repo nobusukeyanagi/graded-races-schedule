@@ -11,9 +11,6 @@ on:
         required: false
         type: string
 
-permissions:
-  contents: write
-
 concurrency:
   group: graded-race-update
   cancel-in-progress: false
@@ -22,6 +19,10 @@ jobs:
   update:
     name: Daily integrated update
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      website_changed: ${{ steps.commit.outputs.website_changed }}
     timeout-minutes: 60
 
     steps:
@@ -108,6 +109,7 @@ jobs:
           PY
 
       - name: Commit updated website data
+        id: commit
         run: |
           git config user.name 'graded-races-bot'
           git config user.email 'graded-races-bot@users.noreply.github.com'
@@ -135,6 +137,9 @@ jobs:
             [ -f gradedraces/daily_update_report.json ] && git add gradedraces/daily_update_report.json || true
           fi
 
+          # Web公開対象の3ファイルに変更があったかを、後続のデプロイjobへ渡す。
+          echo "website_changed=$DATA_CHANGED" >> "$GITHUB_OUTPUT"
+
           if git diff --cached --quiet; then
             echo 'グレードレース情報の変更はありません。'
           else
@@ -157,3 +162,14 @@ jobs:
             gradedraces/schedule_sync_state.json
           if-no-files-found: ignore
           retention-days: 30
+
+
+  deploy:
+    name: Deploy updated website
+    needs: update
+    if: needs.update.outputs.website_changed == '1'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/deploy-website.yml
