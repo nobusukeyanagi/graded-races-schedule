@@ -3127,7 +3127,7 @@
     "time": "14:10",
     "sport": "jra",
     "venue": "函館",
-    "grade": "GIII",
+    "grade": "GⅢ",
     "name": "函館2歳S",
     "winner": "フェリチタ"
   },
@@ -3136,7 +3136,7 @@
     "time": "15:20",
     "sport": "jra",
     "venue": "小倉",
-    "grade": "GIII",
+    "grade": "GⅢ",
     "name": "小倉記念",
     "winner": "ゼンダンハヤブサ"
   },
@@ -3214,6 +3214,15 @@
   },
   {
     "date": "2026-07-22",
+    "time": "17:50",
+    "sport": "boat",
+    "venue": "児島",
+    "grade": "GⅢ",
+    "name": "シモデンカップ",
+    "winner": ""
+  },
+  {
+    "date": "2026-07-22",
     "time": "20:15",
     "sport": "nar",
     "venue": "大井",
@@ -3228,15 +3237,6 @@
     "venue": "門別",
     "grade": "H3",
     "name": "リリーカップ",
-    "winner": ""
-  },
-  {
-    "date": "2026-07-22",
-    "time": "",
-    "sport": "boat",
-    "venue": "児島",
-    "grade": "GⅢ",
-    "name": "シモデンカップ",
     "winner": ""
   },
   {

@@ -1,20 +1,10 @@
 {
-  "generated_at": "2026-07-21T15:49:20.189391+09:00",
-  "center_date": "2026-07-21",
+  "generated_at": "2026-07-22T05:43:08.969318+09:00",
+  "center_date": "2026-07-22",
   "past_unresolved_count": 0,
   "upcoming_missing_time_count": 15,
   "past_unresolved": [],
   "upcoming_missing_time": [
-    {
-      "date": "2026-07-22",
-      "sport": "boat",
-      "venue": "児島",
-      "grade": "GⅢ",
-      "name": "シモデンカップ",
-      "missing": [
-        "time"
-      ]
-    },
     {
       "date": "2026-07-23",
       "sport": "boat",
@@ -151,6 +141,16 @@
       "venue": "小田原",
       "grade": "GⅢ",
       "name": "第77周年記念北条早雲杯争奪戦",
+      "missing": [
+        "time"
+      ]
+    },
+    {
+      "date": "2026-08-05",
+      "sport": "boat",
+      "venue": "桐生",
+      "grade": "GⅢ",
+      "name": "オールレディース",
       "missing": [
         "time"
       ]

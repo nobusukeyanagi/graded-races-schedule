@@ -1,68 +1,14 @@
 {
-  "generated_at": "2026-07-21T15:49:20.189013+09:00",
-  "center_date": "2026-07-21",
+  "generated_at": "2026-07-22T05:43:08.968778+09:00",
+  "center_date": "2026-07-22",
   "selection_mode": "smart",
   "selection_counts": {
-    "recent_verification": 10,
-    "upcoming": 25
+    "recent_verification": 4,
+    "upcoming": 26
   },
-  "target_count": 35,
-  "change_count": 6,
+  "target_count": 30,
+  "change_count": 5,
   "changes": [
-    {
-      "date": "2026-07-19",
-      "sport": "jra",
-      "venue": "小倉",
-      "name": "小倉記念",
-      "before": {
-        "date": "2026-07-19",
-        "time": "15:20",
-        "sport": "jra",
-        "venue": "小倉",
-        "grade": "GⅢ",
-        "name": "小倉記念",
-        "winner": "ゼンダンハヤブサ"
-      },
-      "after": {
-        "date": "2026-07-19",
-        "time": "15:20",
-        "sport": "jra",
-        "venue": "小倉",
-        "grade": "GIII",
-        "name": "小倉記念",
-        "winner": "ゼンダンハヤブサ"
-      },
-      "source": "JRA",
-      "evidence_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
-      "note": "JRA重賞一覧"
-    },
-    {
-      "date": "2026-07-19",
-      "sport": "jra",
-      "venue": "函館",
-      "name": "函館2歳S",
-      "before": {
-        "date": "2026-07-19",
-        "time": "14:10",
-        "sport": "jra",
-        "venue": "函館",
-        "grade": "GⅢ",
-        "name": "函館2歳S",
-        "winner": "フェリチタ"
-      },
-      "after": {
-        "date": "2026-07-19",
-        "time": "14:10",
-        "sport": "jra",
-        "venue": "函館",
-        "grade": "GIII",
-        "name": "函館2歳S",
-        "winner": "フェリチタ"
-      },
-      "source": "JRA",
-      "evidence_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
-      "note": "JRA重賞一覧"
-    },
     {
       "date": "2026-07-26",
       "sport": "jra",
@@ -170,6 +116,33 @@
       "source": "JRA",
       "evidence_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
       "note": "JRA重賞一覧"
+    },
+    {
+      "date": "2026-07-22",
+      "sport": "boat",
+      "venue": "児島",
+      "name": "シモデンカップ",
+      "before": {
+        "date": "2026-07-22",
+        "time": "",
+        "sport": "boat",
+        "venue": "児島",
+        "grade": "GⅢ",
+        "name": "シモデンカップ",
+        "winner": ""
+      },
+      "after": {
+        "date": "2026-07-22",
+        "time": "17:50",
+        "sport": "boat",
+        "venue": "児島",
+        "grade": "GⅢ",
+        "name": "シモデンカップ",
+        "winner": ""
+      },
+      "source": "ボートレース",
+      "evidence_url": "https://www.boatrace.jp/owpc/pc/race/raceresult?jcd=16&hd=20260722&rno=12",
+      "note": "BOAT RACE公式12R結果"
     }
   ]
 }
