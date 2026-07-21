@@ -8,5 +8,9 @@
   "data_file": "races.json",
   "html_file": "graded_races_schedule.html",
   "changes_file": "changes.json",
-  "source_status_file": "source_status.json"
+  "source_status_file": "source_status.json",
+  "upcoming_days": 14,
+  "unresolved_retry_days": 90,
+  "recent_verification_days": 2,
+  "incomplete_file": "incomplete_records.json"
 }

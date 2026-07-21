@@ -1,66 +1,147 @@
 {
-  "generated_at": "2026-07-21T06:48:29.541085+09:00",
+  "generated_at": "2026-07-21T14:09:34.913508+09:00",
   "center_date": "2026-07-21",
-  "window": {
-    "start": "2026-07-19",
-    "end": "2026-08-04"
+  "selection_mode": "implementation_correction",
+  "selection_counts": {
+    "reported_missing": 4
   },
-  "target_count": 35,
-  "change_count": 2,
+  "target_count": 4,
+  "change_count": 5,
   "changes": [
     {
-      "date": "2026-07-20",
-      "sport": "nar",
-      "venue": "笠松",
-      "name": "サマーカップ",
+      "date": "2026-07-18",
+      "sport": "boat",
+      "venue": "尼崎",
+      "name": "オールレディース",
       "before": {
-        "date": "2026-07-20",
-        "time": "17:15",
-        "sport": "nar",
-        "venue": "笠松",
-        "grade": "SPⅡ",
-        "name": "サマーカップ",
+        "date": "2026-07-18",
+        "time": "16:35",
+        "sport": "boat",
+        "venue": "尼崎",
+        "grade": "GⅢ",
+        "name": "オールレディース",
         "winner": ""
       },
       "after": {
-        "date": "2026-07-20",
-        "time": "17:15",
-        "sport": "nar",
-        "venue": "笠松",
-        "grade": "SPⅡ",
-        "name": "サマーカップ",
-        "winner": "マンノライトニング"
+        "date": "2026-07-18",
+        "time": "16:35",
+        "sport": "boat",
+        "venue": "尼崎",
+        "grade": "GⅢ",
+        "name": "オールレディース",
+        "winner": "中谷 朋子"
       },
-      "source": "地方競馬",
-      "evidence_url": "https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/RaceList?k_raceDate=2026%2F07%2F20&k_babaCode=23",
-      "note": "地方競馬公式レース情報"
+      "source": "ボートレース",
+      "evidence_url": "https://www.boatrace.jp/owpc/pc/race/raceresult?hd=20260718&jcd=13&rno=12",
+      "note": "BOAT RACE公式12R結果"
+    },
+    {
+      "date": "2026-07-18",
+      "sport": "boat",
+      "venue": "蒲郡",
+      "name": "モーターボート大賞",
+      "before": {
+        "date": "2026-07-18",
+        "time": "20:39",
+        "sport": "boat",
+        "venue": "蒲郡",
+        "grade": "GⅡ",
+        "name": "モーターボート大賞",
+        "winner": ""
+      },
+      "after": {
+        "date": "2026-07-18",
+        "time": "20:39",
+        "sport": "boat",
+        "venue": "蒲郡",
+        "grade": "GⅡ",
+        "name": "モーターボート大賞",
+        "winner": "豊田 健士郎"
+      },
+      "source": "ボートレース",
+      "evidence_url": "https://www.boatrace.jp/owpc/pc/race/raceresult?hd=20260718&jcd=07&rno=12",
+      "note": "BOAT RACE公式12R結果"
     },
     {
       "date": "2026-07-20",
-      "sport": "nar",
-      "venue": "盛岡",
-      "name": "マーキュリーカップ",
+      "sport": "keirin",
+      "venue": "高知",
+      "name": "サマーナイトフェスティバル",
       "before": {
         "date": "2026-07-20",
-        "time": "18:15",
-        "sport": "nar",
-        "venue": "盛岡",
-        "grade": "JpnⅢ",
-        "name": "マーキュリーカップ",
+        "time": "",
+        "sport": "keirin",
+        "venue": "高知",
+        "grade": "GⅡ",
+        "name": "サマーナイトフェスティバル",
         "winner": ""
       },
       "after": {
         "date": "2026-07-20",
-        "time": "18:15",
-        "sport": "nar",
-        "venue": "盛岡",
-        "grade": "JpnⅢ",
-        "name": "マーキュリーカップ",
-        "winner": "サンデーファンデー"
+        "time": "20:30",
+        "sport": "keirin",
+        "venue": "高知",
+        "grade": "GⅡ",
+        "name": "サマーナイトフェスティバル",
+        "winner": ""
       },
-      "source": "地方競馬",
-      "evidence_url": "https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/RaceList?k_raceDate=2026%2F07%2F20&k_babaCode=10",
-      "note": "地方競馬公式レース情報"
+      "source": "競輪",
+      "evidence_url": "https://keirin.jp/pc/dfw/portal/guest/report/graderace/summer/2026/report_int_3.html",
+      "note": "KEIRIN.JP公式決勝戦共同インタビューの発走予定"
+    },
+    {
+      "date": "2026-07-20",
+      "sport": "keirin",
+      "venue": "高知",
+      "name": "サマーナイトフェスティバル",
+      "before": {
+        "date": "2026-07-20",
+        "time": "20:30",
+        "sport": "keirin",
+        "venue": "高知",
+        "grade": "GⅡ",
+        "name": "サマーナイトフェスティバル",
+        "winner": ""
+      },
+      "after": {
+        "date": "2026-07-20",
+        "time": "20:30",
+        "sport": "keirin",
+        "venue": "高知",
+        "grade": "GⅡ",
+        "name": "サマーナイトフェスティバル",
+        "winner": "吉田 拓矢"
+      },
+      "source": "競輪",
+      "evidence_url": "https://keirin.jp/pc/graderaceschedule",
+      "note": "KEIRIN.JP公式グレード日程の優勝者"
+    },
+    {
+      "date": "2026-07-20",
+      "sport": "auto",
+      "venue": "川口",
+      "name": "キューポラ杯",
+      "before": {
+        "date": "2026-07-20",
+        "time": "20:45",
+        "sport": "auto",
+        "venue": "川口",
+        "grade": "GⅠ",
+        "name": "キューポラ杯",
+        "winner": ""
+      },
+      "after": {
+        "date": "2026-07-20",
+        "time": "20:45",
+        "sport": "auto",
+        "venue": "川口",
+        "grade": "GⅠ",
+        "name": "キューポラ杯",
+        "winner": "青山 周平"
+      },
+      "source": "オートレース",
+      "evidence_url": "https://autorace.jp/calendar/graderace/",
+      "note": "AutoRace.JP公式年間グレード日程の優勝者"
     }
   ]
 }

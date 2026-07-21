@@ -24,6 +24,7 @@ gradedraces/
 ├─ config.json
 ├─ changes.json
 ├─ source_status.json
+├─ incomplete_records.json
 ├─ discord_notification_state.json
 ├─ requirements.txt
 └─ scripts/
@@ -32,45 +33,78 @@ gradedraces/
 - `races.json`：レース一覧データ
 - `graded_races_schedule.html`：更新元となるHTML
 - `index.html`：公開用HTML。自動更新時に上記HTMLから同期
-- `changes.json`：直近の自動更新差分
-- `source_status.json`：各公式サイトの取得状況
+- `changes.json`：直近の自動更新差分と更新対象の選択理由
+- `source_status.json`：各取得先の取得状況、参照URL、警告
+- `incomplete_records.json`：終了済みの未解決項目と、開催前の時刻未公開項目
 - `discord_notification_state.json`：当日の重複通知を防ぐ状態ファイル
 
-## 自動更新
+## 通常更新の考え方
 
-`.github/workflows/daily-update.yml`が、毎朝次の順で処理します。
+`.github/workflows/graded-race-update.yml`の通常更新は、単純な「過去何日～未来何日」ではなく、情報の状態から対象を選びます。
 
-1. 公式サイトから時刻・結果を取得
-2. `races.json`とHTMLを更新
-3. GitHub Pagesへ公開
-4. 今回のページが公開されたことを確認
-5. 当日のグレードレースをDiscordへ通知
+1. 当日から14日後までの登録済みレースを確認し、番組公開後の発走時刻を取得
+2. 終了済みで時刻または優勝者が空欄のレースは、最長90日間、解決するまで毎回再取得
+3. 直近2日分は入力済みでも再確認し、公式側の公開遅延や訂正を反映
+4. 終了済みの空欄は`incomplete_records.json`とGitHub Actionsの警告に残す
 
-通常実行は日本時間6:17、予備実行は6:47です。予備実行では、当日すでに通知済みならDiscordへ再送しません。
-
-## GitHub設定
-
-Repository secret：
+通常更新は日本時間の次の時刻に実行します。
 
 ```text
-DISCORD_WEBHOOK_URL
+02:17 / 08:17 / 14:17 / 20:17 / 23:17
 ```
 
-Repository variable：
+開催番組の公開後と、ナイター終了後の公式結果公開を同日中に拾うための時間設定です。
+
+## 取得先の優先順位
+
+原則として、各競技の公式サイトを直接参照します。
+
+- ボートレース
+  - BOAT RACE公式グレード日程：正式名称
+  - BOAT RACE公式12R結果ページ：発走時刻・優勝者
+  - BOAT RACE公式レース一覧：開催前の12R時刻
+- 競輪
+  - KEIRIN.JP公式グレードレース開催日程：優勝者
+  - KEIRIN.JPの一般レース一覧が画面遷移依存のため、当日結果と発走時刻をOddsPark公開ページで補完
+  - 翌日以降はKEIRIN.JP公式グレード日程の優勝者で再確認
+- オートレース
+  - AutoRace.JP公式年間グレードレース日程：優勝者
+  - AutoRace.JP公式Program／RaceResult：発走時刻・個別結果
+- JRA・地方競馬
+  - 各公式サイトの登録済み取得処理を使用
+
+公式サイトから取得できた既存値を、補完取得の空欄で消すことはありません。
+
+## 四半期監査
+
+1・4・7・10月には、登録済み期間を分割して翌年末まで再確認します。通常更新の未解決再試行とは別に、長期日程の変更や表記揺れを確認するための処理です。
+
+## GitHub Actionsの確認
 
 ```text
-SITE_URL=https://nobusukeyanagi.github.io/zenrace/gradedraces/
+Actions
+→ Graded-race Update
 ```
 
-GitHub PagesのSourceは`GitHub Actions`を使用します。
+実行結果のSummaryには次の件数が表示されます。
+
+- 取得対象
+- 変更件数
+- 終了済み未解決件数
+- 開催前の時刻未公開件数
+- 競技別の取得成功・警告件数
 
 ## 手動実行
 
 ```text
 Actions
-→ Daily graded-race update
+→ Graded-race Update
 → Run workflow
 ```
 
+- `mode: daily`：通常のスマート更新
 - `base_date`：空欄なら日本時間の当日
-- `force_notify`：同じ日付でも再通知するときだけチェック
+- `mode: quarterly`：指定期間の一括再確認
+- `start_date` / `end_date`：四半期監査の対象期間
+
+GitHub PagesのSourceは`GitHub Actions`を使用します。
