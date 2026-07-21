@@ -103,7 +103,7 @@
   };
 
   const buildPastTrack = (row) => ({
-    mode: "ended",
+    mode: "past",
     cards: [
       ...row.races.map((race, index) => createCard(
         race,
@@ -115,11 +115,7 @@
 
   const buildFutureTrack = (row) => ({
     mode: "future",
-    cards: [
-      createCard(null, "spacer"),
-      ...row.races.map((race, index) => createCard(race, index === 0 ? "current" : "upcoming")),
-      '<span class="race-active-tail" aria-hidden="true"></span>',
-    ].join(""),
+    cards: row.races.map((race) => createCard(race, "upcoming")).join(""),
   });
 
   const renderRow = (row, dayDiff) => {
@@ -139,32 +135,63 @@
       </article>`;
   };
 
+  const readLayout = () => {
+    const styles = getComputedStyle(document.documentElement);
+    return {
+      slotWidth: parseFloat(styles.getPropertyValue("--race-card-w")) || 76,
+      slotGap: parseFloat(styles.getPropertyValue("--track-gap")) || 7,
+      trackPad: parseFloat(styles.getPropertyValue("--track-pad-x")) || 8,
+      bandShift: parseFloat(styles.getPropertyValue("--focus-band-shift")) || 0,
+    };
+  };
+
+  const setScrollLeftExactly = (track, value) => {
+    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+    track.style.scrollSnapType = "none";
+    track.scrollLeft = Math.min(maxScroll, Math.max(0, value));
+    requestAnimationFrame(() => {
+      track.style.scrollSnapType = "";
+    });
+  };
+
   const alignTrack = (track) => {
     if (!track) return;
-    if (track.dataset.mode === "ended") {
+    const mode = track.dataset.mode || "active";
+    const { slotWidth, slotGap, trackPad, bandShift } = readLayout();
+
+    // 過去日は最終レースの右端を、全開催場で同じ位置に揃える。
+    if (mode === "past") {
       const finalCard = track.querySelector(".race-card.final");
-      if (!finalCard) {
-        track.scrollLeft = 0;
-        return;
-      }
-      const styles = getComputedStyle(document.documentElement);
-      const trackPad = parseFloat(styles.getPropertyValue("--track-pad-x")) || 8;
-      const bandShift = parseFloat(styles.getPropertyValue("--focus-band-shift")) || 0;
-      track.scrollLeft = Math.max(0, finalCard.offsetLeft - trackPad - bandShift);
-      return;
+      if (!finalCard) return setScrollLeftExactly(track, 0);
+      track.style.justifyContent = track.scrollWidth <= track.clientWidth ? "flex-end" : "flex-start";
+      const desiredLeft = track.clientWidth - trackPad - finalCard.offsetWidth;
+      return setScrollLeftExactly(track, finalCard.offsetLeft - desiredLeft);
     }
-    const focusCard = track.querySelector(".race-card.current");
-    if (!focusCard) {
-      track.scrollLeft = 0;
-      return;
+
+    // 未来日は1Rを左端に揃える。
+    if (mode === "future") {
+      track.style.justifyContent = "flex-start";
+      return setScrollLeftExactly(track, 0);
     }
-    const styles = getComputedStyle(document.documentElement);
-    const slotWidth = parseFloat(styles.getPropertyValue("--race-card-w")) || focusCard.offsetWidth || 76;
-    const slotGap = parseFloat(styles.getPropertyValue("--track-gap")) || 7;
-    const trackPad = parseFloat(styles.getPropertyValue("--track-pad-x")) || 8;
-    const bandShift = parseFloat(styles.getPropertyValue("--focus-band-shift")) || 0;
-    const target = focusCard.offsetLeft - trackPad - (FOCUS_SLOT_INDEX * (slotWidth + slotGap)) - bandShift;
-    track.scrollLeft = Math.max(0, target);
+
+    // 当日で終了済みの開催は、最終レースを共通の左端位置に置く。
+    if (mode === "ended") {
+      track.style.justifyContent = "flex-start";
+      const finalCard = track.querySelector(".race-card.final");
+      if (!finalCard) return setScrollLeftExactly(track, 0);
+      return setScrollLeftExactly(track, finalCard.offsetLeft - trackPad - bandShift);
+    }
+
+    // 当日の開催中は、直近レースの1つ左のボタンを全行で同じX座標に固定する。
+    track.style.justifyContent = "flex-start";
+    const currentCard = track.querySelector(".race-card.current");
+    if (!currentCard) return setScrollLeftExactly(track, 0);
+    const anchorCard = currentCard.previousElementSibling;
+    if (anchorCard?.classList.contains("race-card")) {
+      return setScrollLeftExactly(track, anchorCard.offsetLeft - trackPad - bandShift);
+    }
+    const target = currentCard.offsetLeft - trackPad - (FOCUS_SLOT_INDEX * (slotWidth + slotGap)) - bandShift;
+    return setScrollLeftExactly(track, target);
   };
 
   const render = () => {
@@ -178,6 +205,7 @@
     todayBtn.classList.toggle("is-current", isCurrentDay);
     todayBtn.disabled = isCurrentDay;
 
+    board.dataset.dayMode = dayDiff < 0 ? "past" : dayDiff > 0 ? "future" : "today";
     const rows = groupRacesByVenue();
     board.innerHTML = rows.map((row) => renderRow(row, dayDiff)).join("");
 
@@ -188,7 +216,9 @@
       });
     });
 
-    requestAnimationFrame(() => board.querySelectorAll(".venue-track").forEach(alignTrack));
+    const alignAllTracks = () => board.querySelectorAll(".venue-track").forEach(alignTrack);
+    requestAnimationFrame(() => requestAnimationFrame(alignAllTracks));
+    window.setTimeout(alignAllTracks, 120);
   };
 
   document.addEventListener("DOMContentLoaded", () => {

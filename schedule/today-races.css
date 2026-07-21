@@ -64,6 +64,8 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
   box-shadow:inset 1px 0 rgba(255,255,255,.24),inset -1px 0 rgba(84,56,8,.12);
   pointer-events:none
 }
+.today-board[data-day-mode="past"]::before,
+.today-board[data-day-mode="future"]::before{display:none}
 .venue-row{
   position:relative;z-index:1;display:grid;grid-template-columns:var(--venue-card-w) minmax(0,1fr);align-items:stretch;
   min-height:var(--row-h)
@@ -91,7 +93,7 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 .venue-track{
   position:relative;z-index:1;display:flex;gap:var(--track-gap);align-items:center;min-height:var(--row-h);
   padding:5px var(--track-pad-x);overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;
-  touch-action:pan-x pan-y;overscroll-behavior-x:contain;overscroll-behavior-y:auto;scroll-snap-type:x mandatory;
+  touch-action:pan-x pan-y;overscroll-behavior-x:contain;overscroll-behavior-y:auto;scroll-snap-type:x proximity;
   scroll-padding-left:calc(var(--track-pad-x) + var(--focus-band-shift))
 }
 .venue-track::-webkit-scrollbar{display:none}
@@ -103,7 +105,7 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 }
 .race-card .race-no{font-size:15px;font-weight:950;line-height:1}
 .race-card .race-time{font-size:14px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
-.race-card.current{color:#171108;border-color:#8f6a18;background:#fff9e6;box-shadow:0 0 0 1px rgba(255,230,161,.42),0 2px 5px rgba(0,0,0,.20)}
+.race-card.current{color:#171108;border-color:rgba(240,204,112,.86);background:#fff9e6;box-shadow:0 2px 5px rgba(0,0,0,.18)}
 .race-card.finished{color:#69717c;background:#eef0f3}
 .race-card.upcoming{background:#f7f7f7}
 .race-card.placeholder,.race-card.spacer{box-shadow:none;border-color:transparent;background:transparent;color:transparent;pointer-events:none}
