@@ -4,7 +4,7 @@
   --venue-card-w:100px;
   --race-card-w:76px;
   --race-card-h:58px;
-  --row-h:64px;
+  --row-h:72px;
   --track-gap:7px;
   --track-pad-x:8px;
   --focus-slot-index:1;
@@ -74,15 +74,15 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 .venue-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,.11)}
 .venue-card{
   min-height:var(--row-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-  padding:5px 6px;border-right:1px solid rgba(255,255,255,.16);color:#fff
+  padding:6px 5px;border-right:1px solid rgba(255,255,255,.16);color:#fff
 }
 .venue-card.sport-keirin{background:linear-gradient(180deg,#d66c1d,#bd5510)}
 .venue-card.sport-auto{background:linear-gradient(180deg,#7e47af,#683397)}
 .venue-card.sport-boat{background:linear-gradient(180deg,#237fc8,#1264a8)}
 .venue-card.sport-nar{background:linear-gradient(180deg,#93643a,#704722)}
 .venue-title-line{display:flex;align-items:center;justify-content:center;gap:.5em;min-width:0}
-.venue-name{font-size:16px;line-height:1.05;font-weight:950;letter-spacing:-.01em;text-align:center;white-space:nowrap}
-.venue-grade-row{display:flex;align-items:center;justify-content:center;gap:4px;min-height:20px}
+.venue-name{font-size:15px;line-height:1.05;font-weight:950;letter-spacing:-.01em;text-align:center;white-space:nowrap}
+.venue-meta-row{display:flex;align-items:center;justify-content:center;gap:3px;min-height:20px;flex-wrap:nowrap}
 .venue-sport-icon{
   flex:0 0 19px;width:19px;height:19px;display:block;background:#fff;
   filter:drop-shadow(0 1px 1px rgba(0,0,0,.16));-webkit-filter:drop-shadow(0 1px 1px rgba(0,0,0,.16))
@@ -92,12 +92,14 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 .venue-sport-icon.boat{-webkit-mask:url('../gradedraces/icons/boat.png') center / contain no-repeat;mask:url('../gradedraces/icons/boat.png') center / contain no-repeat}
 .venue-sport-icon.nar{-webkit-mask:url('../gradedraces/icons/nar.png') center / contain no-repeat;mask:url('../gradedraces/icons/nar.png') center / contain no-repeat}
 .venue-grade-icon{
-  min-width:25px;height:20px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;border-radius:5px;
+  min-width:25px;height:18px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;border-radius:5px;
   color:#fff;font-size:9px;font-weight:1000;line-height:1;letter-spacing:-.03em;white-space:nowrap;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 1px 2px rgba(0,0,0,.2)
 }
 .venue-grade-icon.accent{background:#d4232b}
 .venue-grade-icon.muted{background:#707782}
+.venue-status-icon{width:16px;height:16px;display:block;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.22)}
+.venue-status-icon.girls{border-radius:4px}
 .venue-day-label{
   color:rgba(255,255,255,.95);font-size:10px;font-weight:900;line-height:1;letter-spacing:.01em;white-space:nowrap;
   text-shadow:0 1px 2px rgba(0,0,0,.28)
@@ -144,11 +146,11 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 .today-race-toast.is-visible{opacity:1;transform:translate(-50%,0)}
 
 @media(max-width:430px){
-  :root{--date-toolbar-h:44px;--venue-card-w:92px;--race-card-w:72px;--race-card-h:56px;--row-h:62px;--track-gap:6px;--track-pad-x:6px}
+  :root{--date-toolbar-h:44px;--venue-card-w:96px;--race-card-w:72px;--race-card-h:56px;--row-h:68px;--track-gap:6px;--track-pad-x:6px}
   .date-toolbar{grid-template-columns:62px auto 62px;padding-inline:5px}
   .date-nav{grid-template-columns:29px minmax(140px,auto) 29px}.date-arrow{width:29px}.date-title{font-size:15px}
   .today-btn{min-width:60px;height:30px;padding-inline:9px}
   .today-page{padding:5px}
-  .venue-name{font-size:15px}.venue-title-line{gap:.45em}.venue-sport-icon{flex-basis:17px;width:17px;height:17px}.venue-grade-row{min-height:18px;gap:3px}.venue-grade-icon{height:18px;min-width:23px;padding-inline:3px;font-size:8px}.venue-day-label{font-size:9px}
+  .venue-name{font-size:14px}.venue-title-line{gap:.45em}.venue-sport-icon{flex-basis:16px;width:16px;height:16px}.venue-meta-row{min-height:17px;gap:2px}.venue-grade-icon{height:17px;min-width:22px;padding-inline:3px;font-size:8px}.venue-status-icon{width:14px;height:14px}.venue-day-label{font-size:8px}
   .race-card .race-no{font-size:14px}.race-card .race-time{font-size:13px}
 }

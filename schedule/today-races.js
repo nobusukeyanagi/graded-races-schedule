@@ -84,6 +84,29 @@
     [groupKey("boat", "大村"), "最終日"],
   ]);
 
+  const venueSessionMap = new Map([
+    [groupKey("keirin", "京王閣"), "midnight"],
+    [groupKey("keirin", "松戸"), "morning"],
+    [groupKey("keirin", "平塚"), "midnight"],
+    [groupKey("keirin", "豊橋"), "night"],
+    [groupKey("keirin", "玉野"), "midnight"],
+    [groupKey("keirin", "高知"), "night"],
+    [groupKey("auto", "飯塚"), "midnight"],
+    [groupKey("boat", "蒲郡"), "night"],
+    [groupKey("boat", "住之江"), "night"],
+    [groupKey("boat", "丸亀"), "night"],
+    [groupKey("boat", "徳山"), "morning"],
+    [groupKey("boat", "芦屋"), "morning"],
+    [groupKey("boat", "唐津"), "morning"],
+    [groupKey("boat", "大村"), "night"],
+    [groupKey("nar", "名古屋"), "night"],
+    [groupKey("nar", "高知"), "night"],
+  ]);
+  const girlsVenueSet = new Set([
+    groupKey("keirin", "高知"),
+    groupKey("boat", "福岡"),
+  ]);
+
 
   const groupRacesByVenue = () => {
     const grouped = new Map();
@@ -186,10 +209,21 @@
     if (dayDiff > 0) track = buildFutureTrack(row);
 
     const venueDay = venueDayMap.get(row.key) || "";
+    const session = venueSessionMap.get(row.key) || "";
+    const hasGirls = girlsVenueSet.has(row.key);
     const gradeIcon = row.grade
       ? `<span class="venue-grade-icon ${row.grade.accent ? "accent" : "muted"}" aria-label="格 ${row.grade.label}">${row.grade.label}</span>`
       : "";
+    const sessionIcon = session
+      ? `<img class="venue-status-icon" src="icons/${session}.png" alt="" aria-hidden="true">`
+      : "";
+    const girlsIcon = hasGirls
+      ? `<img class="venue-status-icon girls" src="icons/girls.png" alt="" aria-hidden="true">`
+      : "";
     const dayLabel = venueDay ? `<span class="venue-day-label">${venueDay}</span>` : "";
+    const metaLine = gradeIcon || sessionIcon || girlsIcon || dayLabel
+      ? `<div class="venue-meta-row">${gradeIcon}${sessionIcon}${girlsIcon}${dayLabel}</div>`
+      : "";
 
     return `
       <article class="venue-row" data-mode="${track.mode}">
@@ -198,7 +232,7 @@
             <div class="venue-name">${row.venue}</div>
             <span class="venue-sport-icon ${row.sport}" aria-hidden="true"></span>
           </div>
-          ${gradeIcon || dayLabel ? `<div class="venue-grade-row">${gradeIcon}${dayLabel}</div>` : ""}
+          ${metaLine}
         </div>
         <div class="venue-track-shell">
           <div class="venue-track" data-mode="${track.mode}" data-anchor="${track.anchor}">${track.cards}</div>
