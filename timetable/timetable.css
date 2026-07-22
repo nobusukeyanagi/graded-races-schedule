@@ -1,0 +1,197 @@
+:root{
+  --timetable-gold:#d5ab43;
+  --timetable-gold-dark:#8b6a00;
+  --timetable-blue:#2f62ad;
+  --timetable-card:#060606;
+  --timetable-text:#fff;
+  --hour-label-w:62px;
+}
+
+*{box-sizing:border-box}
+html,body,button{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Yu Gothic UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif}
+body{background:#060606}
+button{font:inherit}
+
+.timetable-page{
+  width:min(100%,680px);
+  margin:0 auto;
+  padding:7px 5px 12px;
+}
+.timetable-board{
+  overflow:hidden;
+  border:1px solid rgba(213,171,67,.30);
+  border-radius:8px;
+  background:#000;
+  box-shadow:0 8px 24px rgba(0,0,0,.22);
+}
+.hour-group{
+  display:grid;
+  grid-template-columns:var(--hour-label-w) minmax(0,1fr);
+  gap:8px;
+  min-height:94px;
+  padding:8px;
+  background:#000;
+  border-bottom:1px solid rgba(255,255,255,.10);
+  scroll-margin-top:6px;
+}
+.hour-group:last-child{border-bottom:0}
+.hour-group.current-hour{
+  background:linear-gradient(135deg,#d8b34d 0%,#b98918 100%);
+  box-shadow:inset 0 1px rgba(255,245,197,.38),inset 0 -1px rgba(62,38,0,.28);
+}
+.hour-label{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:78px;
+  border:2px solid var(--timetable-blue);
+  color:#fff;
+  background:#050505;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:38px;
+  font-weight:700;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+  text-shadow:0 2px 4px rgba(0,0,0,.42);
+}
+.current-hour .hour-label{
+  color:#161006;
+  border-color:#ffdf7f;
+  background:#f1ca63;
+  text-shadow:none;
+}
+.hour-races{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  align-content:start;
+}
+.timetable-race{
+  position:relative;
+  min-width:0;
+  height:78px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  padding:6px 4px 12px;
+  overflow:hidden;
+  border:2px solid var(--timetable-gold-dark);
+  color:var(--timetable-text);
+  background:var(--timetable-card);
+  text-decoration:none;
+  text-align:center;
+  -webkit-tap-highlight-color:transparent;
+}
+.current-hour .timetable-race{
+  border-color:#6f5100;
+  box-shadow:0 2px 5px rgba(42,27,0,.26);
+}
+.timetable-race::after{
+  content:"";
+  position:absolute;
+  left:8px;
+  right:8px;
+  bottom:7px;
+  height:5px;
+  background:#1185c8;
+}
+.timetable-race.sport-keirin::after{background:#f17c32}
+.timetable-race.sport-auto::after{background:#8a56b5}
+.timetable-race.sport-boat::after{background:#1185c8}
+.timetable-race.sport-nar::after{background:#9a673e}
+.timetable-race.sport-jra::after{background:#2d9f54}
+.race-venue{
+  width:100%;
+  overflow:hidden;
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+  line-height:1.05;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.race-main{
+  color:#fff;
+  font-size:17px;
+  font-weight:950;
+  line-height:1;
+  white-space:nowrap;
+}
+.race-time{
+  color:#e7e7e7;
+  font-size:11px;
+  font-weight:850;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.timetable-race:focus-visible{outline:2px solid #fff1b5;outline-offset:-4px}
+
+.cancelled-group{background:#0b0b0b}
+.cancelled-group .hour-label{
+  font-family:inherit;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.04em;
+}
+.cancelled-group .timetable-race{opacity:.78}
+.cancelled-group .race-time{color:#ff9b9b}
+
+.timetable-empty{
+  min-height:260px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:32px 16px;
+  color:#fff;
+  background:linear-gradient(180deg,#151515,#050505);
+  text-align:center;
+}
+.timetable-empty strong{font-size:19px}
+.timetable-empty span{color:#b9b9b9;font-size:13px}
+
+.timetable-toast{
+  position:fixed;
+  left:50%;
+  bottom:calc(var(--bottom-nav-total-h,62px) + 16px);
+  z-index:12000;
+  max-width:min(88vw,420px);
+  padding:10px 16px;
+  color:#18130a;
+  border:1px solid rgba(255,255,255,.42);
+  border-radius:999px;
+  background:linear-gradient(135deg,#f2da8e,#c28c25);
+  box-shadow:0 10px 28px rgba(0,0,0,.28);
+  font-size:13px;
+  font-weight:850;
+  opacity:0;
+  pointer-events:none;
+  transform:translate(-50%,12px);
+  transition:opacity .18s ease,transform .18s ease;
+}
+.timetable-toast.is-visible{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:430px){
+  :root{--hour-label-w:48px}
+  .timetable-page{padding:5px 4px 10px}
+  .hour-group{gap:6px;min-height:84px;padding:6px}
+  .hour-label{min-height:70px;font-size:32px}
+  .hour-races{gap:6px}
+  .timetable-race{height:70px;padding:5px 3px 11px;border-width:1.5px}
+  .timetable-race::after{left:6px;right:6px;bottom:6px;height:4px}
+  .race-venue{font-size:10px}
+  .race-main{font-size:15px}
+  .race-time{font-size:10px}
+}
+
+@media(max-width:350px){
+  :root{--hour-label-w:44px}
+  .hour-group{gap:4px;padding:5px}
+  .hour-races{gap:4px}
+  .timetable-race{height:68px}
+  .race-venue{font-size:9px}
+  .race-main{font-size:14px}
+}
