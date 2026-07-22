@@ -56,7 +56,33 @@
   const raceNumber = (race) => Number.parseInt(String(race.race), 10) || 0;
   const groupKey = (sport, venue) => `${sport}:${venue}`;
   const venueGradeMap = new Map(venueGrades.map((item) => [groupKey(item.sport, item.venue), item]));
-
+  const venueDayMap = new Map([
+    [groupKey("keirin", "京王閣"), "初日"],
+    [groupKey("keirin", "松戸"), "2日目"],
+    [groupKey("keirin", "平塚"), "初日"],
+    [groupKey("keirin", "豊橋"), "初日"],
+    [groupKey("keirin", "玉野"), "初日"],
+    [groupKey("keirin", "防府"), "最終日"],
+    [groupKey("keirin", "高知"), "2日目"],
+    [groupKey("keirin", "熊本"), "最終日"],
+    [groupKey("auto", "浜松"), "最終日"],
+    [groupKey("auto", "飯塚"), "最終日"],
+    [groupKey("boat", "江戸川"), "最終日"],
+    [groupKey("boat", "平和島"), "3日目"],
+    [groupKey("boat", "多摩川"), "2日目"],
+    [groupKey("boat", "浜名湖"), "5日目"],
+    [groupKey("boat", "蒲郡"), "3日目"],
+    [groupKey("boat", "びわこ"), "2日目"],
+    [groupKey("boat", "住之江"), "2日目"],
+    [groupKey("boat", "丸亀"), "3日目"],
+    [groupKey("boat", "児島"), "初日"],
+    [groupKey("boat", "宮島"), "4日目"],
+    [groupKey("boat", "徳山"), "最終日"],
+    [groupKey("boat", "芦屋"), "3日目"],
+    [groupKey("boat", "福岡"), "最終日"],
+    [groupKey("boat", "唐津"), "初日"],
+    [groupKey("boat", "大村"), "最終日"],
+  ]);
 
 
   const groupRacesByVenue = () => {
@@ -159,6 +185,12 @@
     if (dayDiff < 0) track = buildPastTrack(row);
     if (dayDiff > 0) track = buildFutureTrack(row);
 
+    const venueDay = venueDayMap.get(row.key) || "";
+    const gradeIcon = row.grade
+      ? `<span class="venue-grade-icon ${row.grade.accent ? "accent" : "muted"}" aria-label="格 ${row.grade.label}">${row.grade.label}</span>`
+      : "";
+    const dayLabel = venueDay ? `<span class="venue-day-label">${venueDay}</span>` : "";
+
     return `
       <article class="venue-row" data-mode="${track.mode}">
         <div class="venue-card sport-${row.sport}">
@@ -166,7 +198,7 @@
             <div class="venue-name">${row.venue}</div>
             <span class="venue-sport-icon ${row.sport}" aria-hidden="true"></span>
           </div>
-          ${row.grade ? `<div class="venue-grade-row"><span class="venue-grade-icon ${row.grade.accent ? "accent" : "muted"}" aria-label="格 ${row.grade.label}">${row.grade.label}</span></div>` : ""}
+          ${gradeIcon || dayLabel ? `<div class="venue-grade-row">${gradeIcon}${dayLabel}</div>` : ""}
         </div>
         <div class="venue-track-shell">
           <div class="venue-track" data-mode="${track.mode}" data-anchor="${track.anchor}">${track.cards}</div>

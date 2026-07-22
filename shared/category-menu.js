@@ -17,7 +17,7 @@
       { id: "timetable", label: "時刻表", path: "timetable/" },
       { id: "quick-results", label: "結果早見", path: "results/" },
       { id: "monthly", label: "開催日程", path: "monthly/" },
-      { id: "grade", label: "グレード日程", path: "gradedraces/" },
+      { id: "grade", label: "グレード", path: "gradedraces/" },
     ],
     vote: [
       { id: "racecard", label: "出走表", path: "vote/" },
