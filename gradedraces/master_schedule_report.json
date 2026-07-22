@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-22T05:40:16.942405+09:00",
-  "base_date": "2026-07-22",
+  "generated_at": "2026-07-23T05:20:19.452981+09:00",
+  "base_date": "2026-07-23",
   "calendar_years": [
     2026,
     2027
@@ -11,59 +11,11 @@
   ],
   "official_record_count": 205,
   "added_count": 0,
-  "updated_count": 6,
+  "updated_count": 4,
   "registered_only_count": 6,
   "duplicate_count": 0,
   "additions": [],
   "changes": [
-    {
-      "type": "master_updated",
-      "match_type": "exact",
-      "before": {
-        "date": "2026-07-19",
-        "time": "14:10",
-        "sport": "jra",
-        "venue": "函館",
-        "grade": "GIII",
-        "name": "函館2歳S",
-        "winner": "フェリチタ"
-      },
-      "after": {
-        "date": "2026-07-19",
-        "time": "14:10",
-        "sport": "jra",
-        "venue": "函館",
-        "grade": "GⅢ",
-        "name": "函館2歳S",
-        "winner": "フェリチタ"
-      },
-      "source_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
-      "source_id": "jra:2026:2026-07-19:函館2歳s"
-    },
-    {
-      "type": "master_updated",
-      "match_type": "exact",
-      "before": {
-        "date": "2026-07-19",
-        "time": "15:20",
-        "sport": "jra",
-        "venue": "小倉",
-        "grade": "GIII",
-        "name": "小倉記念",
-        "winner": "ゼンダンハヤブサ"
-      },
-      "after": {
-        "date": "2026-07-19",
-        "time": "15:20",
-        "sport": "jra",
-        "venue": "小倉",
-        "grade": "GⅢ",
-        "name": "小倉記念",
-        "winner": "ゼンダンハヤブサ"
-      },
-      "source_url": "https://www.jra.go.jp/datafile/seiseki/replay/2026/jyusyo.html",
-      "source_id": "jra:2026:2026-07-19:小倉記念"
-    },
     {
       "type": "master_updated",
       "match_type": "exact",

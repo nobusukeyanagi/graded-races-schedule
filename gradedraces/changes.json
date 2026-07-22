@@ -1,13 +1,14 @@
 {
-  "generated_at": "2026-07-22T05:43:08.968778+09:00",
-  "center_date": "2026-07-22",
+  "generated_at": "2026-07-23T05:23:03.316504+09:00",
+  "center_date": "2026-07-23",
   "selection_mode": "smart",
   "selection_counts": {
-    "recent_verification": 4,
-    "upcoming": 26
+    "unresolved": 3,
+    "recent_verification": 3,
+    "upcoming": 25
   },
-  "target_count": 30,
-  "change_count": 5,
+  "target_count": 28,
+  "change_count": 8,
   "changes": [
     {
       "date": "2026-07-26",
@@ -119,12 +120,66 @@
     },
     {
       "date": "2026-07-22",
+      "sport": "nar",
+      "venue": "大井",
+      "name": "サンタアニタトロフィー",
+      "before": {
+        "date": "2026-07-22",
+        "time": "20:15",
+        "sport": "nar",
+        "venue": "大井",
+        "grade": "SⅢ",
+        "name": "サンタアニタトロフィー",
+        "winner": ""
+      },
+      "after": {
+        "date": "2026-07-22",
+        "time": "20:15",
+        "sport": "nar",
+        "venue": "大井",
+        "grade": "SⅢ",
+        "name": "サンタアニタトロフィー",
+        "winner": "リコースパロー"
+      },
+      "source": "地方競馬",
+      "evidence_url": "https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/RaceList?k_raceDate=2026%2F07%2F22&k_babaCode=20",
+      "note": "地方競馬公式レース情報"
+    },
+    {
+      "date": "2026-07-22",
+      "sport": "nar",
+      "venue": "門別",
+      "name": "リリーカップ",
+      "before": {
+        "date": "2026-07-22",
+        "time": "20:35",
+        "sport": "nar",
+        "venue": "門別",
+        "grade": "H3",
+        "name": "リリーカップ",
+        "winner": ""
+      },
+      "after": {
+        "date": "2026-07-22",
+        "time": "20:35",
+        "sport": "nar",
+        "venue": "門別",
+        "grade": "H3",
+        "name": "リリーカップ",
+        "winner": "セルアウトクラウド"
+      },
+      "source": "地方競馬",
+      "evidence_url": "https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/RaceList?k_raceDate=2026%2F07%2F22&k_babaCode=36",
+      "note": "地方競馬公式レース情報"
+    },
+    {
+      "date": "2026-07-22",
       "sport": "boat",
       "venue": "児島",
       "name": "シモデンカップ",
       "before": {
         "date": "2026-07-22",
-        "time": "",
+        "time": "17:50",
         "sport": "boat",
         "venue": "児島",
         "grade": "GⅢ",
@@ -138,10 +193,37 @@
         "venue": "児島",
         "grade": "GⅢ",
         "name": "シモデンカップ",
-        "winner": ""
+        "winner": "4166 吉田 拡郎"
       },
       "source": "ボートレース",
       "evidence_url": "https://www.boatrace.jp/owpc/pc/race/raceresult?jcd=16&hd=20260722&rno=12",
+      "note": "BOAT RACE公式12R結果"
+    },
+    {
+      "date": "2026-07-23",
+      "sport": "boat",
+      "venue": "津",
+      "name": "イースタンヤング",
+      "before": {
+        "date": "2026-07-23",
+        "time": "",
+        "sport": "boat",
+        "venue": "津",
+        "grade": "GⅢ",
+        "name": "イースタンヤング",
+        "winner": ""
+      },
+      "after": {
+        "date": "2026-07-23",
+        "time": "16:25",
+        "sport": "boat",
+        "venue": "津",
+        "grade": "GⅢ",
+        "name": "イースタンヤング",
+        "winner": ""
+      },
+      "source": "ボートレース",
+      "evidence_url": "https://www.boatrace.jp/owpc/pc/race/raceresult?jcd=09&hd=20260723&rno=12",
       "note": "BOAT RACE公式12R結果"
     }
   ]
