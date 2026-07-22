@@ -1,0 +1,58 @@
+:root{
+  --date-toolbar-h:46px;
+  --header-total-h:calc(var(--category-menu-total-h) + var(--date-toolbar-h));
+}
+
+.date-toolbar{
+  position:fixed;
+  left:0;
+  right:0;
+  top:calc(var(--visual-top,0px) + var(--category-menu-total-h));
+  z-index:9500;
+  width:100%;
+  height:var(--date-toolbar-h);
+  display:grid;
+  grid-template-columns:minmax(70px,1fr) auto minmax(70px,1fr);
+  align-items:center;
+  padding:0 8px;
+  color:#fff;
+  background:linear-gradient(180deg,#181818,#090909);
+  border-bottom:1px solid rgba(213,171,67,.34);
+  box-shadow:0 4px 13px rgba(0,0,0,.20);
+  touch-action:none;
+}
+.date-nav{display:grid;grid-template-columns:34px minmax(152px,auto) 34px;align-items:center;gap:2px}
+.date-arrow{width:34px;height:34px;border:0;background:transparent;color:#f0cc70;font-size:27px;line-height:1;cursor:pointer}
+.date-title{text-align:center;color:#fff;font-size:17px;font-weight:900;letter-spacing:.04em;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.28)}
+.date-weekday.sunday,.date-weekday.holiday{color:#ff7676}
+.date-weekday.saturday{color:#75b8ff}
+.date-toolbar-side{display:flex;align-items:center;min-width:0}
+.date-toolbar-side.right{justify-content:flex-end}
+.today-btn{
+  min-width:66px;
+  height:32px;
+  padding:0 13px;
+  border:1px solid rgba(242,216,137,.42);
+  border-radius:8px;
+  color:#f8e8b8;
+  background:rgba(255,255,255,.055);
+  font-size:12px;
+  font-weight:850;
+  cursor:pointer;
+}
+.today-btn.is-current{
+  color:#171108;
+  border-color:#ffe6a1;
+  background:#f0cc70;
+  box-shadow:0 0 0 1px rgba(255,230,161,.25);
+}
+.today-btn:disabled{cursor:default;opacity:1}
+
+@media(max-width:430px){
+  :root{--date-toolbar-h:44px}
+  .date-toolbar{grid-template-columns:62px auto 62px;padding-inline:5px}
+  .date-nav{grid-template-columns:29px minmax(140px,auto) 29px}
+  .date-arrow{width:29px}
+  .date-title{font-size:15px}
+  .today-btn{min-width:60px;height:30px;padding-inline:9px}
+}

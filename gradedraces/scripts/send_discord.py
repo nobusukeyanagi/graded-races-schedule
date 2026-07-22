@@ -128,8 +128,8 @@ def build_message_block(
     race_lines: list[str],
     site_url: str,
 ) -> str:
-    # タイトルの後に空行を1行入れ、レース一覧とURLは続けて表示する。
-    return "\n".join([title, "", *race_lines, site_url])
+    # タイトル、レース一覧、URLを空行なしで続けて表示する。
+    return "\n".join([title, *race_lines, site_url])
 
 
 def build_messages(

@@ -45,7 +45,9 @@ button{-webkit-tap-highlight-color:transparent}
 .month-arrow{width:34px;height:34px;border:0;background:transparent;color:#f0cc70;font-size:27px;line-height:1;cursor:pointer}
 .month-title{text-align:center;color:#fff;font-size:17px;font-weight:900;letter-spacing:.045em;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.28)}
 .month-toolbar-side{display:flex;align-items:center;min-width:0}.month-toolbar-side.right{justify-content:flex-end}
-.today-btn{min-width:66px;height:32px;padding:0 13px;border:1px solid rgba(242,216,137,.42);border-radius:8px;color:#f8e8b8;background:rgba(255,255,255,.055);font-size:12px;font-weight:850}
+.today-btn{min-width:66px;height:32px;padding:0 13px;border:1px solid rgba(242,216,137,.42);border-radius:8px;color:#f8e8b8;background:rgba(255,255,255,.055);font-size:12px;font-weight:850;cursor:pointer}
+.today-btn.is-current{color:#171108;border-color:#ffe6a1;background:#f0cc70;box-shadow:0 0 0 1px rgba(255,230,161,.25)}
+.today-btn:disabled{cursor:default;opacity:1}
 
 zenrace-bottom-nav{touch-action:none;overscroll-behavior:none}
 
@@ -326,6 +328,10 @@ function render(){
   $("loadingState").style.display="none";
   const y=viewDate.getFullYear(),m=viewDate.getMonth();
   $("monthTitle").textContent=`${y}年 ${m+1}月`;
+  const currentMonth=new Date();
+  const isCurrentMonth=y===currentMonth.getFullYear()&&m===currentMonth.getMonth();
+  const currentMonthButton=$("todayBtn");
+  if(currentMonthButton){currentMonthButton.classList.toggle("is-current",isCurrentMonth);currentMonthButton.disabled=isCurrentMonth;}
   const monthPrefix=`${y}-${String(m+1).padStart(2,"0")}`;
   const monthRecords=records.filter(r=>r.date.startsWith(monthPrefix));
   if(!monthRecords.length){$("schedule").innerHTML='<div class="empty-month">この月の登録レースはありません</div>';updateZoomMetrics(true);return}

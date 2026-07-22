@@ -10,12 +10,23 @@
 <link rel="stylesheet" href="../shared/category-menu.css?v=57">
 <link rel="stylesheet" href="../shared/page-shell.css?v=19">
 <link rel="stylesheet" href="../shared/placeholder-page.css?v=33">
+<link rel="stylesheet" href="../shared/month-selector.css?v=1">
 <script src="../shared/category-menu.js?v=50" defer></script>
 <script src="../shared/fixed-layout.js?v=20" defer></script>
 <script src="../shared/bottom-nav.js?v=60" defer></script>
+<script src="../shared/month-selector.js?v=1" defer></script>
 </head>
 <body>
 <zenrace-category-menu category="schedule" active="monthly"></zenrace-category-menu>
+<div class="month-toolbar" data-zenrace-month-selector aria-label="月選択">
+  <div class="month-toolbar-side left"></div>
+  <div class="month-nav">
+    <button class="month-arrow" data-month-prev aria-label="前月">‹</button>
+    <div class="month-title" data-month-title></div>
+    <button class="month-arrow" data-month-next aria-label="翌月">›</button>
+  </div>
+  <div class="month-toolbar-side right"><button class="current-month-btn" data-month-current>当月</button></div>
+</div>
 <div class="zenrace-content-shell" data-zenrace-pinch-shell>
   <div class="zenrace-content-sizer" data-zenrace-pinch-sizer>
     <div class="zenrace-content-stage" data-zenrace-pinch-stage>
