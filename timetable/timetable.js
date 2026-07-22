@@ -7,6 +7,12 @@
   const toolbar = document.querySelector("[data-zenrace-date-selector]");
   const shell = document.querySelector(".zenrace-content-shell");
   const races = Array.isArray(window.ZENRACE_RACES) ? window.ZENRACE_RACES : [];
+  const FEATURED_RACES = new Set([
+    "keirin:熊本:12R",
+    "auto:浜松:12R",
+    "nar:名古屋:7R",
+  ]);
+  const isFeaturedRace = (race) => FEATURED_RACES.has(`${race.sport}:${race.venue}:${race.race}`);
 
   const timeParts = (value) => {
     const match = /^(\d{1,2}):(\d{2})$/.exec(String(value || ""));
@@ -35,15 +41,16 @@
     toast.dataset.timer = String(window.setTimeout(() => toast.classList.remove("is-visible"), 1800));
   };
 
-  const raceCard = (race, cancelled = false) => {
+  const raceCard = (race) => {
     const parts = timeParts(race.time);
-    const minute = cancelled ? "中止" : String(parts?.minute ?? "").padStart(2, "0");
-    const label = `${race.venue} ${race.race} ${cancelled ? "中止" : race.time}`;
+    const minute = String(parts?.minute ?? "").padStart(2, "0");
+    const featured = isFeaturedRace(race);
+    const label = `${race.venue} ${race.race} ${race.time}${featured ? " 注目レース" : ""}`;
     return `
-      <a class="timetable-race sport-${race.sport}${cancelled ? " is-cancelled" : ""}" href="#" aria-label="${label}">
+      <a class="timetable-race sport-${race.sport}${featured ? " featured-race" : ""}" href="#" aria-label="${label}">
         <span class="race-minute">${minute}</span>
         <span class="race-sport-line" aria-hidden="true"></span>
-        <span class="race-detail"><span class="race-venue">${race.venue}</span> <span class="race-no">${race.race}</span></span>
+        <span class="race-detail"><span class="race-venue">${race.venue}</span><span class="race-no">${race.race}</span></span>
       </a>`;
   };
 
@@ -51,7 +58,6 @@
     const validRaces = races
       .filter((race) => timeParts(race.time))
       .sort((a, b) => (raceMinutes(a) - raceMinutes(b)) || (raceNumber(a) - raceNumber(b)));
-    const cancelledRaces = races.filter((race) => !timeParts(race.time));
     const grouped = new Map();
 
     validRaces.forEach((race) => {
@@ -69,15 +75,7 @@
         </section>`)
       .join("");
 
-    const cancelledMarkup = cancelledRaces.length
-      ? `
-        <section class="hour-group cancelled-group" aria-label="中止レース">
-          <div class="hour-label">中止</div>
-          <div class="hour-races">${cancelledRaces.map((race) => raceCard(race, true)).join("")}</div>
-        </section>`
-      : "";
-
-    return hourMarkup + cancelledMarkup;
+    return hourMarkup;
   };
 
   const scrollToCurrentHour = () => {
