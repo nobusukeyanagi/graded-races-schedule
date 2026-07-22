@@ -60,6 +60,20 @@
   };
   const raceNumber = (race) => Number.parseInt(String(race.race), 10) || 0;
   const groupKey = (sport, venue) => `${sport}:${venue}`;
+  const featuredRaceKey = (date, sport, venue, race) => `${date}:${sport}:${venue}:${race}`;
+  const FEATURED_RACES = new Set([
+    featuredRaceKey("2026-02-22", "jra", "東京", "11R"),
+    featuredRaceKey("2026-02-22", "jra", "小倉", "11R"),
+    featuredRaceKey("2026-02-22", "nar", "帯広", "11R"),
+    featuredRaceKey("2026-02-22", "nar", "高知", "4R"),
+    featuredRaceKey("2026-02-23", "keirin", "熊本", "12R"),
+    featuredRaceKey("2026-02-23", "auto", "浜松", "12R"),
+    featuredRaceKey("2026-02-23", "nar", "名古屋", "7R"),
+    featuredRaceKey("2026-02-24", "boat", "江戸川", "12R"),
+  ]);
+  const isFeaturedRace = (race) => FEATURED_RACES.has(
+    featuredRaceKey(dateKey(selectedDate), race.sport, race.venue, race.race),
+  );
   const baseVenueDayMap = new Map([
     [groupKey("keirin", "京王閣"), "初日"],
     [groupKey("keirin", "松戸"), "2日目"],
@@ -168,8 +182,10 @@
       return `<span class="race-card placeholder ${className}" aria-hidden="true"><span class="race-no">--</span><span class="race-time">--:--</span></span>`;
     }
     const cancelled = race.time === "中止";
-    const label = `${race.venue} ${race.race} ${cancelled ? "中止" : `締切${race.time}`}`;
-    return `<a href="#" class="race-card ${className}${cancelled ? " cancelled" : ""}" aria-label="${label}"><span class="race-no">${race.race}</span><span class="race-time">${race.time}</span></a>`;
+    const featured = isFeaturedRace(race);
+    const label = `${race.venue} ${race.race} ${cancelled ? "中止" : `締切${race.time}`}${featured ? " 注目レース" : ""}`;
+    const stateClasses = `${cancelled ? " cancelled" : ""}${featured ? " featured-race" : ""}`;
+    return `<a href="#" class="race-card ${className}${stateClasses}" aria-label="${label}"><span class="race-no">${race.race}</span><span class="race-time">${race.time}</span></a>`;
   };
 
   const buildCurrentTrack = (row) => {
