@@ -1,5 +1,7 @@
 {
   "last_notified_date": "2026-07-23",
-  "last_notified_count": 2,
-  "notified_at": "2026-07-23T00:12:20.450514+00:00"
+  "last_notified_graded_count": 2,
+  "last_notified_venue_count": 29,
+  "last_message_digest": "251fc68d1bb7cc667fb3e9e66208ca216b1df87afe8c57bf31e23e1a50f16135",
+  "notified_at": "2026-07-23T07:19:52.375109+00:00"
 }
