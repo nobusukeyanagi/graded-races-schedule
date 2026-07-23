@@ -192,3 +192,12 @@ button{font:inherit}
 @media(max-width:350px){
   .venue-grid{--venue-columns:2}
 }
+
+
+/* グレード日程と共通の曜日・祝日カラー */
+.day-card.sat .date-number,
+.day-card.sat .date-weekday{color:#1769aa}
+.day-card.sun .date-number,
+.day-card.sun .date-weekday,
+.day-card.holiday .date-number,
+.day-card.holiday .date-weekday{color:#c23d3d}
