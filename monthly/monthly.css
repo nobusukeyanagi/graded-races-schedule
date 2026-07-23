@@ -1,0 +1,186 @@
+:root{
+  --monthly-bg:#eef1f5;
+  --monthly-panel:#fff;
+  --monthly-line:#d8dde6;
+  --monthly-text:#18202a;
+  --monthly-muted:#738091;
+  --jra:#23834a;
+  --nar:#8b5a2b;
+  --boat:#1876c9;
+  --keirin:#d8661d;
+  --auto:#7545af;
+}
+*{box-sizing:border-box}
+html{background:#090909}
+body{
+  color:var(--monthly-text);
+  background:linear-gradient(180deg,#f8fafc,var(--monthly-bg));
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Yu Gothic UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+}
+button{font:inherit}
+.zenrace-content-shell{background:linear-gradient(180deg,#f6f8fb,#e9edf3)}
+.monthly-page{width:min(100%,760px);margin:0 auto;padding:7px 6px 12px}
+.monthly-schedule{width:100%}
+.day-card{
+  display:grid;
+  grid-template-columns:50px minmax(0,1fr);
+  overflow:hidden;
+  border:1px solid var(--monthly-line);
+  border-radius:8px;
+  background:var(--monthly-panel);
+  box-shadow:0 1px 5px rgba(15,23,42,.055);
+}
+.date-cell{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  min-height:100%;
+  padding:6px 3px;
+  border-right:1px solid var(--monthly-line);
+  background:#f8fafc;
+  white-space:nowrap;
+}
+.date-number{font-size:22px;line-height:1;font-weight:950;letter-spacing:-.05em}
+.date-weekday{font-size:9px;line-height:1;font-weight:900;color:var(--monthly-muted)}
+.venue-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:5px;
+  min-width:0;
+  padding:6px;
+}
+.venue-button{
+  --sport:#555;
+  position:relative;
+  min-width:0;
+  min-height:54px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  padding:5px 4px;
+  overflow:hidden;
+  border:1.5px solid color-mix(in srgb,var(--sport) 82%,#000 18%);
+  border-radius:7px;
+  color:var(--monthly-text);
+  background:#fff;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sport) 12%,transparent),0 1px 2px rgba(15,23,42,.05);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.venue-button::before{
+  content:"";
+  position:absolute;
+  top:0;
+  right:0;
+  left:0;
+  height:3px;
+  background:var(--sport);
+}
+.venue-button.sport-keirin{--sport:var(--keirin)}
+.venue-button.sport-auto{--sport:var(--auto)}
+.venue-button.sport-boat{--sport:var(--boat)}
+.venue-button.sport-nar{--sport:var(--nar)}
+.venue-button.sport-jra{--sport:var(--jra)}
+.venue-button:active{transform:translateY(1px);background:color-mix(in srgb,var(--sport) 5%,#fff)}
+.venue-main-line{display:flex;align-items:center;justify-content:center;gap:5px;min-width:0;max-width:100%}
+.venue-name{
+  min-width:0;
+  overflow:hidden;
+  color:#18202a;
+  font-size:14px;
+  font-weight:950;
+  line-height:1;
+  letter-spacing:-.03em;
+  text-overflow:clip;
+  white-space:nowrap;
+}
+.sport-icon{
+  flex:0 0 16px;
+  width:16px;
+  height:16px;
+  display:block;
+  background:var(--sport);
+}
+.sport-icon.keirin{-webkit-mask:url('../gradedraces/icons/keirin.png') center/contain no-repeat;mask:url('../gradedraces/icons/keirin.png') center/contain no-repeat}
+.sport-icon.auto{-webkit-mask:url('../gradedraces/icons/auto.png') center/contain no-repeat;mask:url('../gradedraces/icons/auto.png') center/contain no-repeat}
+.sport-icon.boat{-webkit-mask:url('../gradedraces/icons/boat.png') center/contain no-repeat;mask:url('../gradedraces/icons/boat.png') center/contain no-repeat}
+.sport-icon.nar{-webkit-mask:url('../gradedraces/icons/nar.png') center/contain no-repeat;mask:url('../gradedraces/icons/nar.png') center/contain no-repeat}
+.sport-icon.jra{-webkit-mask:url('../gradedraces/icons/jra.png') center/contain no-repeat;mask:url('../gradedraces/icons/jra.png') center/contain no-repeat}
+.venue-meta-line{
+  min-height:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  max-width:100%;
+  white-space:nowrap;
+}
+.grade-icon{
+  min-width:24px;
+  height:17px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 3px;
+  border-radius:5px;
+  color:#fff;
+  font-size:8px;
+  font-weight:1000;
+  line-height:1;
+  letter-spacing:-.04em;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 1px 2px rgba(0,0,0,.16);
+}
+.grade-icon.accent{background:#d4232b}
+.grade-icon.muted{background:#707782}
+.status-icon{width:16px;height:16px;display:block;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.18)}
+.status-icon.girls{border-radius:4px}
+.day-label{color:#596575;font-size:9px;font-weight:900;line-height:1;white-space:nowrap}
+.monthly-empty{
+  margin:8px 2px;
+  padding:52px 18px;
+  border:1px dashed #c7ced8;
+  border-radius:11px;
+  color:#8792a0;
+  background:rgba(255,255,255,.76);
+  text-align:center;
+  font-size:13px;
+  font-weight:800;
+}
+.monthly-toast{
+  position:fixed;
+  left:50%;
+  bottom:calc(var(--bottom-nav-total-h,62px) + 16px);
+  z-index:12000;
+  max-width:min(88vw,420px);
+  padding:10px 16px;
+  border:1px solid rgba(255,255,255,.42);
+  border-radius:999px;
+  color:#18130a;
+  background:linear-gradient(135deg,#f2da8e,#c28c25);
+  box-shadow:0 10px 28px rgba(0,0,0,.28);
+  font-size:13px;
+  font-weight:850;
+  opacity:0;
+  pointer-events:none;
+  transform:translate(-50%,12px);
+  transition:opacity .18s ease,transform .18s ease;
+}
+.monthly-toast.is-visible{opacity:1;transform:translate(-50%,0)}
+@media(hover:hover){.venue-button:hover{background:color-mix(in srgb,var(--sport) 4%,#fff)}}
+@media(max-width:600px){.venue-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:430px){
+  .monthly-page{padding:5px}
+  .day-card{grid-template-columns:42px minmax(0,1fr)}
+  .date-number{font-size:19px}.date-weekday{font-size:8px}
+  .venue-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:5px}
+  .venue-button{min-height:52px;gap:4px;padding:5px 3px}
+  .venue-name{font-size:13px}.sport-icon{flex-basis:15px;width:15px;height:15px}
+  .venue-meta-line{gap:2px}.grade-icon{min-width:22px;height:16px;font-size:7.5px}.status-icon{width:15px;height:15px}.day-label{font-size:8px}
+}
+@media(max-width:350px){
+  .day-card{grid-template-columns:38px minmax(0,1fr)}
+  .venue-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
