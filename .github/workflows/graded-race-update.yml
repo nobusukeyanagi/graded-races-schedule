@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r gradedraces/requirements.txt
 
-      - name: Run integrated official update
+      - name: Run integrated graded-race update
         working-directory: gradedraces
         env:
           BASE_DATE: ${{ inputs.base_date }}
@@ -55,6 +55,22 @@ jobs:
             python -m scripts.daily_update \
               --fail-if-all-sources-fail
           fi
+
+      - name: Run official venue schedule update
+        env:
+          BASE_DATE: ${{ inputs.base_date }}
+        run: |
+          if [ -n "$BASE_DATE" ]; then
+            python -m monthly.scripts.update_schedule \
+              --date "$BASE_DATE" \
+              --fail-if-all-sources-fail
+          else
+            python -m monthly.scripts.update_schedule \
+              --fail-if-all-sources-fail
+          fi
+
+      - name: Run schedule and notification tests
+        run: python -m unittest discover -s monthly/tests -p 'test_*.py'
 
       - name: Write update quality summary
         if: always()
@@ -73,6 +89,7 @@ jobs:
           master = load('master_schedule_report.json')
           incomplete = load('incomplete_records.json')
           detail_status = load('source_status.json')
+          monthly = json.loads(Path('../monthly/monthly_update_report.json').read_text(encoding='utf-8')) if Path('../monthly/monthly_update_report.json').exists() else {}
           summary = daily.get('summary', {})
           lines = [
               '# Graded-race Update',
@@ -87,6 +104,7 @@ jobs:
               f"- 発走時刻・優勝者等の更新: {summary.get('detail_changes', 0)}件",
               f"- 終了済み未解決: {incomplete.get('past_unresolved_count', 0)}件",
               f"- 開催前の時刻未公開: {incomplete.get('upcoming_missing_time_count', 0)}件",
+              f"- 開催日程（{monthly.get('target_date', '')}）: {monthly.get('before_count', 0)}件 → {monthly.get('after_count', 0)}件",
               '',
               '## Official schedules',
           ]
@@ -104,6 +122,14 @@ jobs:
                   f"- {source.get('name', '')}: {state}, "
                   f"patches={source.get('patch_count', 0)}, warnings={len(source.get('warnings', []))}"
               )
+          lines.append('')
+          lines.append('## Venue schedule sources')
+          for source in monthly.get('sources', []):
+              state = 'OK' if source.get('ok') else 'FAILED'
+              lines.append(
+                  f"- {source.get('sport', '')}: {state}, "
+                  f"entries={source.get('entry_count', 0)}, warnings={len(source.get('warnings', []))}"
+              )
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as output:
               output.write('\n'.join(lines) + '\n')
           PY
@@ -118,7 +144,8 @@ jobs:
           if ! git diff --quiet -- \
             gradedraces/races.json \
             gradedraces/graded_races_schedule.html \
-            gradedraces/index.html; then
+            gradedraces/index.html \
+            monthly/monthly.js; then
             DATA_CHANGED=1
           fi
 
@@ -134,17 +161,19 @@ jobs:
             gradedraces/source_status.json \
             gradedraces/incomplete_records.json \
             gradedraces/master_schedule_report.json \
-            gradedraces/daily_update_report.json; do
+            gradedraces/daily_update_report.json \
+            monthly/monthly.js \
+            monthly/monthly_update_report.json; do
             [ -f "$file" ] && git add "$file"
           done
 
-          # Web公開対象の3ファイルに変更があったかを、後続のデプロイjobへ渡す。
+          # Web公開対象ファイルに変更があったかを、後続のデプロイjobへ渡す。
           echo "website_changed=$DATA_CHANGED" >> "$GITHUB_OUTPUT"
 
           if git diff --cached --quiet; then
-            echo 'グレードレース情報の変更はありません。'
+            echo '公営競技情報の変更はありません。'
           else
-            git commit -m 'Update graded races (daily integrated)'
+            git commit -m 'Update public racing schedules (daily integrated)'
 
             # rebase前に作業ツリーが空であることを保証する。
             # 新しい生成ファイルが増えた場合は、黙って破棄せずファイル名を表示して停止する。
@@ -171,6 +200,7 @@ jobs:
             gradedraces/source_status.json
             gradedraces/incomplete_records.json
             gradedraces/schedule_sync_state.json
+            monthly/monthly_update_report.json
           if-no-files-found: ignore
           retention-days: 30
 

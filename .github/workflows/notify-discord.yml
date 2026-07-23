@@ -2,11 +2,10 @@ name: Notify Discord
 
 on:
   schedule:
-    # GitHub Actionsの遅延・欠落対策として、定期実行は2回に限定する。
-    # 5:37の先行実行は、時刻どおり起動した場合のみ6:05まで待機して送信する。
-    - cron: '37 20 * * *' # JST 05:37
-    # 6:17の予備実行。先行実行で通知済みなら送信をスキップする。
-    - cron: '17 21 * * *' # JST 06:17
+    # JST 01:47の先行実行は、02:00まで待機して通知する。
+    - cron: '47 16 * * *'
+    # JST 02:17の予備実行。先行実行で通知済みなら送信をスキップする。
+    - cron: '17 17 * * *'
   workflow_dispatch:
     inputs:
       notify_date:
@@ -22,7 +21,7 @@ on:
 permissions:
   contents: write
 
-# 先行実行が6:05まで待っている間は、後続実行を並列で動かさない。
+# 先行実行が02:00まで待っている間は、後続実行を並列で動かさない。
 # 最初の実行が通知状態を保存した後、後続実行は最新mainを取得して重複を回避する。
 concurrency:
   group: notify-discord
@@ -30,12 +29,12 @@ concurrency:
 
 jobs:
   notify:
-    name: Send graded races to Discord
+    name: Send public racing schedule to Discord
     runs-on: ubuntu-latest
     timeout-minutes: 70
 
     steps:
-      - name: Wait until 06:05 JST for early scheduled runs
+      - name: Wait until 02:00 JST for early scheduled runs
         if: github.event_name == 'schedule'
         shell: bash
         run: |
@@ -46,13 +45,13 @@ jobs:
 
           jst = ZoneInfo("Asia/Tokyo")
           now = datetime.now(jst)
-          target = now.replace(hour=6, minute=5, second=0, microsecond=0)
+          target = now.replace(hour=2, minute=0, second=0, microsecond=0)
 
           if now < target:
               wait_seconds = int((target - now).total_seconds())
               print(
                   f"現在は日本時間 {now:%H:%M:%S}。"
-                  f"6:05まで{wait_seconds}秒待機します。"
+                  f"2:00まで{wait_seconds}秒待機します。"
               )
               time.sleep(wait_seconds)
           else:
@@ -78,14 +77,13 @@ jobs:
           date -u '+UTC=%Y-%m-%d %H:%M:%S'
           TZ=Asia/Tokyo date '+JST=%Y-%m-%d %H:%M:%S'
 
-      - name: Send graded races
-        working-directory: gradedraces
+      - name: Send public racing schedule
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           SITE_URL: ${{ vars.SITE_URL }}
           NOTIFY_DATE: ${{ inputs.notify_date }}
           FORCE_NOTIFY: ${{ inputs.force_notify }}
-        run: python scripts/send_discord.py
+        run: python gradedraces/scripts/send_discord.py
 
       - name: Save notification state
         run: |
