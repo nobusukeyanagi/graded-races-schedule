@@ -46,7 +46,7 @@
         const active = key === activeKey;
         const featured = FEATURED_RACES.has(key);
         const ariaLabel = `${race.venue} ${race.race} ${race.time}${featured ? " 注目レース" : ""}`;
-        return `<a class="race-tab sport-${race.sport}${featured ? " featured-race" : ""}${active ? " active" : ""}" href="#" data-race-key="${key}" data-race-time="${race.time}" aria-label="${ariaLabel}"${active ? ' aria-current="true"' : ""}><strong><span class="race-tab-name">${race.venue}</span><span class="race-tab-icon ${race.sport}" aria-hidden="true"></span></strong><span>${race.race} ${race.time}</span></a>`;
+        return `<a class="race-tab sport-${race.sport}${featured ? " featured-race" : ""}${active ? " active" : ""}" href="#" data-race-key="${key}" data-race-time="${race.time}" data-race-venue="${race.venue}" aria-label="${ariaLabel}"${active ? ' aria-current="true"' : ""}><strong><span class="race-tab-name">${race.venue}</span><span class="race-tab-icon ${race.sport}" aria-hidden="true"></span></strong><span>${race.race} ${race.time}</span></a>`;
       }).join("");
       this.innerHTML = `<section class="race-switch-wrap" aria-label="レース切り替え"><div class="race-switch">${tabs}</div></section>`;
 
@@ -60,17 +60,39 @@
         track.scrollLeft = target;
       };
 
-      this.querySelectorAll(".race-tab").forEach((tab) => {
+      const raceTabs = [...this.querySelectorAll(".race-tab")];
+      raceTabs.forEach((tab) => {
         tab.addEventListener("click", (event) => {
           event.preventDefault();
           showPreparingToast();
         });
       });
 
+      const applyVenueFilter = (venue, enabled) => {
+        raceTabs.forEach((tab) => {
+          tab.hidden = Boolean(enabled && tab.dataset.raceVenue !== venue);
+        });
+        track?.classList.toggle("is-venue-filtered", Boolean(enabled));
+        if (track) track.scrollLeft = 0;
+        requestAnimationFrame(() => requestAnimationFrame(alignActive));
+      };
+      this._venueFilterHandler = (event) => {
+        const venue = event.detail?.venue;
+        if (!venue) return;
+        applyVenueFilter(venue, Boolean(event.detail?.enabled));
+      };
+      document.addEventListener("zenrace:race-venue-filter", this._venueFilterHandler);
+
       requestAnimationFrame(() => requestAnimationFrame(alignActive));
       setTimeout(alignActive, 120);
       window.addEventListener("pageshow", alignActive);
       if ("ResizeObserver" in window) new ResizeObserver(alignActive).observe(track);
+    }
+
+    disconnectedCallback() {
+      if (this._venueFilterHandler) {
+        document.removeEventListener("zenrace:race-venue-filter", this._venueFilterHandler);
+      }
     }
   }
 

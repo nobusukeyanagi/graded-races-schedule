@@ -9,6 +9,21 @@
 
       const maxScrollLeft = () => Math.max(0, scroller.scrollWidth - scroller.clientWidth);
 
+      const riderColumn = scroller.querySelector("thead th:nth-child(2)");
+      const updateRiderNameFallback = () => {
+        const riderWidth = riderColumn?.getBoundingClientRect().width || 154;
+        scroller.classList.toggle("is-rider-hidden", scroller.scrollLeft >= riderWidth - 1);
+      };
+      let scrollFrame = 0;
+      scroller.addEventListener("scroll", () => {
+        if (scrollFrame) return;
+        scrollFrame = requestAnimationFrame(() => {
+          scrollFrame = 0;
+          updateRiderNameFallback();
+        });
+      }, { passive: true });
+      requestAnimationFrame(updateRiderNameFallback);
+
       scroller.addEventListener("touchstart", (event) => {
         if (event.touches.length !== 1) return;
         startX = event.touches[0].clientX;
@@ -43,6 +58,7 @@
         const max = maxScrollLeft();
         scroller.scrollLeft = Math.min(max, Math.max(0, scroller.scrollLeft));
         direction = "";
+        updateRiderNameFallback();
       }, { passive: true });
     });
   };

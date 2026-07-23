@@ -9,8 +9,10 @@
       this.innerHTML = `
         <section class="shared-race-info" aria-label="浜松12R レース情報">
           <div class="race-info-primary">
-            <strong class="race-info-venue">浜松</strong>
-            <span class="race-info-number">12R</span>
+            <button class="race-info-filter-toggle" type="button" aria-label="浜松のレースだけ表示" aria-pressed="false">
+              <strong class="race-info-venue">浜松</strong>
+              <span class="race-info-number">12R</span>
+            </button>
             <span class="race-info-icon auto" aria-label="オートレース"></span>
             <span class="race-info-icon sg" aria-label="SG">SG</span>
             <span class="race-info-icon final-day" aria-label="最終日">終</span>
@@ -27,6 +29,18 @@
             <div class="race-info-video-frame" data-video-frame></div>
           </div>
         </section>`;
+
+      const filterToggle = this.querySelector('.race-info-filter-toggle');
+      let venueOnly = false;
+      filterToggle?.addEventListener('click', () => {
+        venueOnly = !venueOnly;
+        filterToggle.setAttribute('aria-pressed', String(venueOnly));
+        filterToggle.setAttribute('aria-label', venueOnly ? '全開催場のレースを表示' : '浜松のレースだけ表示');
+        filterToggle.classList.toggle('is-active', venueOnly);
+        document.dispatchEvent(new CustomEvent('zenrace:race-venue-filter', {
+          detail: { venue: '浜松', enabled: venueOnly },
+        }));
+      });
 
       const dateLine = this.querySelector('.race-info-date');
       const dateCopy = this.querySelector('.race-info-date-copy');
