@@ -90,8 +90,9 @@
     const girls = item.girls
       ? '<img class="status-icon girls" src="../schedule/icons/girls.png" alt="" aria-hidden="true">'
       : "";
-    const day = item.day ? `<span class="day-label">${escapeHtml(item.day)}</span>` : "";
-    const aria = [item.venue, item.grade, item.session, item.girls ? "ガールズ" : "", item.day].filter(Boolean).join(" ");
+    const showDay = item.sport !== "nar" && item.day;
+    const day = showDay ? `<span class="day-label">${escapeHtml(item.day)}</span>` : "";
+    const aria = [item.venue, item.grade, item.session, item.girls ? "ガールズ" : "", showDay ? item.day : ""].filter(Boolean).join(" ");
 
     return `<button type="button" class="venue-button sport-${escapeHtml(item.sport)}" aria-label="${escapeHtml(aria)}">
       <span class="venue-main-line">
