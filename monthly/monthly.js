@@ -107,7 +107,7 @@
     return `<article class="day-card">
       <div class="date-cell" aria-label="${date.getMonth() + 1}月${date.getDate()}日 ${WEEKDAY[date.getDay()]}曜日">
         <span class="date-number">${date.getDate()}</span>
-        <span class="date-weekday">(${WEEKDAY[date.getDay()]})</span>
+        <span class="date-weekday">${WEEKDAY[date.getDay()]}</span>
       </div>
       <div class="venue-grid">${day.venues.map(venueButtonHtml).join("")}</div>
     </article>`;

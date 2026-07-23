@@ -23,7 +23,7 @@ button{font:inherit}
 .monthly-schedule{width:100%}
 .day-card{
   display:grid;
-  grid-template-columns:50px minmax(0,1fr);
+  grid-template-columns:38px minmax(0,1fr);
   overflow:hidden;
   border:1px solid var(--monthly-line);
   border-radius:8px;
@@ -49,6 +49,7 @@ button{font:inherit}
   gap:5px;
   min-width:0;
   padding:6px;
+  background:#090909;
 }
 .venue-button{
   --sport:#555;
@@ -173,7 +174,7 @@ button{font:inherit}
 @media(max-width:600px){.venue-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:430px){
   .monthly-page{padding:5px}
-  .day-card{grid-template-columns:42px minmax(0,1fr)}
+  .day-card{grid-template-columns:36px minmax(0,1fr)}
   .date-number{font-size:19px}.date-weekday{font-size:8px}
   .venue-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:5px}
   .venue-button{min-height:52px;gap:4px;padding:5px 3px}
@@ -181,6 +182,5 @@ button{font:inherit}
   .venue-meta-line{gap:2px}.grade-icon{min-width:22px;height:16px;font-size:7.5px}.status-icon{width:15px;height:15px}.day-label{font-size:8px}
 }
 @media(max-width:350px){
-  .day-card{grid-template-columns:38px minmax(0,1fr)}
   .venue-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
