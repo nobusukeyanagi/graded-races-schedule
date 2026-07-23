@@ -5900,6 +5900,24 @@
     '"': "&quot;",
   })[char]);
 
+  const DAY_BADGE_DIGITS = { "0": "０", "1": "１", "2": "２", "3": "３", "4": "４", "5": "５", "6": "６", "7": "７", "8": "８", "9": "９" };
+  const toFullWidthDigits = (value) => String(value).replace(/\d/g, (digit) => DAY_BADGE_DIGITS[digit] || digit);
+  const dayBadgeText = (value) => {
+    if (!value) return "";
+    if (value === "初日") return "初";
+    if (value === "最終日") return "終";
+    const match = String(value).match(/^(\d+)日目$/);
+    if (!match) return String(value);
+    const numeric = Number(match[1]);
+    return numeric <= 9 ? toFullWidthDigits(match[1]) : match[1];
+  };
+  const renderDayLabel = (value) => {
+    if (!value) return "";
+    const text = dayBadgeText(value);
+    const multiDigit = String(text).length > 1 ? " multi-digit" : "";
+    return `<span class="day-label${multiDigit}" aria-label="${escapeHtml(value)}" title="${escapeHtml(value)}">${escapeHtml(text)}</span>`;
+  };
+
   const parseDate = (value) => {
     const [year, month, day] = value.split("-").map(Number);
     return new Date(year, month - 1, day);
@@ -5932,7 +5950,7 @@
       ? '<img class="status-icon girls" src="../schedule/icons/girls.png" alt="" aria-hidden="true">'
       : "";
     const showDay = item.sport !== "nar" && item.day;
-    const day = showDay ? `<span class="day-label">${escapeHtml(item.day)}</span>` : "";
+    const day = showDay ? renderDayLabel(item.day) : "";
     const aria = [item.venue, item.grade, item.session, item.girls ? "ガールズ" : "", showDay ? item.day : ""].filter(Boolean).join(" ");
 
     return `<button type="button" class="venue-button sport-${escapeHtml(item.sport)}" aria-label="${escapeHtml(aria)}">

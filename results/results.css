@@ -54,7 +54,8 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 .venue-grade-icon.accent{background:#d4232b}.venue-grade-icon.muted{background:#707782}
 .venue-status-icon{width:16px;height:16px;display:block;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.22)}
 .venue-status-icon.girls{border-radius:4px}
-.venue-day-label{color:rgba(255,255,255,.95);font-size:10px;font-weight:900;line-height:1;letter-spacing:.01em;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.28)}
+.venue-day-label{min-width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;border:1px solid rgba(255,255,255,.45);border-radius:5px;color:#17191d;background:#fff;font-size:10px;font-weight:1000;line-height:1;letter-spacing:-.02em;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.22);flex:0 0 auto;font-variant-numeric:tabular-nums}
+.venue-day-label.multi-digit{padding-inline:3px;font-size:8px;letter-spacing:-.05em}
 .result-table-wrap{padding:0;overflow:hidden;background:#fff}
 .result-table{width:100%;border-collapse:collapse;table-layout:fixed;background:#fff}
 .result-table col.r-col{width:42px}
@@ -100,7 +101,7 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
   .date-nav{grid-template-columns:29px minmax(140px,auto) 29px}.date-arrow{width:29px}.date-title{font-size:15px}
   .update-btn,.today-btn{min-width:60px;height:30px;padding-inline:9px}
   .results-page{padding:5px}
-  .venue-name{font-size:16px}.venue-title-line{gap:.45em}.venue-sport-icon{flex-basis:16px;width:16px;height:16px}.venue-meta-row{min-height:17px;gap:2px}.venue-grade-icon{height:17px;min-width:22px;padding-inline:3px;font-size:8px}.venue-status-icon{width:14px;height:14px}.venue-day-label{font-size:8px}
+  .venue-name{font-size:16px}.venue-title-line{gap:.45em}.venue-sport-icon{flex-basis:16px;width:16px;height:16px}.venue-meta-row{min-height:17px;gap:2px}.venue-grade-icon{height:17px;min-width:22px;padding-inline:3px;font-size:8px}.venue-status-icon{width:14px;height:14px}.venue-day-label{min-width:16px;height:16px;padding:0 3px;font-size:8px}.venue-day-label.multi-digit{padding-inline:2px;font-size:7px;letter-spacing:-.05em}
   .result-table col.r-col{width:34px}.result-table col.finish-col{width:75px}.result-table col.payout-col{width:98px}.result-table col.pop-col{width:60px}
   .result-table tbody td{height:38px;font-size:13px;padding:5px 3px}.entry-no{width:21px;height:21px;margin-inline:1px;font-size:14px}.entry-no.double-digit{font-size:12px}.result-table .payout-cell{font-size:13px;padding-right:5px}.result-table .pop-cell{font-size:12px;padding-right:5px}
 }

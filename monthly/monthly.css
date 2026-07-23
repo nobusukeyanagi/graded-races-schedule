@@ -125,6 +125,7 @@ button{font:inherit}
   gap:3px;
   max-width:100%;
   white-space:nowrap;
+  flex-wrap:nowrap;
 }
 .grade-icon{
   min-width:24px;
@@ -145,7 +146,8 @@ button{font:inherit}
 .grade-icon.muted{background:#707782}
 .status-icon{width:16px;height:16px;display:block;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.18)}
 .status-icon.girls{border-radius:4px}
-.day-label{color:#596575;font-size:9px;font-weight:900;line-height:1;white-space:nowrap}
+.day-label{min-width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;border:1px solid rgba(29,35,44,.14);border-radius:5px;color:#17191d;background:#fff;font-size:10px;font-weight:1000;line-height:1;letter-spacing:-.02em;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.12);flex:0 0 auto;font-variant-numeric:tabular-nums}
+.day-label.multi-digit{padding-inline:3px;font-size:8px;letter-spacing:-.05em}
 .monthly-empty{
   margin:8px 2px;
   padding:52px 18px;
@@ -187,7 +189,7 @@ button{font:inherit}
   .venue-sport-group{gap:4px}
   .venue-button{min-height:52px;gap:4px;padding:5px 3px}
   .venue-name{font-size:13px}.sport-icon{flex-basis:15px;width:15px;height:15px}
-  .venue-meta-line{gap:2px}.grade-icon{min-width:22px;height:16px;font-size:7.5px}.status-icon{width:15px;height:15px}.day-label{font-size:8px}
+  .venue-meta-line{gap:2px}.grade-icon{min-width:22px;height:16px;font-size:7.5px}.status-icon{width:15px;height:15px}.day-label{min-width:16px;height:16px;padding:0 3px;font-size:8px}.day-label.multi-digit{padding-inline:2px;font-size:7px;letter-spacing:-.05em}
 }
 @media(max-width:350px){
   .venue-grid{--venue-columns:2}

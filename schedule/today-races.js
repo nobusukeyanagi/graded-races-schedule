@@ -125,6 +125,29 @@
     groupKey("boat", "福岡"),
   ]);
 
+  const DAY_BADGE_DIGITS = { "0": "０", "1": "１", "2": "２", "3": "３", "4": "４", "5": "５", "6": "６", "7": "７", "8": "８", "9": "９" };
+  const escapeAttr = (value) => String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  const toFullWidthDigits = (value) => String(value).replace(/\d/g, (digit) => DAY_BADGE_DIGITS[digit] || digit);
+  const dayBadgeText = (value) => {
+    if (!value) return "";
+    if (value === "初日") return "初";
+    if (value === "最終日") return "終";
+    const match = String(value).match(/^(\d+)日目$/);
+    if (!match) return String(value);
+    const numeric = Number(match[1]);
+    return numeric <= 9 ? toFullWidthDigits(match[1]) : match[1];
+  };
+  const renderVenueDayLabel = (value) => {
+    if (!value) return "";
+    const text = dayBadgeText(value);
+    const multiDigit = String(text).length > 1 ? " multi-digit" : "";
+    return `<span class="venue-day-label${multiDigit}" aria-label="${escapeAttr(value)}" title="${escapeAttr(value)}">${escapeAttr(text)}</span>`;
+  };
+
 
   const makeMap = (value) => new Map(Object.entries(value || {}));
   const currentDayData = () => {
@@ -267,7 +290,7 @@
     const girlsIcon = hasGirls
       ? `<img class="venue-status-icon girls" src="icons/girls.png" alt="" aria-hidden="true">`
       : "";
-    const dayLabel = venueDay ? `<span class="venue-day-label">${venueDay}</span>` : "";
+    const dayLabel = renderVenueDayLabel(venueDay);
     const metaLine = gradeIcon || sessionIcon || girlsIcon || dayLabel
       ? `<div class="venue-meta-row">${gradeIcon}${sessionIcon}${girlsIcon}${dayLabel}</div>`
       : "";
