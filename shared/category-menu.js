@@ -8,9 +8,9 @@
   const MENUS = {
     home: [
       { id: "home", label: "トップ", path: "" },
+      { id: "guide", label: "ページガイド", path: "guide/" },
+      { id: "about", label: "Q&A", path: "about/" },
       { id: "settings", label: "設定", path: "settings/" },
-      { id: "guide", label: "ガイド", path: "guide/" },
-      { id: "about", label: "ABOUT", path: "about/" },
     ],
     schedule: [
       { id: "today", label: "本日のレース", path: "schedule/" },

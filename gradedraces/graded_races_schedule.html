@@ -41,8 +41,9 @@ button{-webkit-tap-highlight-color:transparent}
   padding:0 8px;color:#fff;background:linear-gradient(180deg,#181818,#090909);
   border-bottom:1px solid rgba(213,171,67,.34);box-shadow:0 4px 13px rgba(0,0,0,.20);touch-action:none
 }
-.month-nav{display:grid;grid-template-columns:34px minmax(112px,auto) 34px;align-items:center;gap:2px}
-.month-arrow{width:34px;height:34px;border:0;background:transparent;color:#f0cc70;font-size:27px;line-height:1;cursor:pointer}
+.month-nav{display:grid;grid-template-columns:36px minmax(112px,auto) 36px;align-items:center;gap:2px}
+.month-arrow{display:grid;width:36px;height:36px;place-items:center;padding:0 0 2px;color:#ead181;border:1px solid rgba(222,184,87,.36);border-radius:50%;background:#141414;box-shadow:0 2px 7px rgba(0,0,0,.30);font-size:28px;line-height:1;cursor:pointer}
+.month-arrow:active{color:#fff1b5;border-color:rgba(240,204,112,.70);background:#1d1d1d;transform:translateY(1px)}
 .month-title{text-align:center;color:#fff;font-size:17px;font-weight:900;letter-spacing:.045em;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.28)}
 .month-toolbar-side{display:flex;align-items:center;min-width:0}.month-toolbar-side.right{justify-content:flex-end}
 .today-btn{min-width:66px;height:32px;padding:0 13px;border:1px solid rgba(242,216,137,.42);border-radius:8px;color:#f8e8b8;background:rgba(255,255,255,.055);font-size:12px;font-weight:850;cursor:pointer}
@@ -64,7 +65,7 @@ zenrace-bottom-nav{touch-action:none;overscroll-behavior:none}
 .schedule{padding:7px 8px 6px}
 .day-block{
   display:grid;grid-template-columns:38px minmax(0,1fr);margin-bottom:3px;overflow:hidden;
-  border:1px solid var(--line);border-radius:7px;background:var(--panel);box-shadow:0 1px 4px rgba(15,23,42,.045)
+  border:1px solid rgba(213,171,67,.24);border-radius:8px;background:var(--panel);box-shadow:0 2px 7px rgba(0,0,0,.09)
 }
 .day-block.today{border-color:#d2a52e;box-shadow:0 0 0 1px rgba(210,165,46,.17)}
 .date-cell{
@@ -111,7 +112,7 @@ zenrace-bottom-nav{touch-action:none;overscroll-behavior:none}
 
 @media(max-width:430px){
   :root{--nav-content-h:62px}
-  .month-toolbar{grid-template-columns:62px auto 62px;padding-inline:5px}.month-nav{grid-template-columns:29px minmax(102px,auto) 29px}.month-arrow{width:29px}.month-title{font-size:15px}.today-btn{min-width:60px;height:30px;padding-inline:9px}
+  .month-toolbar{grid-template-columns:62px auto 62px;padding-inline:5px}.month-nav{grid-template-columns:32px minmax(98px,auto) 32px}.month-arrow{width:32px;height:32px;font-size:25px}.month-title{font-size:15px}.today-btn{min-width:60px;height:30px;padding-inline:9px}
   .schedule{padding:5px 5px 5px}.day-block{grid-template-columns:36px minmax(0,1fr)}
   .date-number{font-size:16px}.weekday{font-size:6.5px}
 }

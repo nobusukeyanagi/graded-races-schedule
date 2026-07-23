@@ -18,7 +18,7 @@ button{font:inherit}
 }
 .timetable-board{
   overflow:hidden;
-  border:1px solid rgba(213,171,67,.30);
+  border:1px solid rgba(213,171,67,.24);
   border-radius:8px;
   background:linear-gradient(180deg,#181818,#090909);
   box-shadow:0 8px 24px rgba(0,0,0,.20);
