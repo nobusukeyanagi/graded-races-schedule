@@ -59,7 +59,7 @@ button{font:inherit;-webkit-tap-highlight-color:transparent}
 .today-page{width:min(100%,760px);margin:0 auto;padding:7px 5px 10px}
 .today-board{
   position:relative;isolation:isolate;overflow:hidden;
-  border:1px solid #8f6a18;border-radius:8px;
+  border:1px solid rgba(213,171,67,.34);border-radius:8px;
   background:linear-gradient(180deg,#181818,#090909)
 }
 .today-board::before{

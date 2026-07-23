@@ -16,10 +16,10 @@
       --title-h: 88px;
       --row-h: 103px;
       --black: #111111;
-      --navy-1: #081225;
-      --navy-2: #17284f;
-      --gold: #f3c94c;
-      --line: #e7eaf0;
+      --auto: #7545af;
+      --auto-dark: #683397;
+      --gold-border: rgba(213,171,67,.34);
+      --line: #e1e3e6;
     }
 
     * { box-sizing: border-box; }
@@ -33,10 +33,12 @@
       overflow: hidden;
       background: transparent;
       font-family:
-        "Noto Sans JP",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Yu Gothic UI",
         "Hiragino Kaku Gothic ProN",
-        "Yu Gothic",
-        "Meiryo",
+        Meiryo,
         sans-serif;
     }
 
@@ -51,12 +53,9 @@
       overflow: hidden;
       background: #ffffff;
       color: #101010;
-      border-radius: 26px;
-      box-shadow:
-        0 26px 54px rgba(0, 0, 0, .34),
-        0 10px 22px rgba(0, 0, 0, .24),
-        inset 0 1px 0 rgba(255, 255, 255, .75);
-      border: 1px solid rgba(255, 255, 255, .42);
+      border: 2px solid var(--gold-border);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .20);
     }
 
     .race-title {
@@ -65,17 +64,13 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background:
-        radial-gradient(circle at 86% 18%, rgba(243, 201, 76, .18) 0%, transparent 26%),
-        linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%);
+      background: linear-gradient(180deg, #7e47af, var(--auto-dark));
       color: #ffffff;
-      border-bottom: 4px solid var(--gold);
+      border-bottom: 2px solid rgba(255,255,255,.16);
       text-align: center;
       line-height: 1;
       white-space: nowrap;
-      box-shadow:
-        inset 0 2px 0 rgba(255, 255, 255, .14),
-        inset 0 -10px 24px rgba(0, 0, 0, .18);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.14);
     }
 
     .title-main {
@@ -83,7 +78,7 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
-      font-size: 43px;
+      font-size: 38px;
       font-weight: 1000;
       letter-spacing: .03em;
       text-shadow: 0 2px 4px rgba(0, 0, 0, .28);
@@ -98,12 +93,9 @@
       align-items: center;
       justify-content: center;
       margin-right: 2px;
-      border-radius: 16px;
-      background: #7a4cff;
-      box-shadow:
-        0 0 18px rgba(122,76,255,.30),
-        0 4px 10px rgba(0,0,0,.28),
-        inset 0 1px 0 rgba(255,255,255,.18);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
     }
 
     .title-icon img {
@@ -120,8 +112,8 @@
 
     .title-main .sub {
       margin-left: 8px;
-      color: #ffe48a;
-      font-size: 34px;
+      color: rgba(255,255,255,.92);
+      font-size: 26px;
       font-weight: 1000;
       letter-spacing: .04em;
       vertical-align: 3px;
@@ -132,7 +124,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: repeat(4, var(--row-h));
-      background: #f7f8fb;
+      background: #ffffff;
     }
 
     .entry {
@@ -140,11 +132,9 @@
       grid-template-columns: 104px 1fr 118px;
       align-items: center;
       min-width: 0;
-      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      background: #ffffff;
       border-bottom: 1px solid var(--line);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .95),
-        inset 0 -1px 0 rgba(0, 0, 0, .025);
+      box-shadow: none;
     }
 
     .entry:nth-child(2n) { border-left: 1px solid var(--line); }
@@ -164,14 +154,11 @@
       height: 60px;
       display: grid;
       place-items: center;
-      border-radius: .16em;
-      font-size: 39px;
+      border-radius: 10px;
+      font-size: 34px;
       font-weight: 1000;
       line-height: 1;
-      box-shadow:
-        inset 0 2px 0 rgba(255, 255, 255, .38),
-        inset 0 -4px 0 rgba(0, 0, 0, .18),
-        0 5px 12px rgba(0, 0, 0, .20);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.38), 0 2px 4px rgba(0,0,0,.14);
     }
 
     .rider-name {
@@ -180,8 +167,8 @@
       height: 100%;
       min-width: 0;
       padding: 0 4px 0 0;
-      font-size: 40px;
-      font-weight: 900;
+      font-size: 34px;
+      font-weight: 950;
       letter-spacing: .002em;
       line-height: 1;
       color: #101010;
@@ -195,7 +182,7 @@
       align-items: center;
       justify-content: center;
       padding-right: 10px;
-      font-size: 39px;
+      font-size: 34px;
       font-weight: 1000;
       letter-spacing: .002em;
       color: #1a2333;
@@ -208,12 +195,10 @@
       height: 56px;
       display: grid;
       place-items: center;
-      border-radius: 16px;
-      background: linear-gradient(180deg, #f8fafc 0%, #e9eef7 100%);
-      border: 1px solid #d6ddea;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .85),
-        0 2px 5px rgba(0, 0, 0, .08);
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid #d8dde6;
+      box-shadow: 0 1px 2px rgba(0,0,0,.08);
     }
 
     .car-1 {

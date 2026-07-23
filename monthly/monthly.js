@@ -109,19 +109,20 @@
     </button>`;
   };
 
+  const SPORT_DISPLAY_ORDER = ["keirin", "auto", "boat", "nar", "jra"];
   const venueGroupsHtml = (venues) => {
-    const groups = [];
+    const groupMap = new Map();
     venues.forEach((item) => {
-      const lastGroup = groups.at(-1);
-      if (lastGroup?.sport === item.sport) {
-        lastGroup.items.push(item);
-        return;
-      }
-      groups.push({ sport: item.sport, items: [item] });
+      if (!groupMap.has(item.sport)) groupMap.set(item.sport, []);
+      groupMap.get(item.sport).push(item);
     });
+    const orderedSports = [
+      ...SPORT_DISPLAY_ORDER.filter((sport) => groupMap.has(sport)),
+      ...[...groupMap.keys()].filter((sport) => !SPORT_DISPLAY_ORDER.includes(sport)),
+    ];
 
-    return groups.map((group) => `<div class="venue-sport-group sport-group-${escapeHtml(group.sport)}">
-      ${group.items.map(venueButtonHtml).join("")}
+    return orderedSports.map((sport) => `<div class="venue-sport-group sport-group-${escapeHtml(sport)}">
+      ${groupMap.get(sport).map(venueButtonHtml).join("")}
     </div>`).join("");
   };
 

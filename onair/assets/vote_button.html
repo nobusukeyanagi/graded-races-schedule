@@ -6,16 +6,16 @@
 <style>
 :root{--white:#fff;--gold:#ffd76a;--gold1:#f7cf58;--gold2:#d5a628}
 *{box-sizing:border-box}
-html,body{margin:0;width:150px;height:150px;overflow:hidden;background:transparent;font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
+html,body{margin:0;width:150px;height:150px;overflow:hidden;background:transparent;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Yu Gothic UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif}
 .wrap{width:150px;height:150px;padding:0}
 a.vote-button{position:relative;width:150px;height:150px;display:grid;grid-template-rows:34px 29px 28px 42px;align-content:center;justify-items:center;gap:1px;padding:8px 8px 7px;border-radius:18px;color:#fff;text-decoration:none;text-align:center;overflow:hidden;border:1.5px solid rgba(255,215,106,.82);background:radial-gradient(circle at 78% 14%,rgba(255,215,106,.30),transparent 31%),linear-gradient(145deg,#1a0f04 0%,#4a2b0b 50%,#0b0501 100%);box-shadow:0 8px 16px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.16)}
 a.vote-button::before{content:"";position:absolute;right:-27px;top:-27px;width:72px;height:72px;border-radius:50%;border:10px solid rgba(255,215,106,.10)}
 .line1,.line2,.line3,.line4{position:relative;z-index:1;width:100%;display:flex;align-items:center;justify-content:center;white-space:nowrap}
 .line1{font-size:25px;line-height:1;font-weight:1000;letter-spacing:-.03em;text-shadow:0 2px 5px rgba(0,0,0,.45)}
 .line2{font-weight:1000;line-height:1}.deadline-time{font-size:25px}.deadline-label{margin-left:3px;font-size:12px;transform:translateY(2px)}
-.line3{gap:6px}.icon-badge{width:23px;height:23px;border-radius:6px;display:grid;place-items:center;box-shadow:0 3px 7px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.18)}
-.icon-badge.auto{background:#7a4cff}.auto-mark{width:20px;height:20px;background:#fff;-webkit-mask:url("./icons/auto.png") center/contain no-repeat;mask:url("./icons/auto.png") center/contain no-repeat}
-.icon-badge.sg{background:linear-gradient(180deg,var(--gold1),var(--gold2))}.icon-badge.sg span{font:1000 10px/1 Arial,sans-serif;color:#fff}
+.line3{gap:5px}.icon-badge{width:23px;height:23px;border-radius:6px;display:grid;place-items:center;box-shadow:0 3px 7px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.18)}
+.icon-badge.auto{background:#7545af}.auto-mark{width:20px;height:20px;background:#fff;-webkit-mask:url("./icons/auto.png") center/contain no-repeat;mask:url("./icons/auto.png") center/contain no-repeat}
+.icon-badge.sg{background:#d4232b}.icon-badge.sg span{font:1000 9px/1 Arial,sans-serif;color:#fff}.icon-badge.day{color:#17191d;border:1px solid rgba(29,35,44,.14);background:#fff}.icon-badge.day span{font:1000 13px/1 -apple-system,BlinkMacSystemFont,"Segoe UI","Yu Gothic UI",sans-serif}
 .vote-pill{width:112px;height:36px;display:grid;place-items:center;border-radius:999px;border:1.5px solid rgba(255,215,106,.9);font-size:25px;font-weight:1000;letter-spacing:.08em;background:rgba(255,215,106,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
 </style>
 
@@ -29,6 +29,7 @@ a.vote-button::before{content:"";position:absolute;right:-27px;top:-27px;width:7
       <div class="line3">
         <span class="icon-badge auto" aria-hidden="true"><span class="auto-mark"></span></span>
         <span class="icon-badge sg" aria-hidden="true"><span>SG</span></span>
+        <span class="icon-badge day" aria-hidden="true"><span>終</span></span>
       </div>
       <div class="line4">
         <span class="vote-pill">投票</span>
