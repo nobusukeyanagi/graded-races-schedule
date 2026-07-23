@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-23T05:20:19.452981+09:00",
-  "base_date": "2026-07-23",
+  "generated_at": "2026-07-24T05:19:24.745013+09:00",
+  "base_date": "2026-07-24",
   "calendar_years": [
     2026,
     2027
@@ -9,10 +9,10 @@
     2026,
     2027
   ],
-  "official_record_count": 205,
+  "official_record_count": 204,
   "added_count": 0,
   "updated_count": 4,
-  "registered_only_count": 6,
+  "registered_only_count": 7,
   "duplicate_count": 0,
   "additions": [],
   "changes": [
@@ -129,6 +129,13 @@
       "name": ""
     },
     {
+      "date": "2026-10-25",
+      "sport": "keirin",
+      "venue": "熊本",
+      "grade": "GⅢ",
+      "name": ""
+    },
+    {
       "date": "2026-11-23",
       "sport": "keirin",
       "venue": "小倉",
@@ -201,7 +208,7 @@
     {
       "name": "KEIRIN.JP公式グレード日程",
       "ok": true,
-      "record_count": 148,
+      "record_count": 146,
       "fetched_urls": [
         "https://keirin.jp/pc/graderaceschedule?scyy=2026",
         "https://keirin.jp/pc/graderaceschedule?scyy=2027"

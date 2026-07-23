@@ -3219,7 +3219,7 @@
     "venue": "児島",
     "grade": "GⅢ",
     "name": "シモデンカップ",
-    "winner": "4166 吉田 拡郎"
+    "winner": "吉田 拡郎"
   },
   {
     "date": "2026-07-22",
@@ -3241,12 +3241,12 @@
   },
   {
     "date": "2026-07-23",
-    "time": "16:25",
+    "time": "16:27",
     "sport": "boat",
     "venue": "津",
     "grade": "GⅢ",
     "name": "イースタンヤング",
-    "winner": ""
+    "winner": "中山 翔太"
   },
   {
     "date": "2026-07-23",
@@ -3255,20 +3255,11 @@
     "venue": "門別",
     "grade": "H2",
     "name": "王冠賞",
-    "winner": ""
+    "winner": "マロンソレイユ"
   },
   {
     "date": "2026-07-24",
-    "time": "",
-    "sport": "boat",
-    "venue": "下関",
-    "grade": "GⅢ",
-    "name": "オールレディース",
-    "winner": ""
-  },
-  {
-    "date": "2026-07-24",
-    "time": "",
+    "time": "18:00",
     "sport": "boat",
     "venue": "福岡",
     "grade": "GⅢ",
@@ -3277,11 +3268,20 @@
   },
   {
     "date": "2026-07-24",
-    "time": "",
+    "time": "20:30",
     "sport": "keirin",
     "venue": "前橋",
     "grade": "GⅢ",
     "name": "ドームスーパーナイトレース",
+    "winner": ""
+  },
+  {
+    "date": "2026-07-24",
+    "time": "20:45",
+    "sport": "boat",
+    "venue": "下関",
+    "grade": "GⅢ",
+    "name": "オールレディース",
     "winner": ""
   },
   {
