@@ -28,6 +28,13 @@ SPORT_NAMES = {
     "jra": "JRA",
 }
 SPORT_ORDER = {"keirin": 0, "auto": 1, "boat": 2, "nar": 3, "jra": 4}
+SPORT_HEADINGS = {
+    "keirin": "🚴競輪",
+    "auto": "🏍オート―レース",
+    "boat": "🚤ボートレース",
+    "nar": "🏇地方競馬",
+    "jra": "🏇JRA",
+}
 VENUE_ORDER = {
     "keirin": ["函館", "青森", "いわき平", "弥彦", "前橋", "取手", "宇都宮", "大宮", "西武園", "京王閣", "立川", "松戸", "川崎", "平塚", "小田原", "伊東", "静岡", "名古屋", "岐阜", "大垣", "豊橋", "富山", "松阪", "四日市", "福井", "奈良", "向日町", "和歌山", "岸和田", "玉野", "広島", "防府", "高松", "小松島", "高知", "松山", "小倉", "久留米", "武雄", "佐世保", "別府", "熊本"],
     "auto": ["川口", "伊勢崎", "浜松", "飯塚", "山陽"],
@@ -185,14 +192,23 @@ def build_full_message(target_date: str, races: list[dict[str, Any]], venues: li
             str(item.get("name", "")),
         )
     )
-    lines = [f"{format_date(target_date)} の公営競技", "🏆グレードレース（優勝戦・決勝）"]
+    lines = [f"🏁{format_date(target_date)} の公営競技", "", "🏆グレードレース"]
     lines.extend(format_race(item) for item in todays_races)
     if not todays_races:
         lines.append("グレードレースはありません")
-    lines.extend([graded_url, "", "🏁開催場"])
-    lines.extend(format_venue(item) for item in venues)
+    lines.extend([graded_url, ""])
+
     if not venues:
         lines.append("開催はありません")
+    else:
+        grouped_venues: dict[str, list[dict[str, Any]]] = {}
+        for item in venues:
+            sport = str(item.get("sport", ""))
+            grouped_venues.setdefault(sport, []).append(item)
+        for sport in sorted(grouped_venues, key=lambda value: SPORT_ORDER.get(value, 99)):
+            lines.append(SPORT_HEADINGS.get(sport, SPORT_NAMES.get(sport, sport)))
+            lines.extend(format_venue(item) for item in grouped_venues[sport])
+
     lines.append(monthly_url)
     return "\n".join(lines)
 

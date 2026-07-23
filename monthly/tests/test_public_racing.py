@@ -98,7 +98,12 @@ class ScheduleTests(unittest.TestCase):
 
     def test_notification_format(self) -> None:
         races = [{"date": "2026-07-22", "time": "17:50", "sport": "boat", "venue": "児島", "grade": "GⅢ", "name": "シモデンカップ"}]
-        venues = [{"sport": "boat", "venue": "児島", "grade": "G3", "day": "最終日", "session": "night"}]
+        venues = [
+            {"sport": "keirin", "venue": "青森", "grade": "FⅠ", "day": "初日"},
+            {"sport": "auto", "venue": "伊勢崎", "grade": "普通", "day": "最終日", "session": "night"},
+            {"sport": "boat", "venue": "児島", "grade": "G3", "day": "最終日", "session": "night"},
+            {"sport": "nar", "venue": "門別", "grade": "H3", "session": "night"},
+        ]
         message = build_full_message(
             "2026-07-22",
             races,
@@ -106,9 +111,12 @@ class ScheduleTests(unittest.TestCase):
             "https://example.com/gradedraces/",
             "https://example.com/monthly/",
         )
-        self.assertTrue(message.startswith("7/22 (水) の公営競技\n🏆グレードレース（優勝戦・決勝）"))
+        self.assertTrue(message.startswith("🏁7/22 (水) の公営競技\n\n🏆グレードレース"))
         self.assertIn("17:50 ボートレース 児島 GⅢ シモデンカップ", message)
-        self.assertIn("🏁開催場\n児島 G3 最終日 ナイター", message)
+        self.assertIn("🚴競輪\n青森 FⅠ 初日", message)
+        self.assertIn("🏍オート―レース\n伊勢崎 普通 最終日 ナイター", message)
+        self.assertIn("🚤ボートレース\n児島 G3 最終日 ナイター", message)
+        self.assertIn("🏇地方競馬\n門別 H3 ナイター", message)
         self.assertTrue(message.endswith("https://example.com/monthly/"))
 
 
