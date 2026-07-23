@@ -60,6 +60,26 @@
   };
   const raceNumber = (race) => Number.parseInt(String(race.race), 10) || 0;
   const groupKey = (sport, venue) => `${sport}:${venue}`;
+  const normalizedGrade = (value) => String(value ?? "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "")
+    .replace(/Ⅲ/g, "3")
+    .replace(/Ⅱ/g, "2")
+    .replace(/Ⅰ/g, "1")
+    .replace(/III/g, "3")
+    .replace(/II/g, "2")
+    .replace(/I/g, "1");
+  const isAccentGrade = (sport, grade) => {
+    if (!grade) return false;
+    const normalized = normalizedGrade(grade);
+    if (sport === "keirin") return normalized === "GP" || /^G[123]$/.test(normalized);
+    if (sport === "auto") return normalized === "SG" || /^G[12]$/.test(normalized);
+    if (sport === "boat") return normalized === "SG" || normalized === "PG1" || /^G[123]$/.test(normalized);
+    if (sport === "nar" || sport === "jra") return true;
+    return false;
+  };
+
   const featuredRaceKey = (date, sport, venue, race) => `${date}:${sport}:${venue}:${race}`;
   const FEATURED_RACES = new Set([
     featuredRaceKey("2026-02-22", "jra", "東京", "11R"),
@@ -282,7 +302,7 @@
     const session = dayData.venueSessionMap.get(row.key) || "";
     const hasGirls = dayData.girlsVenueSet.has(row.key);
     const gradeIcon = row.grade
-      ? `<span class="venue-grade-icon ${row.grade.accent ? "accent" : "muted"}" aria-label="格 ${row.grade.label}">${row.grade.label}</span>`
+      ? `<span class="venue-grade-icon ${isAccentGrade(row.sport, row.grade.label) ? "accent" : "muted"}" aria-label="格 ${row.grade.label}">${row.grade.label}</span>`
       : "";
     const sessionIcon = session
       ? `<img class="venue-status-icon" src="icons/${session}.png" alt="" aria-hidden="true">`

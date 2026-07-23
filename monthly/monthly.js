@@ -5918,10 +5918,34 @@
     return `<span class="day-label${multiDigit}" aria-label="${escapeHtml(value)}" title="${escapeHtml(value)}">${escapeHtml(text)}</span>`;
   };
 
+  const normalizedGrade = (value) => String(value ?? "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "")
+    .replace(/Ⅲ/g, "3")
+    .replace(/Ⅱ/g, "2")
+    .replace(/Ⅰ/g, "1")
+    .replace(/III/g, "3")
+    .replace(/II/g, "2")
+    .replace(/I/g, "1");
+  const isAccentGrade = (sport, grade) => {
+    if (!grade) return false;
+    const normalized = normalizedGrade(grade);
+    if (sport === "keirin") return normalized === "GP" || /^G[123]$/.test(normalized);
+    if (sport === "auto") return normalized === "SG" || /^G[12]$/.test(normalized);
+    if (sport === "boat") return normalized === "SG" || normalized === "PG1" || /^G[123]$/.test(normalized);
+    if (sport === "nar" || sport === "jra") return true;
+    return false;
+  };
+
   const parseDate = (value) => {
     const [year, month, day] = value.split("-").map(Number);
     return new Date(year, month - 1, day);
   };
+
+  const pad = (value) => String(value).padStart(2, "0");
+  const dateKey = (value) => `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}`;
+  const todayKey = dateKey(new Date());
 
   const showPreparingToast = () => {
     let toast = document.querySelector(".monthly-toast");
@@ -5941,7 +5965,7 @@
 
   const venueButtonHtml = (item) => {
     const grade = item.grade
-      ? `<span class="grade-icon ${item.accent ? "accent" : "muted"}">${escapeHtml(item.grade)}</span>`
+      ? `<span class="grade-icon ${isAccentGrade(item.sport, item.grade) ? "accent" : "muted"}">${escapeHtml(item.grade)}</span>`
       : "";
     const session = item.session
       ? `<img class="status-icon" src="${STATUS_ICON[item.session]}" alt="" aria-hidden="true">`
@@ -5984,6 +6008,7 @@
     if (date.getDay() === 6) dayClasses.push("sat");
     if (date.getDay() === 0) dayClasses.push("sun");
     if (HOLIDAYS.has(day.date)) dayClasses.push("holiday");
+    if (day.date === todayKey) dayClasses.push("today");
     return `<article class="${dayClasses.join(" " )}">
       <div class="date-cell" aria-label="${date.getMonth() + 1}月${date.getDate()}日 ${WEEKDAY[date.getDay()]}曜日">
         <span class="date-number">${date.getDate()}</span>

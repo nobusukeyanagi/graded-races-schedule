@@ -7,6 +7,7 @@
   --monthly-gold-border:rgba(143,106,24,.48);
   --sat:#eaf4ff;
   --sun:#fff0f0;
+  --today:#fff6c8;
   --jra:#23834a;
   --nar:#8b5a2b;
   --boat:#1876c9;
@@ -46,6 +47,7 @@ button{font:inherit}
 }
 .day-card.sat .date-cell{background:var(--sat)}
 .day-card.sun .date-cell,.day-card.holiday .date-cell{background:var(--sun)}
+.day-card.today .date-cell{background:var(--today)}
 .date-number{font-size:22px;line-height:1;font-weight:950;letter-spacing:-.05em}
 .date-weekday{font-size:9px;line-height:1;font-weight:900;color:var(--monthly-muted)}
 .venue-grid{
@@ -134,12 +136,12 @@ button{font:inherit}
   flex-wrap:nowrap;
 }
 .grade-icon{
-  min-width:24px;
+  min-width:0;
   height:17px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  padding:0 3px;
+  padding:0 1px;
   border-radius:5px;
   color:#fff;
   font-size:8px;
@@ -196,7 +198,7 @@ button{font:inherit}
   .venue-button{min-height:56px;grid-template-rows:17px 17px;row-gap:5px;padding:5px 3px}
   .venue-main-line{height:17px}
   .venue-name{font-size:13px}.sport-icon{flex-basis:15px;width:15px;height:15px}
-  .venue-meta-line{height:17px;min-height:17px;gap:2px}.grade-icon{min-width:22px;height:16px;font-size:7.5px}.status-icon{width:15px;height:15px}.day-label{min-width:16px;height:16px;padding:0 3px;font-size:8px}.day-label.multi-digit{padding-inline:2px;font-size:7px;letter-spacing:-.05em}
+  .venue-meta-line{height:17px;min-height:17px;gap:2px}.grade-icon{min-width:0;height:16px;padding-inline:1px;font-size:7.5px}.status-icon{width:15px;height:15px}.day-label{min-width:16px;height:16px;padding:0 3px;font-size:8px}.day-label.multi-digit{padding-inline:2px;font-size:7px;letter-spacing:-.05em}
 }
 @media(max-width:350px){
   .venue-grid{--venue-columns:2}
