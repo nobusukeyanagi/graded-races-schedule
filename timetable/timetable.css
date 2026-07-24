@@ -4,7 +4,7 @@
   --timetable-gold-dark:#8f6a18;
   --timetable-blue:#2f62ad;
   --timetable-text:#101114;
-  --hour-label-w:58px;
+  --hour-label-w:45px;
 }
 
 *{box-sizing:border-box}
@@ -26,7 +26,7 @@ button{font:inherit}
 .hour-group{
   display:grid;
   grid-template-columns:var(--hour-label-w) minmax(0,1fr);
-  min-height:94px;
+  min-height:80px;
   background:transparent;
   border-bottom:1px solid rgba(255,255,255,.11);
   scroll-margin-top:6px;
@@ -36,13 +36,13 @@ button{font:inherit}
   display:flex;
   align-items:center;
   justify-content:center;
-  min-height:94px;
+  min-height:80px;
   padding:6px 2px;
   border-right:1px solid rgba(255,255,255,.16);
   color:#fff;
   background:rgba(0,0,0,.18);
   font-family:inherit;
-  font-size:38px;
+  font-size:22px;
   font-weight:800;
   line-height:1;
   font-variant-numeric:tabular-nums;
@@ -50,7 +50,7 @@ button{font:inherit}
 }
 .current-hour .hour-label{
   color:#171108;
-  background:linear-gradient(180deg,#efd787,#cfa33e);
+  background:#fff6c8;
   box-shadow:inset 1px 0 rgba(255,255,255,.24),inset -1px 0 rgba(84,56,8,.12);
   text-shadow:none;
 }
@@ -65,7 +65,7 @@ button{font:inherit}
 .timetable-race{
   position:relative;
   min-width:0;
-  height:72px;
+  height:64px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -85,7 +85,7 @@ button{font:inherit}
 .race-minute{
   display:block;
   color:#111;
-  font-size:35px;
+  font-size:31px;
   font-weight:800;
   line-height:.95;
   letter-spacing:.01em;
@@ -169,21 +169,21 @@ button{font:inherit}
 .timetable-toast.is-visible{opacity:1;transform:translate(-50%,0)}
 
 @media(max-width:430px){
-  :root{--hour-label-w:48px}
+  :root{--hour-label-w:43px}
   .timetable-page{padding:5px 4px 10px}
-  .hour-group{min-height:84px}
-  .hour-label{min-height:84px;font-size:34px}
+  .hour-group{min-height:70px}
+  .hour-label{min-height:70px;font-size:19px}
   .hour-races{gap:6px;padding:6px}
-  .timetable-race{height:64px;gap:3px;padding:4px 3px;border-radius:7px}
-  .race-minute{font-size:32px}
+  .timetable-race{height:58px;gap:3px;padding:3px 3px;border-radius:7px}
+  .race-minute{font-size:28px}
   .race-sport-line{width:calc(100% - 10px);height:4px;flex-basis:4px}
   .race-detail{font-size:12px;letter-spacing:-.055em}
 }
 
 @media(max-width:350px){
-  :root{--hour-label-w:44px}
+  :root{--hour-label-w:43px}
   .hour-races{gap:4px;padding:5px}
-  .timetable-race{height:68px}
-  .race-minute{font-size:29px}
+  .timetable-race{height:56px}
+  .race-minute{font-size:27px}
   .race-detail{font-size:11px;letter-spacing:-.06em}
 }
