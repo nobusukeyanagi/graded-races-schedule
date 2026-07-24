@@ -65,13 +65,13 @@ button{font:inherit}
 .timetable-race{
   position:relative;
   min-width:0;
-  height:64px;
+  height:56px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:4px;
-  padding:5px 4px;
+  gap:2px;
+  padding:2px 4px;
   overflow:hidden;
   border:1px solid var(--timetable-gold-dark);
   border-radius:8px;
@@ -85,7 +85,7 @@ button{font:inherit}
 .race-minute{
   display:block;
   color:#111;
-  font-size:31px;
+  font-size:28px;
   font-weight:800;
   line-height:.95;
   letter-spacing:.01em;
@@ -174,8 +174,8 @@ button{font:inherit}
   .hour-group{min-height:70px}
   .hour-label{min-height:70px;font-size:19px}
   .hour-races{gap:6px;padding:6px}
-  .timetable-race{height:58px;gap:3px;padding:3px 3px;border-radius:7px}
-  .race-minute{font-size:28px}
+  .timetable-race{height:56px;gap:2px;padding:2px 3px;border-radius:7px}
+  .race-minute{font-size:27px}
   .race-sport-line{width:calc(100% - 10px);height:4px;flex-basis:4px}
   .race-detail{font-size:12px;letter-spacing:-.055em}
 }
@@ -184,6 +184,6 @@ button{font:inherit}
   :root{--hour-label-w:43px}
   .hour-races{gap:4px;padding:5px}
   .timetable-race{height:56px}
-  .race-minute{font-size:27px}
+  .race-minute{font-size:26px}
   .race-detail{font-size:11px;letter-spacing:-.06em}
 }
