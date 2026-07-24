@@ -47,3 +47,9 @@
 .table-scroll.rider-name-hidden .race-table td.car-number::after{content:attr(data-rider-short);position:static;display:block;max-width:100%;margin-top:4px;padding-left:.4px;overflow:hidden;font-size:10px;font-weight:1000;line-height:1;letter-spacing:.4px;white-space:nowrap;text-align:center;text-overflow:clip}
 .car-1{color:#111!important;background:#f3f4f5!important}.car-2{color:#fff!important;background:#171717!important}.car-3{color:#fff!important;background:#e51125!important}.car-4{color:#fff!important;background:#0877bd!important}.car-5{color:#111!important;background:#f2d819!important}.car-6{color:#fff!important;background:#07914a!important}.car-7{color:#111!important;background:#ee8b10!important}.car-8{color:#fff!important;background:#d9008f!important}
 @media(max-width:430px){.vote-racecard{padding-top:0}.section{margin-inline:8px}.race-table td{height:42px}}
+
+/* v78: force ranked row backgrounds to render after cached revisions */
+.good-ten-time .good-ten-line.rank-first,.surface-stat .stat-line.rank-first{background-color:#fff0b8!important}
+.good-ten-time .good-ten-line.rank-second,.surface-stat .stat-line.rank-second{background-color:#e4f5b4!important}
+.good-ten-time .good-ten-line.rank-third,.surface-stat .stat-line.rank-third{background-color:#cfeeff!important}
+.good-ten-time .good-ten-line[class*="rank-"],.surface-stat .stat-line[class*="rank-"]{display:grid!important;width:100%!important;border-radius:0!important;box-shadow:none!important}
