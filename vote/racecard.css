@@ -8,7 +8,7 @@
 .race-table th,.race-table td{padding:2px 5px;border-right:1px solid #d2d3d7;border-bottom:1px solid #d2d3d7;text-align:center;white-space:nowrap}
 .race-table th{height:28px;color:#fff;background:var(--auto-purple);font-size:13px;font-weight:1000;line-height:1.05}
 .race-table td{height:44px;color:#15171a;background:#fff;font-size:13px;font-weight:850;line-height:1}
-.race-table th:first-child,.race-table td:first-child{position:sticky;left:0;z-index:4;padding:0;box-shadow:5px 0 8px -7px rgba(0,0,0,.8)}
+.race-table th:first-child,.race-table td:first-child{position:sticky;left:0;z-index:4;padding:0;box-shadow:none}
 .race-table th:first-child{z-index:6;color:#fff;background:var(--auto-purple);border-right:1px solid rgba(255,255,255,.32)}
 .race-table td:first-child{border-right:0}
 .race-table th:last-child,.race-table td:last-child{border-right:0}.race-table tbody tr:last-child td{border-bottom:0}
@@ -19,10 +19,12 @@
 .race-table tbody td:nth-child(n+3){padding-inline:5px;color:#111!important;font-size:13px!important}
 .data-stack{vertical-align:middle;font-variant-numeric:tabular-nums}
 .data-stack>span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#111;font-size:13px;font-weight:850;line-height:1}
-.data-stack>span+span{margin-top:2px;color:#111;font-size:13px;font-weight:850}
+.data-stack>span+span{margin-top:3px;color:#111;font-size:13px;font-weight:850}
 .surface-stat{padding-inline:5px!important}
 .stat-line{display:grid!important;width:100%;grid-template-columns:1.1em 1fr .8em;align-items:center;justify-content:stretch;column-gap:0;overflow:visible!important;text-overflow:clip!important}
 .surface-label{text-align:left}.surface-value{text-align:right}.surface-unit{text-align:left}
+.stat-line.is-best{border-radius:4px;background:linear-gradient(90deg,#f7df8b,#fff4c9);box-shadow:inset 3px 0 #b87900,0 0 0 1px rgba(184,121,0,.22);font-weight:1000}
+.stat-line.is-best .surface-value{font-weight:1000}
 .race-results{padding-inline:5px!important;text-align:center!important}
 .result-line{display:grid!important;width:100%;grid-template-columns:1em minmax(2ch,1fr) .7ch minmax(2ch,1fr) .7ch minmax(2ch,1fr) .7ch minmax(2ch,1fr) .7ch minmax(2.2ch,1fr);align-items:center;justify-content:stretch;column-gap:0;overflow:visible!important;text-overflow:clip!important}
 .result-label{text-align:left}.result-number,.result-separator{text-align:center}.result-total{text-align:center}
