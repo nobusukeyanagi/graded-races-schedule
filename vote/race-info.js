@@ -24,7 +24,7 @@
             <span class="race-info-time"><span class="race-info-time-label">投票締切</span><time datetime="2026-02-23T16:43:00+09:00">16:43</time></span>
             <span class="race-info-time"><span class="race-info-time-label">発走</span><time datetime="2026-02-23T16:45:00+09:00">16:45</time></span>
           </div>
-          <p class="race-info-date" aria-label="2026年2月23日(月)　晴　良走路57.0℃　気温20.0℃　湿度43.0%　5100m"><span class="race-info-date-track"><span class="race-info-date-copy">2026年2月23日(月)　晴　良走路57.0℃　気温20.0℃　湿度43.0%　5100m</span><span class="race-info-date-copy" aria-hidden="true">2026年2月23日(月)　晴　良走路57.0℃　気温20.0℃　湿度43.0%　5100m</span></span></p>
+          <p class="race-info-date" aria-label="2026年2月23日(月)　晴　良走路57.0℃　気温20.0℃　湿度43.0%　5100m(10周)"><span class="race-info-date-track"><span class="race-info-date-copy">2026年2月23日(月)　晴　良走路57.0℃　気温20.0℃　湿度43.0%　5100m(10周)</span><span class="race-info-date-copy" aria-hidden="true">2026年2月23日(月)　晴　良走路57.0℃　気温20.0℃　湿度43.0%　5100m(10周)</span></span></p>
           <div class="race-info-video" id="${videoId}" hidden>
             <div class="race-info-video-frame" data-video-frame></div>
           </div>

@@ -1,30 +1,64 @@
 (() => {
   "use strict";
 
-  // 全ページ共通: iOS Safariのネイティブピンチと独自ズームを無効化する。
+  // 全ページ共通: ピンチ操作・ダブルタップ・Ctrl+ホイールによる拡大縮小を無効化する。
   if (!window.__ZENRACE_PINCH_DISABLED__) {
     window.__ZENRACE_PINCH_DISABLED__ = true;
-    const stopPinch = (event) => {
-      if (event.touches && event.touches.length < 2) return;
+
+    const stopZoom = (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
     };
+
+    const stopPinch = (event) => {
+      if (event.touches && event.touches.length < 2) return;
+      stopZoom(event);
+    };
+
     for (const type of ["touchstart", "touchmove"]) {
       window.addEventListener(type, stopPinch, { capture: true, passive: false });
     }
     for (const type of ["gesturestart", "gesturechange", "gestureend"]) {
-      window.addEventListener(type, (event) => {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-      }, { capture: true, passive: false });
+      window.addEventListener(type, stopZoom, { capture: true, passive: false });
     }
+
+    let lastTouchEndAt = 0;
+    let lastTouchX = 0;
+    let lastTouchY = 0;
+    window.addEventListener("touchend", (event) => {
+      if (!event.changedTouches || event.changedTouches.length !== 1) return;
+      const touch = event.changedTouches[0];
+      const now = Date.now();
+      const isDoubleTap =
+        now - lastTouchEndAt > 0 &&
+        now - lastTouchEndAt <= 350 &&
+        Math.abs(touch.clientX - lastTouchX) <= 28 &&
+        Math.abs(touch.clientY - lastTouchY) <= 28;
+
+      if (isDoubleTap) {
+        stopZoom(event);
+        lastTouchEndAt = 0;
+        return;
+      }
+
+      lastTouchEndAt = now;
+      lastTouchX = touch.clientX;
+      lastTouchY = touch.clientY;
+    }, { capture: true, passive: false });
+
+    window.addEventListener("dblclick", stopZoom, { capture: true, passive: false });
     window.addEventListener("wheel", (event) => {
       if (!event.ctrlKey) return;
-      event.preventDefault();
-      event.stopImmediatePropagation();
+      stopZoom(event);
     }, { capture: true, passive: false });
-  }
 
+    const setTouchAction = () => {
+      document.documentElement.style.touchAction = "manipulation";
+      if (document.body) document.body.style.touchAction = "manipulation";
+    };
+    setTouchAction();
+    document.addEventListener("DOMContentLoaded", setTouchAction, { once: true });
+  }
   if (customElements.get("zenrace-bottom-nav")) return;
 
   const scriptUrl = document.currentScript?.src || window.location.href;

@@ -26,7 +26,7 @@
 
       const updateRiderNameState = () => {
         riderStateFrame = 0;
-        scroller.classList.toggle('rider-name-hidden', scroller.scrollLeft > 0.5);
+        scroller.classList.toggle('rider-name-hidden', scroller.scrollLeft > 0);
       };
 
       const queueRiderNameState = () => {
