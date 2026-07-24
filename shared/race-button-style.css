@@ -1,7 +1,6 @@
 :root{
   --race-button-border:#8f6a18;
-  --race-button-border-glow:rgba(255,230,161,.38);
-  --race-button-active:#f0cc70;
+  --race-button-active:#fff6c8;
   --race-button-pressed:#f6df9c;
   --race-sport-keirin:#f17c32;
   --race-sport-auto:#8a56b5;
@@ -16,7 +15,7 @@
   overflow:hidden;
   border:1px solid var(--race-button-border);
   border-radius:8px;
-  box-shadow:0 0 0 1px var(--race-button-border-glow),0 2px 5px rgba(0,0,0,.20);
+  box-shadow:0 2px 5px rgba(0,0,0,.20);
   -webkit-tap-highlight-color:transparent;
   transition:transform .08s ease,background-color .12s ease,box-shadow .12s ease;
 }
@@ -28,7 +27,7 @@
   top:0;
   right:0;
   left:0;
-  height:3px;
+  height:4px;
   border-radius:7px 7px 0 0;
   background:var(--race-sport-color,#6f7782);
   pointer-events:none;
@@ -50,7 +49,7 @@
 :is(.race-card,.timetable-race,.venue-button,.race-tab):active:not(.placeholder):not(.spacer){
   transform:translateY(1px) scale(.985);
   background:var(--race-button-pressed);
-  box-shadow:0 0 0 1px rgba(255,230,161,.26),0 1px 2px rgba(0,0,0,.18);
+  box-shadow:0 1px 2px rgba(0,0,0,.18);
 }
 
 :is(.race-card,.timetable-race,.venue-button,.race-tab):focus-visible{
@@ -69,14 +68,14 @@
   color:#171108;
   border-color:var(--race-button-border);
   background:var(--race-button-active);
-  box-shadow:0 0 0 1px rgba(255,230,161,.48),0 4px 11px rgba(0,0,0,.26);
+  box-shadow:0 4px 11px rgba(0,0,0,.26);
 }
 
 /* 注目レースも枠線は金を維持し、赤は文字と外側の光だけに使う。 */
 .race-card.featured-race,
 .timetable-race.featured-race{
   border:1px solid var(--race-button-border);
-  box-shadow:0 0 0 1px rgba(255,226,143,.46),0 0 0 3px rgba(212,35,43,.38),0 2px 5px rgba(0,0,0,.20);
+  box-shadow:0 0 0 3px rgba(212,35,43,.38),0 2px 5px rgba(0,0,0,.20);
 }
 
 /* 時刻表の従来の中央線は廃止し、共通の上端ラインへ統合。 */
